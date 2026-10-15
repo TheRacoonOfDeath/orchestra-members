@@ -137,3 +137,8 @@ function user_can(int $userId, string $capability, mixed ...$args): bool
 {
     return in_array($capability, WordPress::$userCapabilities[$userId] ?? [], true);
 }
+
+function is_email(string $email): string|false
+{
+    return filter_var($email, FILTER_VALIDATE_EMAIL) === false ? false : $email;
+}

@@ -5,7 +5,7 @@
 # Usage: tests/e2e/run.sh
 #   E2E_DIR          working directory (default: a new temporary directory, deleted afterwards)
 #   E2E_PORT         port for the web server (default: 8765)
-#   E2E_CORE_ZIP     orchestra-core zip (default: the latest GitHub release); needs 0.3 or later
+#   E2E_CORE_ZIP     orchestra-core zip (default: the latest GitHub release); needs 0.4 or later
 #
 # Requirements: php 8.3+ with pdo_sqlite, zip and fileinfo; python3; curl; unzip; composer.
 
@@ -95,12 +95,23 @@ add_filter('pre_wp_mail', static function ($result, array $mail) {
 add_filter('orchestra_core_email_batch_size', static fn (int $size) => (int) get_option('e2e_batch_size', $size));
 MU
 
+# The tests never check GitHub for updates
+mkdir -p "$WP_PATH/wp-content/mu-plugins"
+cat > "$WP_PATH/wp-content/mu-plugins/e2e-offline.php" <<'MU'
+<?php
+foreach (['orchestra-core', 'orchestra-library', 'orchestra-members', 'orchestra-projects'] as $slug) {
+    add_filter("puc_check_now-$slug", '__return_false');
+}
+MU
+
 "$WP" plugin activate orchestra-core orchestra-members
 "$WP" user create organizer organizer@example.com --role=orchestra_organizer --user_pass=pass --display_name=Olga --quiet
 "$WP" user create conductor conductor@example.com --role=orchestra_conductor --user_pass=pass --display_name=Carl --quiet
 "$WP" user create member member@example.com --role=orchestra_member --user_pass=pass --display_name=Mia --quiet
 "$WP" user create member2 member2@example.com --role=orchestra_member --user_pass=pass --display_name=Max --quiet
 "$WP" user create sub sub@example.com --role=subscriber --user_pass=pass --display_name=Sam --quiet
+# The Orchestra pages with the shortcodes, as created by "Create Orchestra pages"
+"$WP" eval 'Orchestra\Core\Ui\PageSetup::createMissingPages();'
 
 # Web server
 "${PHP[@]}" -S "localhost:$PORT" -t "$WP_PATH" > "$WORK_DIR/server.log" 2>&1 &

@@ -6,8 +6,10 @@ namespace Orchestra\Members;
 
 use LogicException;
 use Orchestra\Core\Authorization\CapabilityRegistry;
+use Orchestra\Core\Ui\Html;
+use Orchestra\Core\Ui\Menu;
+use Orchestra\Core\Ui\MenuItem;
 use Orchestra\Members\Admin\MembersPage;
-use Orchestra\Members\Admin\Notices;
 use Orchestra\Members\Admin\ProfileSection;
 use Orchestra\Members\Admin\UserListColumn;
 use Orchestra\Core\Email\EmailService;
@@ -16,6 +18,11 @@ use Orchestra\Members\Privacy\PersonalData;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\LoginBlocker;
 use Orchestra\Members\Status\StatusService;
+use Orchestra\Members\Ui\MembersShortcode;
+use Orchestra\Members\Ui\MembersView;
+use Orchestra\Members\Ui\ProfileController;
+use Orchestra\Members\Ui\ProfileShortcode;
+use Orchestra\Members\Ui\StatusController;
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 final class Plugin
@@ -81,7 +88,8 @@ final class Plugin
      */
     public function registerFeatures(): void
     {
-        if (!\class_exists(CapabilityRegistry::class)) {
+        // The shared UI exists since orchestra-core 0.4.
+        if (!\class_exists(CapabilityRegistry::class) || !\class_exists(Html::class)) {
             \add_action('admin_notices', [$this, 'renderMissingCoreNotice']);
             return;
         }
@@ -94,10 +102,15 @@ final class Plugin
             (new MemberEmailGroups($this->directory, $this->profiles))->register();
         }
 
+        $view = new MembersView($this->directory, $this->profiles, $this->status);
+        (new StatusController($this->status))->register();
+        (new ProfileController($this->profiles))->register();
+        (new MembersShortcode($view))->register();
+        (new ProfileShortcode($this->profiles))->register();
+        \add_action(Menu::REGISTER_ACTION, [$this, 'registerMenuItems']);
+
         if (\is_admin()) {
-            $notices = new Notices();
-            $notices->register();
-            (new MembersPage($this->directory, $this->profiles, $this->status, $notices))->register();
+            (new MembersPage($view))->register();
             (new ProfileSection($this->profiles))->register();
             (new UserListColumn($this->profiles))->register();
         }
@@ -112,12 +125,33 @@ final class Plugin
     }
 
     /**
+     * @internal Hooked to `orchestra_core_register_menu_items`.
+     */
+    public function registerMenuItems(Menu $menu): void
+    {
+        $menu->add(new MenuItem(
+            MembersShortcode::TAG,
+            \__('Members', 'orchestra-members'),
+            \__('Who plays in the orchestra.', 'orchestra-members'),
+            static fn (int $userId): bool => \user_can($userId, Capabilities::DIRECTORY_READ),
+            40
+        ));
+        $menu->add(new MenuItem(
+            ProfileShortcode::TAG,
+            \__('My profile', 'orchestra-members'),
+            \__('Your name, email address, password and dietary restrictions.', 'orchestra-members'),
+            static fn (int $userId): bool => \user_can($userId, Capabilities::PROFILE_EDIT, $userId),
+            90
+        ));
+    }
+
+    /**
      * @internal Hooked to `admin_notices`.
      */
     public function renderMissingCoreNotice(): void
     {
         echo '<div class="notice notice-error"><p>'
-            . \esc_html__('Orchestra Members requires the Orchestra Core plugin to be active.', 'orchestra-members')
+            . \esc_html__('Orchestra Members requires Orchestra Core 0.4 or later to be active.', 'orchestra-members')
             . '</p></div>';
     }
 

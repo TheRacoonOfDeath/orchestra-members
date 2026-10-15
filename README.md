@@ -6,9 +6,10 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 
 ## Features
 
-- Profile fields on the WordPress profile screen: financial support and dietary restrictions
-- A **Members** screen in wp-admin: names of all members for everyone, emails, roles, status and
-  profiles for organizers
+- `[orchestra_profile]`: everyone edits their name, email address, password, financial support
+  and dietary restrictions (administrators also on the WordPress profile screen)
+- `[orchestra_members]` (and **Members** in wp-admin): names of all members for everyone; emails,
+  roles, status, profiles and status changes for organizers
 - Active / inactive status, changed by organizers
   - inactive members cannot log in, also not with application passwords; after entering the
     correct password they are told that their account is inactive
@@ -24,8 +25,10 @@ Conductor" or "Orchestra Organizer"). There is no self-registration.
 
 ## Installation
 
-1. Install and activate orchestra-core.
+1. Install and activate orchestra-core 0.4 or later.
 2. Upload `orchestra-members-{VERSION}.zip` under **Plugins → Add New → Upload Plugin** and activate it.
+
+3. Create the Orchestra pages (**Create Orchestra pages** in wp-admin), or put the shortcodes on pages.
 
 Updates are installed from the GitHub releases of this repository. The plugin reads
 `update.json` from the latest release, so the GitHub API and its rate limit are not involved and
