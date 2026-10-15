@@ -1,6 +1,6 @@
 #!/bin/bash
-# End-to-end test: installs WordPress (SQLite, PHP built-in server), orchestra-core and the
-# a fresh orchestra-members build, then drives both through HTTP like a browser (e2e.py).
+# End-to-end test: installs WordPress (SQLite, PHP built-in server), the latest orchestra-core
+# release and a fresh orchestra-members build, then drives both through HTTP like a browser (e2e.py).
 #
 # Usage: tests/e2e/run.sh
 #   E2E_DIR          working directory (default: a new temporary directory, deleted afterwards)
