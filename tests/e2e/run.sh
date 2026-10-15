@@ -92,7 +92,7 @@ add_filter('pre_wp_mail', static function ($result, array $mail) {
     update_option('e2e_mails', $log, false);
     return true;
 }, 10, 2);
-add_filter('orchestra_core_email_batch_size', static fn () => (int) get_option('e2e_batch_size', 20));
+add_filter('orchestra_core_email_batch_size', static fn (int $size) => (int) get_option('e2e_batch_size', $size));
 MU
 
 "$WP" plugin activate orchestra-core orchestra-members
