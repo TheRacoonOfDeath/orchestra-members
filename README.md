@@ -27,7 +27,9 @@ Conductor" or "Orchestra Organizer"). There is no self-registration.
 1. Install and activate orchestra-core.
 2. Upload `orchestra-members-{VERSION}.zip` under **Plugins → Add New → Upload Plugin** and activate it.
 
-Updates are installed from the GitHub releases of this repository.
+Updates are installed from the GitHub releases of this repository. The plugin reads
+`update.json` from the latest release, so the GitHub API and its rate limit are not involved and
+no token is needed.
 
 ## Documentation
 
@@ -54,5 +56,5 @@ They need PHP with `pdo_sqlite`, Python 3, curl, unzip and network access.
 1. Run `composer check` and `composer e2e`.
 2. Bump `Version:` in `orchestra-members.php`.
 3. Run `./build-plugin.sh`; it creates `build/orchestra-members-{VERSION}.zip` with production
-   dependencies only.
-4. Create a GitHub release for the version and attach the zip.
+   dependencies only, and `build/update.json`.
+4. Create a GitHub release `v{VERSION}` and attach the zip **and `update.json`**.
