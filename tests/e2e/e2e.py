@@ -253,6 +253,99 @@ _, page = Session("admin", "admin").page(f"/wp-admin/user-edit.php?user_id={memb
 check("is deleted. It can be entered again" in page and "disabled" in page,
       "the profile of an inactive member cannot be filled in")
 
+# --- Email to the global groups (orchestra-core's email service) -----------------------------
+COMPOSE = "/wp-admin/admin.php?page=orchestra-email"
+LOG = "/wp-admin/admin.php?page=orchestra-email-log"
+
+
+def mails():
+    return json.loads(wp_eval('echo json_encode(get_option("e2e_mails", []));'))
+
+
+def compose(session, groups, subject, body, op):
+    _, page = session.page(COMPOSE)
+    data = {"_wpnonce": field(page, "_wpnonce") or "missing", "op": op, "subject": subject, "body": body}
+    args = ["curl", "-s", "-c", session.jar, "-b", session.jar, "-L", "-o", "-"]
+    for key, value in data.items():
+        args += ["--data-urlencode", f"{key}={value}"]
+    for group in groups:
+        args += ["--data-urlencode", f"groups[]={group}"]
+    return subprocess.run(args + [BASE + COMPOSE], capture_output=True).stdout.decode()
+
+
+def log_rows():
+    return json.loads(wp_eval(
+        'global $wpdb; echo json_encode($wpdb->get_results("SELECT id, subject, body, recipients, sent, failed, status'
+        ' FROM {$wpdb->prefix}orchestra_core_email_log ORDER BY id", ARRAY_A));'
+    ))
+
+
+status, _ = Session("member2").page(COMPOSE)
+check(status == 403, "members cannot write emails")
+_, page = Session("member2").page("/wp-admin/")
+check("orchestra-email" not in page, "members have no email menu")
+
+_, page = organizer.page(COMPOSE)
+check(all(label in page for label in ["Everyone", "All members", "All conductors", "All organizers"]),
+      "organizers see the global groups")
+_, page = conductor.page(COMPOSE)
+check("All organizers" in page, "conductors may email the global groups")
+_, page = organizer.page(COMPOSE + "&groups%5B%5D=orchestra_members_conductors")
+check(re.search(r'value="orchestra_members_conductors"\s+checked', page) is not None, "groups can be preselected by link")
+
+page = compose(organizer, ["orchestra_members_everyone"], "", "Hello", "review")
+check("Please enter a subject." in page, "the subject is required")
+page = compose(organizer, [], "Rehearsal", "Hello", "review")
+check("Please select at least one group." in page, "a group is required")
+page = compose(organizer, ["orchestra_members_everyone"], "Rehearsal", "Hello all,\nsee you on Monday.", "review")
+check("3 people" in page and "Max" in page and "Carl" in page and "Mia" not in page,
+      "the review lists the recipients without inactive members")
+check(len(mails()) == 0, "reviewing sends nothing")
+
+wp("option", "update", "e2e_batch_size", "2")
+page = compose(organizer, ["orchestra_members_everyone"], "Rehearsal", "Hello all,\nsee you on Monday.", "send")
+check("is being sent to 3 recipients" in page,
+      "sending shows the log with a notice")
+sent = mails()
+check(len(sent) == 2, "the first batch is sent right away")
+check("Sending (2 of 3)" in page, "the log shows the progress")
+wp("cron", "event", "run", "orchestra_core_email_send")
+sent = mails()
+rows = log_rows()
+check(len(sent) == 3 and rows[-1]["status"] == "sent" and rows[-1]["sent"] == "3", "the rest is sent by WP-Cron")
+check(rows[-1]["body"] is None, "the text is deleted after sending")
+check(sorted(m["to"] for m in sent) == ["conductor@example.com", "member2@example.com", "organizer@example.com"],
+      "one email per recipient, inactive members excluded")
+first = sent[0]
+check(first["subject"] == "Rehearsal" and first["message"].startswith("Hello all,\nsee you on Monday.")
+      and "Sent by Olga" in first["message"] and "Orchestra: Everyone" in first["message"],
+      "the email contains the message and who sent it to which group")
+check(any(h.startswith("Reply-To:") and "organizer@example.com" in h for h in first["headers"]),
+      "replies go to the sender")
+_, page = organizer.page(LOG)
+check("Rehearsal" in page and "Orchestra: Everyone" in page and ">Sent<" in page, "the log lists the email")
+_, page = conductor.page(LOG)
+check("Rehearsal" in page, "conductors see the log")
+
+wp_eval(f'wp_update_user(["ID" => {conductor_id}, "user_email" => "fail@example.com"]);')
+compose(organizer, ["orchestra_members_conductors", "orchestra_members_organizers"], "Board", "Meeting", "send")
+for _ in range(2):
+    wp("cron", "event", "run", "orchestra_core_email_send")
+rows = log_rows()
+check(rows[-1]["status"] == "sent" and rows[-1]["sent"] == "1" and rows[-1]["failed"] == "1",
+      "failed deliveries are retried and then counted as failed")
+wp_eval(f'wp_update_user(["ID" => {conductor_id}, "user_email" => "conductor@example.com"]);')
+
+status, _, _ = Session("member2").request(COMPOSE, data={
+    "op": "send", "groups[]": "orchestra_members_everyone", "subject": "Spam", "body": "Spam",
+})
+check(status == 403 and len(log_rows()) == 2, "members cannot send emails")
+
+wp_eval('global $wpdb; $wpdb->query("UPDATE {$wpdb->prefix}orchestra_core_email_log SET created_at = \'2020-01-01 00:00:00\''
+        ' WHERE subject = \'Board\'");')
+wp("cron", "event", "run", "orchestra_core_email_purge")
+check([r["subject"] for r in log_rows()] == ["Rehearsal"], "log entries are deleted after 12 months")
+
 # --- Reactivation ---------------------------------------------------------------------------
 _, page = set_status(organizer, member_id, "active")
 check("active again" in page and meta(member_id, "orchestra_members_inactive") == "", "organizer reactivates a member")

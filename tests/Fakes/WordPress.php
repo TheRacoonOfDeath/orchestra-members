@@ -23,12 +23,16 @@ final class WordPress
     /** @var list<int> */
     public static array $destroyedSessions = [];
 
+    /** @var array<int, list<string>> user ID => capabilities */
+    public static array $userCapabilities = [];
+
     public static function reset(): void
     {
         self::$users = [];
         self::$userMeta = [];
         self::$actions = [];
         self::$destroyedSessions = [];
+        self::$userCapabilities = [];
     }
 
     /**

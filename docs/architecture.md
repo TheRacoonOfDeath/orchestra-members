@@ -33,6 +33,7 @@ Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,
 | `Admin\MembersPage` | The **Members** screen and the status form |
 | `Admin\UserListColumn` | The status column in **Users → All Users** |
 | `Privacy\PersonalData` | Exporter, eraser and privacy policy text |
+| `Email\MemberEmailGroups` | The global email groups and the exclusion of inactive members |
 
 ## Capabilities
 
@@ -44,6 +45,7 @@ See the catalogue in orchestra-core's `docs/capabilities.md`.
 | `orchestra_members_profile_read` *meta* | own | own | own + others |
 | `orchestra_members_profile_edit` *meta* | own | own | own |
 | `orchestra_members_status_edit` | | | ✓ |
+| `orchestra_members_email_send` | | ✓ | ✓ |
 
 Administrators have every capability. Editing other members' profiles is reserved for them
 (`user-edit.php`).
@@ -57,8 +59,17 @@ Administrators have every capability. Editing other members' profiles is reserve
   `orchestra_members_member_deactivated`. Reactivating fires `orchestra_members_member_activated`.
 - The profile of an inactive member cannot be filled in.
 
-## Not yet implemented
+## Email groups
 
-- The global email groups (all members, all conductors, all organizers) and the capability
-  `orchestra_members_email_send`. They need the email service of orchestra-core, which does not
-  exist yet. Excluding inactive members from all groups is planned with it.
+With orchestra-core 0.3 or later, orchestra-members registers these groups for the email service,
+listed under "Orchestra". Emailing them requires `orchestra_members_email_send`.
+
+| Group ID | Recipients |
+|----------|------------|
+| `orchestra_members_everyone` | everyone with an orchestra role |
+| `orchestra_members_members` | role Orchestra Member |
+| `orchestra_members_conductors` | role Orchestra Conductor |
+| `orchestra_members_organizers` | role Orchestra Organizer |
+
+It also removes inactive members from **every** group, including those of other plugins, through
+`orchestra_core_email_recipients`.

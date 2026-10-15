@@ -5,7 +5,7 @@
 # Usage: tests/e2e/run.sh
 #   E2E_DIR          working directory (default: a new temporary directory, deleted afterwards)
 #   E2E_PORT         port for the web server (default: 8765)
-#   E2E_CORE_ZIP     orchestra-core zip (default: the latest GitHub release)
+#   E2E_CORE_ZIP     orchestra-core zip (default: the latest GitHub release); needs 0.3 or later
 #
 # Requirements: php 8.3+ with pdo_sqlite, zip and fileinfo; python3; curl; unzip; composer.
 
@@ -71,7 +71,8 @@ unzip -q -o "$CORE_ZIP" -d "$WP_PATH/wp-content/plugins"
 MEMBERS_ZIP=$(ls -t "$ROOT"/build/orchestra-members-*.zip | head -n 1)
 unzip -q -o "$MEMBERS_ZIP" -d "$WP_PATH/wp-content/plugins"
 
-# Records the actions of orchestra-members, for the checks of the public API
+# Records the actions of orchestra-members, for the checks of the public API, and captures emails
+# instead of sending them (delivery to fail@example.com fails)
 mkdir -p "$WP_PATH/wp-content/mu-plugins"
 cat > "$WP_PATH/wp-content/mu-plugins/e2e-actions.php" <<'MU'
 <?php
@@ -82,6 +83,16 @@ foreach (['orchestra_members_member_activated', 'orchestra_members_member_deacti
         update_option('e2e_actions', $log);
     });
 }
+add_filter('pre_wp_mail', static function ($result, array $mail) {
+    if ($mail['to'] === 'fail@example.com') {
+        return false;
+    }
+    $log = get_option('e2e_mails', []);
+    $log[] = $mail;
+    update_option('e2e_mails', $log, false);
+    return true;
+}, 10, 2);
+add_filter('orchestra_core_email_batch_size', static fn () => (int) get_option('e2e_batch_size', 20));
 MU
 
 "$WP" plugin activate orchestra-core orchestra-members

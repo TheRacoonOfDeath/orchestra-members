@@ -29,6 +29,9 @@ final class Capabilities
     /** Set members active or inactive. */
     public const STATUS_EDIT = 'orchestra_members_status_edit';
 
+    /** Email the global groups (everyone, all members, all conductors, all organizers). */
+    public const EMAIL_SEND = 'orchestra_members_email_send';
+
     /**
      * @internal Hooked to `orchestra_core_register_capabilities`.
      */
@@ -43,6 +46,7 @@ final class Capabilities
             ->register(self::PROFILE_EDIT_OWN, $everyone)
             ->register(self::PROFILE_EDIT_OTHERS)
             ->register(self::STATUS_EDIT, [Roles::ORGANIZER])
+            ->register(self::EMAIL_SEND, [Roles::CONDUCTOR, Roles::ORGANIZER])
             ->registerMetaCapability(
                 self::PROFILE_READ,
                 OwnershipMapper::forUsers(self::PROFILE_READ_OWN, self::PROFILE_READ_OTHERS)

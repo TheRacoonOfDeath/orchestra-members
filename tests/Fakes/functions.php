@@ -132,3 +132,8 @@ function get_users(array $args): array
         ? array_map(static fn (WP_User $user): string => (string) $user->ID, $users)
         : $users;
 }
+
+function user_can(int $userId, string $capability, mixed ...$args): bool
+{
+    return in_array($capability, WordPress::$userCapabilities[$userId] ?? [], true);
+}

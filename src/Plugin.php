@@ -10,6 +10,8 @@ use Orchestra\Members\Admin\MembersPage;
 use Orchestra\Members\Admin\Notices;
 use Orchestra\Members\Admin\ProfileSection;
 use Orchestra\Members\Admin\UserListColumn;
+use Orchestra\Core\Email\EmailService;
+use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\Privacy\PersonalData;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\LoginBlocker;
@@ -81,6 +83,10 @@ final class Plugin
         \add_action('orchestra_core_register_capabilities', [Capabilities::class, 'register']);
         \add_action('user_register', [$this, 'announceNewMember']);
         (new PersonalData($this->profiles))->register();
+        // The email service exists since orchestra-core 0.3.
+        if (\class_exists(EmailService::class)) {
+            (new MemberEmailGroups($this->directory, $this->profiles))->register();
+        }
 
         if (\is_admin()) {
             $notices = new Notices();

@@ -20,9 +20,15 @@ final class CapabilitiesTest extends TestCase
         $byRole = $registry->capabilitiesByRole();
         $own = [Capabilities::DIRECTORY_READ, Capabilities::PROFILE_EDIT_OWN, Capabilities::PROFILE_READ_OWN];
         $this->assertSame($own, $byRole[Roles::MEMBER]);
-        $this->assertSame($own, $byRole[Roles::CONDUCTOR]);
         $this->assertSame([
             Capabilities::DIRECTORY_READ,
+            Capabilities::EMAIL_SEND,
+            Capabilities::PROFILE_EDIT_OWN,
+            Capabilities::PROFILE_READ_OWN,
+        ], $byRole[Roles::CONDUCTOR]);
+        $this->assertSame([
+            Capabilities::DIRECTORY_READ,
+            Capabilities::EMAIL_SEND,
             Capabilities::PROFILE_EDIT_OWN,
             Capabilities::PROFILE_READ_OTHERS,
             Capabilities::PROFILE_READ_OWN,
