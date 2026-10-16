@@ -1,0 +1,363 @@
+# German translation of Orchestra Members.
+msgid ""
+msgstr ""
+"Project-Id-Version: orchestra-members\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-16 08:28+0200\n"
+"PO-Revision-Date: 2026-10-16 00:00+0000\n"
+"Last-Translator: Julian Nickerl\n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/Admin/MembersPage.php:43 src/Admin/MembersPage.php:44
+#: src/Admin/MembersPage.php:76 src/Plugin.php:145
+msgid "Members"
+msgstr "Mitglieder"
+
+#: src/Admin/MembersPage.php:63 src/Ui/MembersView.php:82
+msgid "You are not allowed to view this profile."
+msgstr "Du darfst dieses Profil nicht ansehen."
+
+#: src/Admin/ProfileSection.php:56 src/Email/MemberEmailGroups.php:45
+#: src/Ui/ProfileShortcode.php:90
+msgid "Orchestra"
+msgstr "Orchester"
+
+#: src/Admin/ProfileSection.php:60 src/Privacy/PersonalData.php:77
+#: src/Ui/MembersView.php:49 src/Ui/MembersView.php:137
+msgid "Status"
+msgstr "Status"
+
+#: src/Admin/ProfileSection.php:65
+msgid ""
+"The sensitive profile data of inactive members is deleted. It can be entered "
+"again once active."
+msgstr ""
+"Die sensiblen Profildaten inaktiver Mitglieder werden gelöscht. Sie können "
+"nach der Reaktivierung erneut eingegeben werden."
+
+#: src/Admin/ProfileSection.php:72 src/Privacy/PersonalData.php:79
+#: src/Ui/MembersView.php:97
+msgid "Financial support"
+msgstr "Finanzielle Unterstützung"
+
+#: src/Admin/ProfileSection.php:75 src/Ui/ProfileShortcode.php:94
+msgid "I need financial support, e.g. for project fees."
+msgstr "Ich benötige finanzielle Unterstützung, z. B. für Projektbeiträge."
+
+#: src/Admin/ProfileSection.php:79 src/Privacy/PersonalData.php:85
+#: src/Ui/MembersView.php:99 src/Ui/ProfileShortcode.php:98
+msgid "Dietary restrictions"
+msgstr "Ernährungseinschränkungen"
+
+#: src/Admin/ProfileSection.php:85 src/Ui/ProfileShortcode.php:102
+msgid "Allergies, vegetarian, vegan, …"
+msgstr "Allergien, vegetarisch, vegan, …"
+
+#: src/Admin/ProfileSection.php:90 src/Ui/ProfileShortcode.php:105
+msgid ""
+"Only you, the organizers and the administrators can see this information."
+msgstr ""
+"Nur du, die Organisatoren und die Administratoren können diese Angaben sehen."
+
+#: src/Admin/StatusLabel.php:11
+msgid "Active"
+msgstr "Aktiv"
+
+#: src/Admin/StatusLabel.php:11
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: src/Admin/UserListColumn.php:35
+msgid "Orchestra status"
+msgstr "Orchesterstatus"
+
+#: src/Email/MemberEmailGroups.php:47
+msgid "Everyone"
+msgstr "Alle"
+
+#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersView.php:91
+msgid "All members"
+msgstr "Alle Mitglieder"
+
+#: src/Email/MemberEmailGroups.php:49
+msgid "All conductors"
+msgstr "Alle Dirigenten"
+
+#: src/Email/MemberEmailGroups.php:50
+msgid "All organizers"
+msgstr "Alle Organisatoren"
+
+#: src/Plugin.php:146
+msgid "Who plays in the orchestra."
+msgstr "Wer im Orchester spielt."
+
+#: src/Plugin.php:152
+msgid "My profile"
+msgstr "Mein Profil"
+
+#: src/Plugin.php:153
+msgid "Your name, email address, password and dietary restrictions."
+msgstr ""
+"Dein Name, deine E-Mail-Adresse, dein Passwort und deine "
+"Ernährungseinschränkungen."
+
+#: src/Plugin.php:165
+msgid "Orchestra Members requires Orchestra Core 0.4 or later to be active."
+msgstr "Orchestra Members benötigt ein aktives Orchestra Core ab Version 0.4."
+
+#: src/Privacy/PersonalData.php:38 src/Privacy/PersonalData.php:53
+#: src/Privacy/PersonalData.php:74
+msgid "Orchestra profile"
+msgstr "Orchesterprofil"
+
+#: src/Privacy/PersonalData.php:81 src/Ui/MembersView.php:87
+msgid "Needed"
+msgstr "Benötigt"
+
+#: src/Privacy/PersonalData.php:82 src/Ui/MembersView.php:88
+msgid "Not needed"
+msgstr "Nicht benötigt"
+
+#: src/Privacy/PersonalData.php:114
+msgid ""
+"The inactive status of the orchestra account was kept, so that the account "
+"stays blocked."
+msgstr ""
+"Der inaktive Status des Orchesterkontos wurde beibehalten, damit das Konto "
+"gesperrt bleibt."
+
+#: src/Privacy/PersonalData.php:138
+msgid ""
+"Members can enter in their profile if they need financial support and their "
+"dietary restrictions."
+msgstr ""
+"Mitglieder können in ihrem Profil angeben, ob sie finanzielle Unterstützung "
+"benötigen, und ihre Ernährungseinschränkungen eintragen."
+
+#: src/Privacy/PersonalData.php:142
+msgid ""
+"This information is visible only to the member, the organizers and the "
+"administrators."
+msgstr ""
+"Diese Angaben sind nur für das Mitglied, die Organisatoren und die "
+"Administratoren sichtbar."
+
+#: src/Privacy/PersonalData.php:145
+msgid "It is used to plan projects and deleted when a member is set inactive."
+msgstr ""
+"Sie werden zur Planung von Projekten verwendet und gelöscht, wenn ein "
+"Mitglied auf inaktiv gesetzt wird."
+
+#: src/Privacy/PersonalData.php:147
+msgid ""
+"Members who leave are set inactive instead of deleted, to preserve the "
+"history of projects."
+msgstr ""
+"Mitglieder, die das Orchester verlassen, werden auf inaktiv gesetzt statt "
+"gelöscht, damit der Verlauf der Projekte erhalten bleibt."
+
+#: src/Privacy/PersonalData.php:150
+msgid "Inactive members cannot log in."
+msgstr "Inaktive Mitglieder können sich nicht anmelden."
+
+#: src/Privacy/PersonalData.php:154
+msgid "Orchestra Members"
+msgstr "Orchestermitglieder"
+
+#: src/Profile/AccountInput.php:67
+msgid "Please enter your name."
+msgstr "Bitte gib deinen Namen ein."
+
+#: src/Profile/AccountInput.php:69
+msgid "The name is too long."
+msgstr "Der Name ist zu lang."
+
+#: src/Profile/AccountInput.php:74
+msgid "Please enter a valid email address."
+msgstr "Bitte gib eine gültige E-Mail-Adresse ein."
+
+#: src/Profile/AccountInput.php:76
+msgid "This email address is already used by another account."
+msgstr "Diese E-Mail-Adresse wird bereits von einem anderen Konto verwendet."
+
+#. translators: %d: minimum number of characters
+#: src/Profile/AccountInput.php:83
+#, php-format
+msgid "The new password must have at least %d characters."
+msgstr "Das neue Passwort muss mindestens %d Zeichen lang sein."
+
+#: src/Profile/AccountInput.php:86
+msgid "The new passwords do not match."
+msgstr "Die neuen Passwörter stimmen nicht überein."
+
+#: src/Profile/AccountInput.php:92
+msgid ""
+"Please enter your current password to change your email address or password."
+msgstr ""
+"Bitte gib dein aktuelles Passwort ein, um deine E-Mail-Adresse oder dein "
+"Passwort zu ändern."
+
+#. translators: %d: maximum number of characters
+#: src/Profile/ProfileInput.php:43
+#, php-format
+msgid "Dietary restrictions must not be longer than %d characters."
+msgstr "Die Ernährungseinschränkungen dürfen höchstens %d Zeichen lang sein."
+
+#: src/Status/LoginBlocker.php:57
+msgid ""
+"Your account has been marked as inactive. Please contact an administrator to "
+"reactivate it."
+msgstr ""
+"Dein Konto wurde als inaktiv markiert. Bitte wende dich an einen "
+"Administrator, um es zu reaktivieren."
+
+#: src/Status/StatusService.php:31
+msgid "Only users with an orchestra role can be set inactive."
+msgstr ""
+"Nur Benutzer mit einer Orchesterrolle können auf inaktiv gesetzt werden."
+
+#: src/Status/StatusService.php:34
+msgid "Administrators cannot be set inactive."
+msgstr "Administratoren können nicht auf inaktiv gesetzt werden."
+
+#: src/Status/StatusService.php:37
+msgid "You cannot change your own status."
+msgstr "Du kannst deinen eigenen Status nicht ändern."
+
+#: src/Ui/MembersShortcode.php:35
+msgid "Please log in to see the members."
+msgstr "Bitte melde dich an, um die Mitglieder zu sehen."
+
+#: src/Ui/MembersShortcode.php:38
+msgid "You are not allowed to see the members."
+msgstr "Du darfst die Mitglieder nicht sehen."
+
+#: src/Ui/MembersView.php:45 src/Ui/ProfileShortcode.php:51
+msgid "Name"
+msgstr "Name"
+
+#: src/Ui/MembersView.php:47 src/Ui/MembersView.php:95
+msgid "Email"
+msgstr "E-Mail"
+
+#: src/Ui/MembersView.php:48 src/Ui/MembersView.php:96
+msgid "Role"
+msgstr "Rolle"
+
+#. translators: %d: number of members
+#: src/Ui/MembersView.php:68
+#, php-format
+msgid "%d member"
+msgid_plural "%d members"
+msgstr[0] "%d Mitglied"
+msgstr[1] "%d Mitglieder"
+
+#: src/Ui/MembersView.php:71
+msgid "No members found."
+msgstr "Keine Mitglieder gefunden."
+
+#: src/Ui/MembersView.php:107
+msgid "Edit your profile"
+msgstr "Dein Profil bearbeiten"
+
+#: src/Ui/MembersView.php:125
+msgid ""
+"Set this member inactive? They can no longer log in, and their sensitive "
+"profile data is deleted."
+msgstr ""
+"Dieses Mitglied auf inaktiv setzen? Es kann sich dann nicht mehr anmelden, "
+"und seine sensiblen Profildaten werden gelöscht."
+
+#: src/Ui/MembersView.php:128
+msgid "Reactivate this member? They can log in again."
+msgstr "Dieses Mitglied reaktivieren? Es kann sich dann wieder anmelden."
+
+#: src/Ui/MembersView.php:131
+msgid ""
+"Inactive members cannot log in and receive no emails. Their history is kept."
+msgstr ""
+"Inaktive Mitglieder können sich nicht anmelden und erhalten keine E-Mails. "
+"Ihr Verlauf bleibt erhalten."
+
+#: src/Ui/MembersView.php:134
+msgid "Reactivated members can log in again and respond to open projects."
+msgstr ""
+"Reaktivierte Mitglieder können sich wieder anmelden und auf offene Projekte "
+"antworten."
+
+#: src/Ui/MembersView.php:142
+msgid "Reactivate"
+msgstr "Reaktivieren"
+
+#: src/Ui/MembersView.php:142
+msgid "Set inactive"
+msgstr "Inaktiv setzen"
+
+#: src/Ui/ProfileController.php:40
+msgid "You are not allowed to edit this profile."
+msgstr "Du darfst dieses Profil nicht bearbeiten."
+
+#: src/Ui/ProfileController.php:75
+msgid "Your profile has been saved."
+msgstr "Dein Profil wurde gespeichert."
+
+#: src/Ui/ProfileShortcode.php:38
+msgid "Please log in to edit your profile."
+msgstr "Bitte melde dich an, um dein Profil zu bearbeiten."
+
+#: src/Ui/ProfileShortcode.php:42
+msgid "You are not allowed to edit your profile."
+msgstr "Du darfst dein Profil nicht bearbeiten."
+
+#: src/Ui/ProfileShortcode.php:48
+msgid "Account"
+msgstr "Konto"
+
+#: src/Ui/ProfileShortcode.php:55
+msgid "Shown to the other members."
+msgstr "Wird den anderen Mitgliedern angezeigt."
+
+#: src/Ui/ProfileShortcode.php:59
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: src/Ui/ProfileShortcode.php:66
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: src/Ui/ProfileShortcode.php:69
+msgid "Leave empty to keep your password."
+msgstr "Leer lassen, um dein Passwort zu behalten."
+
+#: src/Ui/ProfileShortcode.php:73
+msgid "Repeat new password"
+msgstr "Neues Passwort wiederholen"
+
+#: src/Ui/ProfileShortcode.php:80
+msgid "Current password"
+msgstr "Aktuelles Passwort"
+
+#: src/Ui/ProfileShortcode.php:83
+msgid "Only needed to change your email address or password."
+msgstr "Nur nötig, um deine E-Mail-Adresse oder dein Passwort zu ändern."
+
+#: src/Ui/ProfileShortcode.php:110
+msgid "Save"
+msgstr "Speichern"
+
+#: src/Ui/StatusController.php:41
+msgid "You are not allowed to change the status of members."
+msgstr "Du darfst den Status von Mitgliedern nicht ändern."
+
+#: src/Ui/StatusController.php:49
+msgid "The member is active again."
+msgstr "Das Mitglied ist wieder aktiv."
+
+#: src/Ui/StatusController.php:53
+msgid "The member is inactive. Their sensitive profile data has been deleted."
+msgstr "Das Mitglied ist inaktiv. Seine sensiblen Profildaten wurden gelöscht."
