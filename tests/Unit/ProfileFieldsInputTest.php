@@ -24,17 +24,15 @@ final class ProfileFieldsInputTest extends TestCase
     public function testRenamesReordersAddsAndRemovesFields(): void
     {
         $input = ProfileFieldsInput::fromForm([
+            ProfileFieldsInput::FIELD_ORDER => ['new:0', 'support', 'diet', 'new:1'],
+            ProfileFieldsInput::FIELD_DELETE => 'support',
             ProfileFieldsInput::FIELD_FIELDS => [
-                'support' => ['position' => '1', 'label' => 'Support', 'hint' => '', 'delete' => '1'],
-                'diet' => [
-                    'position' => '3', 'label' => ' Dietary needs ', 'hint' => 'Allergies', 'type' => 'text',
-                ],
+                'support' => ['label' => 'Support', 'hint' => ''],
+                'diet' => ['label' => ' Dietary needs ', 'hint' => 'Allergies', 'type' => 'text'],
             ],
             ProfileFieldsInput::FIELD_NEW_FIELDS => [
-                '0' => [
-                    'position' => '2', 'label' => 'Voice', 'type' => 'select', 'choices' => "Soprano\n\nAlto\nAlto",
-                ],
-                '1' => ['position' => '9', 'label' => '', 'type' => 'text'],
+                '0' => ['label' => 'Voice', 'type' => 'select', 'choices' => "Soprano\n\nAlto\nAlto"],
+                '1' => ['label' => '', 'type' => 'text'],
             ],
         ], $this->current);
 
@@ -44,6 +42,26 @@ final class ProfileFieldsInputTest extends TestCase
             new ProfileField('diet', 'Dietary needs', ProfileField::TYPE_TEXTAREA, 'Allergies'),
         ], $input->fields, 'the type of an existing field cannot change');
         $this->assertEquals([$this->current[0]], $input->removed);
+    }
+
+    public function testTheOrderOfTheRowsIsTheOrderOfTheFields(): void
+    {
+        $input = ProfileFieldsInput::fromForm([
+            ProfileFieldsInput::FIELD_ORDER => ['diet', 'new:5', 'support'],
+            ProfileFieldsInput::FIELD_NEW_FIELDS => ['5' => ['label' => 'Voice', 'type' => 'text']],
+        ], $this->current);
+
+        $this->assertSame(['diet', 'voice', 'support'], \array_map(static fn ($f) => $f->id, $input->fields));
+    }
+
+    public function testRowsWithoutAPlaceInTheOrderKeepTheirOrderAtTheEnd(): void
+    {
+        $input = ProfileFieldsInput::fromForm([
+            ProfileFieldsInput::FIELD_ORDER => ['diet'],
+            ProfileFieldsInput::FIELD_NEW_FIELDS => [['label' => 'Voice', 'type' => 'text']],
+        ], $this->current);
+
+        $this->assertSame(['diet', 'support', 'voice'], \array_map(static fn ($f) => $f->id, $input->fields));
     }
 
     public function testKeepsFieldsThatWereNotSubmitted(): void

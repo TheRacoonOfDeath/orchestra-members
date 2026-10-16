@@ -478,19 +478,22 @@ check(find_form(page, action="orchestra_members_save_profile_fields") is None,
 _, page = admin.get(FIELDS)
 fields_form = find_form(page, action="orchestra_members_save_profile_fields")
 check(fields_form is not None and "Financial support" in page, "administrators see the current profile fields")
-status, _ = organizer.submit(fields_form, {"orchestra_profile_fields[financial_support][delete]": "1"})
+check(["orchestra_delete_profile_field", "financial_support"] in fields_form["buttons"]
+      and "data-orchestra-sortable" in page and "data-orchestra-drag-handle" in page,
+      "every field has a delete button and a drag handle")
+status, _ = organizer.submit(fields_form, button=("orchestra_delete_profile_field", "financial_support"))
 check(status == 403 and "Financial support" in admin.get(FIELDS)[1], "organizers cannot change the profile fields")
 
 wp("user", "meta", "update", str(member_id), "orchestra_members_financial_support", "1")
 member = Session("member")
 _, page = admin.submit(fields_form, {
-    "orchestra_profile_fields[financial_support][delete]": "1",
     "orchestra_profile_fields[dietary_restrictions][label]": "Diet",
     "orchestra_new_profile_fields[0][label]": "Voice",
     "orchestra_new_profile_fields[0][type]": "select",
     "orchestra_new_profile_fields[0][choices]": "Soprano\nAlto",
-    "orchestra_new_profile_fields[0][position]": "1",
-})
+    # The order of the rows after dragging the new field to the top
+    "orchestra_profile_field_order[]": ["new:0", "financial_support", "dietary_restrictions"],
+}, button=("orchestra_delete_profile_field", "financial_support"))
 check("The profile fields have been saved." in text(page), "administrator saves the profile fields")
 check(meta(member_id, "orchestra_members_financial_support") == "",
       "deleting a field deletes what the members entered in it")

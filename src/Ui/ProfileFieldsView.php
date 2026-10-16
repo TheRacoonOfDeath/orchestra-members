@@ -24,15 +24,6 @@ final class ProfileFieldsView
 
     public function form(): string
     {
-        $fields = $this->fields->all();
-        $headings = [
-            \__('Order', 'orchestra-members'),
-            \__('Label', 'orchestra-members'),
-            \__('Type', 'orchestra-members'),
-            \__('Hint', 'orchestra-members'),
-            \__('Choices', 'orchestra-members'),
-            \__('Delete', 'orchestra-members'),
-        ];
         $types = ProfileField::typeNames();
 
         $html = '<p class="orchestra-muted">' . \esc_html__(
@@ -43,37 +34,53 @@ final class ProfileFieldsView
             . Form::open(ProfileFieldsController::ACTION, ProfileFieldsController::ACTION, [], [
                 'class' => 'orchestra-form',
             ])
-            . '<div class="orchestra-table-wrap"><table class="orchestra-table orchestra-table--stacked"><thead><tr>';
-        foreach ($headings as $heading) {
-            $html .= '<th scope="col">' . \esc_html($heading) . '</th>';
-        }
-        $html .= '</tr></thead><tbody id="' . self::ROWS . '">';
+            // Enter in a text field saves instead of pressing the first delete button.
+            . '<button type="submit" class="orchestra-default-submit" tabindex="-1" aria-hidden="true">'
+            . \esc_html__('Save', 'orchestra-members') . '</button>'
+            . '<div class="orchestra-table-wrap"><table class="orchestra-table orchestra-table--stacked">'
+            . '<tbody id="' . self::ROWS . '" data-orchestra-sortable>';
 
-        foreach ($fields as $index => $field) {
+        foreach ($this->fields->all() as $field) {
             $name = ProfileFieldsInput::FIELD_FIELDS . '[' . $field->id . ']';
-            $html .= self::row(
-                $headings,
-                self::positionInput($name, $index + 1),
-                self::textInput($name . '[label]', $field->label, ProfileField::LABEL_MAX_LENGTH, true),
-                \esc_html($types[$field->type] ?? $field->type),
-                self::textInput($name . '[hint]', $field->hint, ProfileField::HINT_MAX_LENGTH),
-                $field->type === ProfileField::TYPE_SELECT ? self::choicesInput($name, $field->choices) : '—',
-                '<label class="orchestra-checkbox"><input type="checkbox" name="' . \esc_attr($name)
-                    . '[delete]" value="1"> <span>' . \esc_html__('Delete field', 'orchestra-members')
-                    . '</span></label>'
+            /* translators: %s: field label */
+            $confirm = \__(
+                'Delete the field "%s"? What the members entered in it is deleted too.',
+                'orchestra-members'
             );
+            $delete = '<button type="submit" class="orchestra-button orchestra-button--small orchestra-button--danger"'
+                . ' name="' . ProfileFieldsInput::FIELD_DELETE . '" value="' . \esc_attr($field->id) . '"'
+                . ' formnovalidate data-orchestra-confirm="' . \esc_attr(\sprintf($confirm, $field->label)) . '">'
+                . \esc_html__('Delete', 'orchestra-members') . '</button>';
+            $cells = [
+                ['', self::header(
+                    $field->id,
+                    $field->label,
+                    '<strong>' . \esc_html($types[$field->type] ?? $field->type) . '</strong>',
+                    $delete
+                )],
+                [
+                    \__('Label', 'orchestra-members'),
+                    self::textInput($name . '[label]', $field->label, ProfileField::LABEL_MAX_LENGTH, true),
+                ],
+                [
+                    \__('Hint', 'orchestra-members'),
+                    self::textInput($name . '[hint]', $field->hint, ProfileField::HINT_MAX_LENGTH),
+                ],
+            ];
+            if ($field->type === ProfileField::TYPE_SELECT) {
+                $cells[] = [\__('Choices', 'orchestra-members'), self::choicesInput($name, $field->choices)];
+            }
+            $html .= self::row($cells);
         }
 
-        $next = \count($fields) + 1;
-        $html .= self::newRow($headings, '0', $next) . '</tbody></table></div>'
-            . '<template id="' . self::NEW_ROW_TEMPLATE . '">' . self::newRow($headings, '__INDEX__', $next)
-            . '</template>'
+        $html .= self::newRow('0') . '</tbody></table></div>'
+            . '<template id="' . self::NEW_ROW_TEMPLATE . '">' . self::newRow('__INDEX__') . '</template>'
             . '<div class="orchestra-actions"><button type="button" class="orchestra-button orchestra-button--small"'
             . ' data-orchestra-add-row="' . self::NEW_ROW_TEMPLATE . '" data-orchestra-target="' . self::ROWS . '">'
             . \esc_html__('+ Add field', 'orchestra-members') . '</button></div>'
             . '<p class="orchestra-muted">' . \esc_html__(
-                'For checkboxes, the hint is the text next to the box. Choice lists need one choice per line.'
-                    . ' Deleting a field also deletes what the members entered in it.',
+                'Drag the fields by their handle to change the order. For checkboxes, the hint is the text next to'
+                    . ' the box.',
                 'orchestra-members'
             ) . '</p>'
             . '<div class="orchestra-actions">' . Form::submit(\__('Save', 'orchestra-members'), 'primary') . '</div>'
@@ -82,10 +89,7 @@ final class ProfileFieldsView
         return $html;
     }
 
-    /**
-     * @param list<string> $headings
-     */
-    private static function newRow(array $headings, string $key, int $position): string
+    private static function newRow(string $key): string
     {
         $name = ProfileFieldsInput::FIELD_NEW_FIELDS . '[' . $key . ']';
         $options = '';
@@ -93,38 +97,56 @@ final class ProfileFieldsView
             $options .= '<option value="' . \esc_attr($type) . '">' . \esc_html($label) . '</option>';
         }
 
-        return self::row(
-            $headings,
-            self::positionInput($name, $position),
-            '<input type="text" name="' . \esc_attr($name) . '[label]" maxlength="' . ProfileField::LABEL_MAX_LENGTH
-                . '" placeholder="' . \esc_attr__('New field, e.g. T-shirt size', 'orchestra-members')
-                . '" aria-label="' . \esc_attr__('Label of the new field', 'orchestra-members') . '">',
-            '<select name="' . \esc_attr($name) . '[type]" aria-label="' . \esc_attr__('Type', 'orchestra-members')
-                . '">' . $options . '</select>',
-            self::textInput($name . '[hint]', '', ProfileField::HINT_MAX_LENGTH),
-            self::choicesInput($name, []),
-            ''
-        );
+        return self::row([
+            ['', self::header(
+                ProfileFieldsInput::NEW_KEY_PREFIX . $key,
+                \__('New field', 'orchestra-members'),
+                '<select name="' . \esc_attr($name) . '[type]" aria-label="' . \esc_attr__('Type', 'orchestra-members')
+                    . '">' . $options . '</select>',
+                '<button type="button" class="orchestra-button orchestra-button--small" data-orchestra-remove-row>'
+                    . \esc_html__('Remove', 'orchestra-members') . '</button>'
+            )],
+            [
+                \__('Label', 'orchestra-members'),
+                '<input type="text" name="' . \esc_attr($name) . '[label]" maxlength="' . ProfileField::LABEL_MAX_LENGTH
+                    . '" placeholder="' . \esc_attr__('New field, e.g. T-shirt size', 'orchestra-members') . '">',
+            ],
+            [\__('Hint', 'orchestra-members'), self::textInput($name . '[hint]', '', ProfileField::HINT_MAX_LENGTH)],
+            [
+                \__('Choices', 'orchestra-members'),
+                self::choicesInput($name, [], \__('Only for choice lists: one choice per line', 'orchestra-members')),
+            ],
+        ]);
     }
 
     /**
-     * @param list<string> $headings
+     * @param list<array{string, string}> $cells Label (plain text, "" for none) and content (HTML)
      */
-    private static function row(array $headings, string ...$cells): string
+    private static function row(array $cells): string
     {
         $html = '<tr>';
-        foreach ($cells as $index => $cell) {
-            $html .= '<td data-label="' . \esc_attr($headings[$index] ?? '') . '"><div class="orchestra-cell">'
-                . $cell . '</div></td>';
+        foreach ($cells as [$label, $cell]) {
+            $html .= '<td data-label="' . \esc_attr($label) . '"><div class="orchestra-cell">' . $cell . '</div></td>';
         }
 
         return $html . '</tr>';
     }
 
-    private static function positionInput(string $name, int $position): string
+    /**
+     * The top line of a row: the drag handle, which also submits the row's place in the order, the
+     * type and the button that deletes or removes the field.
+     */
+    private static function header(string $key, string $label, string $type, string $action): string
     {
-        return '<input type="number" name="' . \esc_attr($name) . '[position]" value="' . $position
-            . '" style="max-width:5em" aria-label="' . \esc_attr__('Order', 'orchestra-members') . '">';
+        /* translators: %s: field label */
+        $move = \sprintf(\__('Move "%s"', 'orchestra-members'), $label);
+
+        return '<div class="orchestra-row-header">' . Form::hidden(ProfileFieldsInput::FIELD_ORDER . '[]', $key)
+            . '<button type="button" class="orchestra-drag-handle" data-orchestra-drag-handle aria-label="'
+            . \esc_attr($move) . '" title="'
+            . \esc_attr__('Drag to change the order, or use the arrow keys', 'orchestra-members') . '">'
+            . '<span aria-hidden="true">&#8801;</span></button>' . $type
+            . '<span class="orchestra-row-header__end">' . $action . '</span></div>';
     }
 
     private static function textInput(string $name, string $value, int $maxLength, bool $required = false): string
@@ -136,10 +158,11 @@ final class ProfileFieldsView
     /**
      * @param list<string> $choices
      */
-    private static function choicesInput(string $name, array $choices): string
+    private static function choicesInput(string $name, array $choices, string $placeholder = ''): string
     {
         return '<textarea name="' . \esc_attr($name) . '[choices]" rows="3" aria-label="'
-            . \esc_attr__('Choices, one per line', 'orchestra-members') . '">'
+            . \esc_attr__('Choices, one per line', 'orchestra-members') . '"'
+            . ($placeholder === '' ? '' : ' placeholder="' . \esc_attr($placeholder) . '"') . '>'
             . \esc_textarea(\implode("\n", $choices)) . '</textarea>';
     }
 }
