@@ -81,8 +81,8 @@ choosing the profile fields are reserved for them.
 
 ## Email groups
 
-With orchestra-core 0.3 or later, orchestra-members registers these groups for the email service,
-listed under "Orchestra". Emailing them requires `orchestra_members_email_send`.
+When orchestra-email is active, orchestra-members registers these groups for it, listed under
+"Orchestra". Emailing them requires `orchestra_members_email_send`.
 
 | Group ID | Recipients |
 |----------|------------|
@@ -92,4 +92,4 @@ listed under "Orchestra". Emailing them requires `orchestra_members_email_send`.
 | `orchestra_members_organizers` | role Orchestra Organizer |
 
 It also removes inactive members from **every** group, including those of other plugins, through
-`orchestra_core_email_recipients`.
+`orchestra_email_recipients`.

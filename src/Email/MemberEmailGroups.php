@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Orchestra\Members\Email;
 
 use Orchestra\Core\Authorization\Roles;
-use Orchestra\Core\Email\EmailGroupRegistry;
-use Orchestra\Core\Email\EmailService;
-use Orchestra\Core\Email\RecipientGroup;
+use Orchestra\Email\EmailGroupRegistry;
+use Orchestra\Email\EmailService;
+use Orchestra\Email\RecipientGroup;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\ProfileRepository;
@@ -38,7 +38,7 @@ final class MemberEmailGroups
     }
 
     /**
-     * @internal Hooked to `orchestra_core_register_email_groups`.
+     * @internal Hooked to `orchestra_email_register_groups`.
      */
     public function registerGroups(EmailGroupRegistry $registry): void
     {
@@ -64,7 +64,7 @@ final class MemberEmailGroups
     /**
      * Inactive members are never part of a group, whichever plugin defines it.
      *
-     * @internal Hooked to `orchestra_core_email_recipients`.
+     * @internal Hooked to `orchestra_email_recipients`.
      * @param array<mixed> $userIds
      * @return array<mixed>
      */

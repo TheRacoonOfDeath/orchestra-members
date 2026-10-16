@@ -370,7 +370,7 @@ def compose(session, groups, subject, body, op):
     _, page = session.submit(form, {"groups[]": groups, "subject": subject, "body": body})
     if op == "review":
         return page
-    send = find_form(page, action="orchestra_core_email_send")
+    send = find_form(page, action="orchestra_email_send")
     return session.submit(send)[1] if send else page
 
 
@@ -440,7 +440,7 @@ check(rows[-1]["status"] == "sent" and rows[-1]["sent"] == "1" and rows[-1]["fai
       "failed deliveries are retried and then counted as failed")
 wp_eval(f'wp_update_user(["ID" => {conductor_id}, "user_email" => "conductor@example.com"]);')
 
-status, _ = member2.post(ADMIN_POST, [("action", "orchestra_core_email_send"), ("groups[]", "orchestra_members_everyone"),
+status, _ = member2.post(ADMIN_POST, [("action", "orchestra_email_send"), ("groups[]", "orchestra_members_everyone"),
                                       ("subject", "Spam"), ("body", "Spam"), ("_wpnonce", "x")])
 check(status == 403 and len(log_rows()) == 2, "members cannot send emails")
 

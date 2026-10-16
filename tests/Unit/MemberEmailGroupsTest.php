@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Orchestra\Members\Tests\Unit;
 
 use Orchestra\Core\Authorization\Roles;
-use Orchestra\Core\Email\EmailGroupRegistry;
+use Orchestra\Email\EmailGroupRegistry;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\MemberDirectory;

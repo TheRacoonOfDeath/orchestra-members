@@ -20,8 +20,9 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
   - inactive members cannot log in, also not with application passwords; after entering the
     correct password they are told that their account is inactive
   - setting a member inactive ends their sessions and deletes their sensitive profile data
-- Email groups for the email service of orchestra-core (0.3 or later): everyone, all members, all
-  conductors and all organizers; inactive members never receive group emails
+- Email groups for [orchestra-email](https://github.com/TheRacoonOfDeath/orchestra-email), if it is
+  installed: everyone, all members, all conductors and all organizers; inactive members never
+  receive group emails
 - Export and erasure of the profile data with the WordPress privacy tools, and a suggested
   privacy policy text
 - An API for the other Orchestra plugins
