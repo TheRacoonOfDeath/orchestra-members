@@ -525,6 +525,38 @@ stored = json.loads(wp("option", "get", "orchestra_members_profile_fields", "--f
 check("used more than once" in text(page) and [f["id"] for f in stored] == ["voice", "dietary_restrictions"],
       "invalid profile fields are rejected with a message and not saved")
 
+# --- Conductors, organizers and administrators add members ---------------------------------
+NEW_MEMBER = MEMBERS + ("&" if "?" in MEMBERS else "?") + "orchestra_members_view=new"
+_, page = organizer.get(MEMBERS)
+check("orchestra_members_view=new" in page, "the member list links to the form for adding members")
+_, page = member.get(NEW_MEMBER)
+check("not allowed to add members" in page, "members cannot add members")
+_, page = conductor.get(NEW_MEMBER)
+form = find_form(page, action="orchestra_members_add_member")
+check(form is not None and 'name="role"' not in page, "conductors add members without choosing a role")
+wp("option", "delete", "e2e_mails")
+_, page = conductor.submit(form, {"first_name": "Nora", "last_name": "Neu", "email": "nora@example.com",
+                                  "role": "orchestra_organizer"})
+nora = json.loads(wp_eval('$u = get_user_by("email", "nora@example.com");'
+                          ' echo json_encode($u ? [$u->user_login, $u->roles, $u->display_name] : null);'))
+check("Nora Neu has been added" in text(page) and nora == ["nora", ["orchestra_member"], "Nora Neu"],
+      f"conductors add members, always with the Member role: {nora}")
+sent = json.loads(wp_eval('echo json_encode(get_option("e2e_mails", []));'))
+check(any("nora@example.com" in json.dumps(m) for m in sent), "the new member receives an email to set a password")
+_, page = organizer.submit(find_form(organizer.get(NEW_MEMBER)[1], action="orchestra_members_add_member"),
+                           {"first_name": "Nora", "email": "NORA@example.com"})
+check("already used by another account" in text(page), "an email address can only be used once")
+_, page = admin.get("/wp-admin/admin.php?page=orchestra-members-new")
+form = find_form(page, action="orchestra_members_add_member")
+check(form is not None and 'name="role"' in page, "administrators add members in wp-admin and choose the role")
+admin.submit(form, {"first_name": "Nora", "last_name": "Zwei", "email": "nora@example.org",
+                    "role": "orchestra_conductor"})
+check(wp("user", "get", "nora2", "--field=roles") == "orchestra_conductor", "administrators choose the role")
+status, _ = member.post("/wp-admin/admin-post.php", [
+    ("action", "orchestra_members_add_member"), ("_wpnonce", "x"), ("email", "forged@example.com")])
+check(status == 403 and wp_eval('echo email_exists("forged@example.com") ? "yes" : "no";') == "no",
+      "members cannot add members by posting the form")
+
 # --- Uninstall ------------------------------------------------------------------------------
 _, page = organizer.get(member_url(member2_id))
 organizer.submit(find_form(page, action="orchestra_members_set_status"))

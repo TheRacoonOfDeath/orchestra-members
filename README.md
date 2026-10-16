@@ -14,6 +14,9 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 - `[orchestra_members]` (and **Members** in wp-admin): names of all members for everyone; emails,
   roles, status, profiles and status changes for organizers
 - Active / inactive status, changed by organizers
+- Adding WordPress users to the orchestra on the members page (**Add member**) or under
+  **Members → Add Member**: conductors and organizers add members, administrators also choose the
+  role. The new member receives the WordPress email with a link to set a password.
   - inactive members cannot log in, also not with application passwords; after entering the
     correct password they are told that their account is inactive
   - setting a member inactive ends their sessions and deletes their sensitive profile data

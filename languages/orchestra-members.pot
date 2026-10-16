@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-16 09:32+0200\n"
+"POT-Creation-Date: 2026-10-16 16:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,21 +18,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/Admin/MembersPage.php:47 src/Admin/MembersPage.php:48
-#: src/Admin/MembersPage.php:112 src/Plugin.php:153
+#: src/Account/NewMemberInput.php:61
+msgid "Please enter a first name."
+msgstr ""
+
+#: src/Account/NewMemberInput.php:64 src/Profile/AccountInput.php:69
+msgid "The name is too long."
+msgstr ""
+
+#: src/Account/NewMemberInput.php:67 src/Profile/AccountInput.php:74
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: src/Account/NewMemberInput.php:69 src/Profile/AccountInput.php:76
+msgid "This email address is already used by another account."
+msgstr ""
+
+#: src/Account/NewMemberInput.php:72
+msgid "Please choose a role."
+msgstr ""
+
+#: src/Admin/MembersPage.php:50 src/Admin/MembersPage.php:51
+#: src/Admin/MembersPage.php:137 src/Plugin.php:158
 msgid "Members"
 msgstr ""
 
-#: src/Admin/MembersPage.php:58 src/Admin/MembersPage.php:59
+#: src/Admin/MembersPage.php:61 src/Admin/MembersPage.php:62
 msgid "All Members"
 msgstr ""
 
-#: src/Admin/MembersPage.php:66 src/Admin/MembersPage.php:67
-#: src/Admin/MembersPage.php:85
+#: src/Admin/MembersPage.php:69 src/Admin/MembersPage.php:70
+#: src/Admin/MembersPage.php:101
+msgid "Add Member"
+msgstr ""
+
+#: src/Admin/MembersPage.php:77 src/Admin/MembersPage.php:78
+#: src/Admin/MembersPage.php:110
 msgid "Profile Fields"
 msgstr ""
 
-#: src/Admin/MembersPage.php:99 src/Ui/MembersView.php:91
+#: src/Admin/MembersPage.php:124 src/Ui/MembersView.php:99
 msgid "You are not allowed to view this profile."
 msgstr ""
 
@@ -42,7 +67,7 @@ msgid "Orchestra"
 msgstr ""
 
 #: src/Admin/ProfileSection.php:63 src/Privacy/PersonalData.php:75
-#: src/Ui/MembersView.php:52 src/Ui/MembersView.php:143
+#: src/Ui/MembersView.php:53 src/Ui/MembersView.php:151
 msgid "Status"
 msgstr ""
 
@@ -73,8 +98,8 @@ msgstr ""
 msgid "Everyone"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersShortcode.php:70
-#: src/Ui/MembersView.php:105
+#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersShortcode.php:80
+#: src/Ui/MembersShortcode.php:93 src/Ui/MembersView.php:113
 msgid "All members"
 msgstr ""
 
@@ -86,19 +111,19 @@ msgstr ""
 msgid "All organizers"
 msgstr ""
 
-#: src/Plugin.php:154
+#: src/Plugin.php:159
 msgid "Who plays in the orchestra."
 msgstr ""
 
-#: src/Plugin.php:160
+#: src/Plugin.php:165
 msgid "My profile"
 msgstr ""
 
-#: src/Plugin.php:161
+#: src/Plugin.php:166
 msgid "Your name, email address, password and orchestra details."
 msgstr ""
 
-#: src/Plugin.php:173
+#: src/Plugin.php:178
 msgid "Orchestra Members requires Orchestra Core 0.4 or later to be active."
 msgstr ""
 
@@ -145,18 +170,6 @@ msgstr ""
 
 #: src/Profile/AccountInput.php:67
 msgid "Please enter your name."
-msgstr ""
-
-#: src/Profile/AccountInput.php:69
-msgid "The name is too long."
-msgstr ""
-
-#: src/Profile/AccountInput.php:74
-msgid "Please enter a valid email address."
-msgstr ""
-
-#: src/Profile/AccountInput.php:76
-msgid "This email address is already used by another account."
 msgstr ""
 
 #. translators: %d: minimum number of characters
@@ -278,75 +291,104 @@ msgstr ""
 msgid "You cannot change your own status."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:40
+#: src/Ui/MembersShortcode.php:43
 msgid "Please log in to see the members."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:43
+#: src/Ui/MembersShortcode.php:46
 msgid "You are not allowed to see the members."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:66 src/Ui/ProfileFieldsController.php:39
+#: src/Ui/MembersShortcode.php:76 src/Ui/NewMemberController.php:44
+msgid "You are not allowed to add members."
+msgstr ""
+
+#: src/Ui/MembersShortcode.php:81 src/Ui/MembersView.php:76
+#: src/Ui/NewMemberView.php:55
+msgid "Add member"
+msgstr ""
+
+#: src/Ui/MembersShortcode.php:89 src/Ui/ProfileFieldsController.php:39
 msgid "You are not allowed to change the profile fields."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:71 src/Ui/MembersView.php:76
+#: src/Ui/MembersShortcode.php:94 src/Ui/MembersView.php:79
 msgid "Profile fields"
 msgstr ""
 
-#: src/Ui/MembersView.php:48 src/Ui/ProfileShortcode.php:53
+#: src/Ui/MembersView.php:49 src/Ui/ProfileShortcode.php:53
 msgid "Name"
 msgstr ""
 
-#: src/Ui/MembersView.php:50 src/Ui/MembersView.php:97
+#: src/Ui/MembersView.php:51 src/Ui/MembersView.php:105
+#: src/Ui/NewMemberView.php:32
 msgid "Email"
 msgstr ""
 
-#: src/Ui/MembersView.php:51 src/Ui/MembersView.php:98
+#: src/Ui/MembersView.php:52 src/Ui/MembersView.php:106
+#: src/Ui/NewMemberView.php:45
 msgid "Role"
 msgstr ""
 
 #. translators: %d: number of members
-#: src/Ui/MembersView.php:71
+#: src/Ui/MembersView.php:72
 #, php-format
 msgid "%d member"
 msgid_plural "%d members"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Ui/MembersView.php:80
+#: src/Ui/MembersView.php:88
 msgid "No members found."
 msgstr ""
 
-#: src/Ui/MembersView.php:113
+#: src/Ui/MembersView.php:121
 msgid "Edit your profile"
 msgstr ""
 
-#: src/Ui/MembersView.php:131
+#: src/Ui/MembersView.php:139
 msgid ""
 "Set this member inactive? They can no longer log in, and their sensitive "
 "profile data is deleted."
 msgstr ""
 
-#: src/Ui/MembersView.php:134
+#: src/Ui/MembersView.php:142
 msgid "Reactivate this member? They can log in again."
 msgstr ""
 
-#: src/Ui/MembersView.php:137
+#: src/Ui/MembersView.php:145
 msgid ""
 "Inactive members cannot log in and receive no emails. Their history is kept."
 msgstr ""
 
-#: src/Ui/MembersView.php:140
+#: src/Ui/MembersView.php:148
 msgid "Reactivated members can log in again and respond to open projects."
 msgstr ""
 
-#: src/Ui/MembersView.php:148
+#: src/Ui/MembersView.php:156
 msgid "Reactivate"
 msgstr ""
 
-#: src/Ui/MembersView.php:148
+#: src/Ui/MembersView.php:156
 msgid "Set inactive"
+msgstr ""
+
+#. translators: %s: name of the new member
+#: src/Ui/NewMemberController.php:54
+#, php-format
+msgid "%s has been added and receives an email with a link to set a password."
+msgstr ""
+
+#: src/Ui/NewMemberView.php:22
+msgid "First name"
+msgstr ""
+
+#: src/Ui/NewMemberView.php:27
+msgid "Last name"
+msgstr ""
+
+#: src/Ui/NewMemberView.php:34
+msgid "The new member receives an email with a link to set a password."
 msgstr ""
 
 #: src/Ui/ProfileController.php:43

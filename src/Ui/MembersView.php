@@ -38,8 +38,9 @@ final class MembersView
     /**
      * @param Closure(?int $memberId): string $url The list (null) or a member's profile
      * @param string|null $fieldsUrl The profile fields, linked for those who may change them
+     * @param string|null $newUrl The form for adding a member, linked for those who may add members
      */
-    public function list(Closure $url, ?string $fieldsUrl = null): string
+    public function list(Closure $url, ?string $fieldsUrl = null, ?string $newUrl = null): string
     {
         $privileged = \current_user_can(Capabilities::PROFILE_READ_OTHERS)
             || \current_user_can(Capabilities::STATUS_EDIT);
@@ -70,10 +71,17 @@ final class MembersView
         /* translators: %d: number of members */
         $count = \sprintf(\_n('%d member', '%d members', \count($members), 'orchestra-members'), \count($members));
 
-        $toolbar = '<p class="orchestra-muted">' . \esc_html($count) . '</p>';
+        $actions = '';
+        if ($newUrl !== null && \current_user_can(Capabilities::MEMBER_CREATE)) {
+            $actions .= Form::link($newUrl, \__('Add member', 'orchestra-members'), 'primary small');
+        }
         if ($fieldsUrl !== null && \current_user_can(Capabilities::FIELDS_MANAGE)) {
-            $toolbar = '<div class="orchestra-toolbar">' . $toolbar
-                . Form::link($fieldsUrl, \__('Profile fields', 'orchestra-members'), 'small') . '</div>';
+            $actions .= Form::link($fieldsUrl, \__('Profile fields', 'orchestra-members'), 'small');
+        }
+        $toolbar = '<p class="orchestra-muted">' . \esc_html($count) . '</p>';
+        if ($actions !== '') {
+            $toolbar = '<div class="orchestra-toolbar">' . $toolbar . '<div class="orchestra-actions">' . $actions
+                . '</div></div>';
         }
 
         return $toolbar

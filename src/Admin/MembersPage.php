@@ -7,6 +7,7 @@ namespace Orchestra\Members\Admin;
 use Orchestra\Core\Ui\Html;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\Ui\MembersView;
+use Orchestra\Members\Ui\NewMemberView;
 use Orchestra\Members\Ui\ProfileFieldsView;
 
 /**
@@ -16,10 +17,12 @@ final class MembersPage
 {
     public const SLUG = 'orchestra-members';
     public const FIELDS_SLUG = 'orchestra-members-fields';
+    public const NEW_SLUG = 'orchestra-members-new';
 
     public function __construct(
         private readonly MembersView $view,
         private readonly ProfileFieldsView $fieldsView,
+        private readonly NewMemberView $newView,
     ) {
     }
 
@@ -63,6 +66,14 @@ final class MembersPage
         );
         \add_submenu_page(
             self::SLUG,
+            \__('Add Member', 'orchestra-members'),
+            \__('Add Member', 'orchestra-members'),
+            Capabilities::MEMBER_CREATE,
+            self::NEW_SLUG,
+            [$this, 'renderNew']
+        );
+        \add_submenu_page(
+            self::SLUG,
             \__('Profile Fields', 'orchestra-members'),
             \__('Profile Fields', 'orchestra-members'),
             Capabilities::FIELDS_MANAGE,
@@ -74,6 +85,20 @@ final class MembersPage
     public static function fieldsUrl(): string
     {
         return \add_query_arg('page', self::FIELDS_SLUG, \admin_url('admin.php'));
+    }
+
+    public static function newUrl(): string
+    {
+        return \add_query_arg('page', self::NEW_SLUG, \admin_url('admin.php'));
+    }
+
+    /**
+     * @internal Submenu page callback.
+     */
+    public function renderNew(): void
+    {
+        // escaped by the view
+        echo Html::adminPage(\__('Add Member', 'orchestra-members'), $this->newView->form());
     }
 
     /**
@@ -110,7 +135,9 @@ final class MembersPage
 
         echo Html::adminPage(
             \__('Members', 'orchestra-members'),
-            $memberId > 0 ? $this->view->member($memberId, $url) : $this->view->list($url, self::fieldsUrl())
+            $memberId > 0
+                ? $this->view->member($memberId, $url)
+                : $this->view->list($url, self::fieldsUrl(), self::newUrl())
         ); // escaped by the view
     }
 

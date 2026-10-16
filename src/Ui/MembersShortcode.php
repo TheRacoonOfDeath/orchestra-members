@@ -10,7 +10,8 @@ use Orchestra\Members\Capabilities;
 
 /**
  * `[orchestra_members]`: the member list, and for organizers the profiles and status changes
- * (`?orchestra_member=ID`). Administrators also choose the profile fields here
+ * (`?orchestra_member=ID`). Conductors, organizers and administrators add members here
+ * (`?orchestra_members_view=new`); administrators also choose the profile fields
  * (`?orchestra_members_view=fields`).
  */
 final class MembersShortcode
@@ -19,10 +20,12 @@ final class MembersShortcode
     private const PARAMETER = 'orchestra_member';
     private const VIEW_PARAMETER = 'orchestra_members_view';
     private const VIEW_FIELDS = 'fields';
+    private const VIEW_NEW = 'new';
 
     public function __construct(
         private readonly MembersView $view,
         private readonly ProfileFieldsView $fieldsView,
+        private readonly NewMemberView $newView,
     ) {
     }
 
@@ -47,6 +50,9 @@ final class MembersShortcode
         if (($_GET[self::VIEW_PARAMETER] ?? null) === self::VIEW_FIELDS) {
             return $this->fields($base);
         }
+        if (($_GET[self::VIEW_PARAMETER] ?? null) === self::VIEW_NEW) {
+            return $this->newMember($base);
+        }
 
         $url = static fn (?int $memberId): string => $memberId === null
             ? $base
@@ -56,7 +62,24 @@ final class MembersShortcode
         return Html::page(
             $memberId > 0
                 ? $this->view->member($memberId, $url)
-                : $this->view->list($url, \add_query_arg(self::VIEW_PARAMETER, self::VIEW_FIELDS, $base))
+                : $this->view->list(
+                    $url,
+                    \add_query_arg(self::VIEW_PARAMETER, self::VIEW_FIELDS, $base),
+                    \add_query_arg(self::VIEW_PARAMETER, self::VIEW_NEW, $base)
+                )
+        );
+    }
+
+    private function newMember(string $listUrl): string
+    {
+        if (!\current_user_can(Capabilities::MEMBER_CREATE)) {
+            return Html::notAllowed(\__('You are not allowed to add members.', 'orchestra-members'));
+        }
+
+        return Html::page(
+            '<p><a href="' . \esc_url($listUrl) . '">&larr; ' . \esc_html__('All members', 'orchestra-members')
+                . '</a></p><h2>' . \esc_html__('Add member', 'orchestra-members') . '</h2>'
+                . $this->newView->form()
         );
     }
 

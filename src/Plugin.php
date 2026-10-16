@@ -9,6 +9,7 @@ use Orchestra\Core\Authorization\CapabilityRegistry;
 use Orchestra\Core\Ui\Html;
 use Orchestra\Core\Ui\Menu;
 use Orchestra\Core\Ui\MenuItem;
+use Orchestra\Members\Account\MemberCreator;
 use Orchestra\Members\Admin\MembersPage;
 use Orchestra\Members\Admin\ProfileSection;
 use Orchestra\Members\Admin\UserListColumn;
@@ -21,6 +22,8 @@ use Orchestra\Members\Status\LoginBlocker;
 use Orchestra\Members\Status\StatusService;
 use Orchestra\Members\Ui\MembersShortcode;
 use Orchestra\Members\Ui\MembersView;
+use Orchestra\Members\Ui\NewMemberController;
+use Orchestra\Members\Ui\NewMemberView;
 use Orchestra\Members\Ui\ProfileController;
 use Orchestra\Members\Ui\ProfileFieldsController;
 use Orchestra\Members\Ui\ProfileFieldsView;
@@ -121,15 +124,17 @@ final class Plugin
 
         $view = new MembersView($this->directory, $this->profiles, $this->status, $this->fields);
         $fieldsView = new ProfileFieldsView($this->fields);
+        $newView = new NewMemberView();
+        (new NewMemberController(new MemberCreator()))->register();
         (new StatusController($this->status))->register();
         (new ProfileController($this->profiles, $this->fields))->register();
         (new ProfileFieldsController($this->fields, $this->profiles))->register();
-        (new MembersShortcode($view, $fieldsView))->register();
+        (new MembersShortcode($view, $fieldsView, $newView))->register();
         (new ProfileShortcode($this->profiles, $this->fields))->register();
         \add_action(Menu::REGISTER_ACTION, [$this, 'registerMenuItems']);
 
         if (\is_admin()) {
-            (new MembersPage($view, $fieldsView))->register();
+            (new MembersPage($view, $fieldsView, $newView))->register();
             (new ProfileSection($this->profiles, $this->fields))->register();
             (new UserListColumn($this->profiles))->register();
         }
