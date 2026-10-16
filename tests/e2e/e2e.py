@@ -466,6 +466,53 @@ check(erased["items_removed"] and meta(member2_id, "orchestra_members_dietary_re
 _, page = admin.get("/wp-admin/options-privacy.php?tab=policyguide")
 check("Orchestra Members" in page and "Inactive members cannot log in." in page, "suggests a privacy policy text")
 
+# --- Administrators choose the profile fields -----------------------------------------------
+FIELDS = MEMBERS + ("&" if "?" in MEMBERS else "?") + "orchestra_members_view=fields"
+_, page = admin.get(MEMBERS)
+check("orchestra_members_view=fields" in page, "administrators find the profile fields on the members page")
+_, page = organizer.get(MEMBERS)
+check("orchestra_members_view=fields" not in page, "organizers do not see the profile fields link")
+_, page = organizer.get(FIELDS)
+check(find_form(page, action="orchestra_members_save_profile_fields") is None,
+      "organizers cannot open the profile fields")
+_, page = admin.get(FIELDS)
+fields_form = find_form(page, action="orchestra_members_save_profile_fields")
+check(fields_form is not None and "Financial support" in page, "administrators see the current profile fields")
+status, _ = organizer.submit(fields_form, {"orchestra_profile_fields[financial_support][delete]": "1"})
+check(status == 403 and "Financial support" in admin.get(FIELDS)[1], "organizers cannot change the profile fields")
+
+wp("user", "meta", "update", str(member_id), "orchestra_members_financial_support", "1")
+member = Session("member")
+_, page = admin.submit(fields_form, {
+    "orchestra_profile_fields[financial_support][delete]": "1",
+    "orchestra_profile_fields[dietary_restrictions][label]": "Diet",
+    "orchestra_new_profile_fields[0][label]": "Voice",
+    "orchestra_new_profile_fields[0][type]": "select",
+    "orchestra_new_profile_fields[0][choices]": "Soprano\nAlto",
+    "orchestra_new_profile_fields[0][position]": "1",
+})
+check("The profile fields have been saved." in text(page), "administrator saves the profile fields")
+check(meta(member_id, "orchestra_members_financial_support") == "",
+      "deleting a field deletes what the members entered in it")
+_, page = member.get(PROFILE)
+check("Financial support" not in page and "Diet" in page and "Soprano" in page
+      and page.index("Voice") < page.index("Diet"), "members see the chosen fields in the chosen order")
+_, page = member.submit(find_form(page, action="orchestra_members_save_profile"), {
+    "orchestra_members_voice": "Alto", "orchestra_members_dietary_restrictions": "Vegan"})
+check(meta(member_id, "orchestra_members_voice") == "Alto"
+      and meta(member_id, "orchestra_members_dietary_restrictions") == "Vegan", "members fill in the new fields")
+_, page = member.submit(find_form(member.get(PROFILE)[1], action="orchestra_members_save_profile"),
+                        {"orchestra_members_voice": "Tenor"})
+check(meta(member_id, "orchestra_members_voice") == "", "only offered choices are saved")
+_, page = admin.get("/wp-admin/admin.php?page=orchestra-members-fields")
+check(find_form(page, action="orchestra_members_save_profile_fields") is not None and "Voice" in page,
+      "the profile fields can also be changed in wp-admin")
+_, page = admin.submit(find_form(admin.get(FIELDS)[1], action="orchestra_members_save_profile_fields"),
+                       {"orchestra_new_profile_fields[0][label]": "Diet", "orchestra_new_profile_fields[0][type]": "text"})
+stored = json.loads(wp("option", "get", "orchestra_members_profile_fields", "--format=json"))
+check("used more than once" in text(page) and [f["id"] for f in stored] == ["voice", "dietary_restrictions"],
+      "invalid profile fields are rejected with a message and not saved")
+
 # --- Uninstall ------------------------------------------------------------------------------
 _, page = organizer.get(member_url(member2_id))
 organizer.submit(find_form(page, action="orchestra_members_set_status"))
@@ -475,6 +522,7 @@ check(meta(member2_id, "orchestra_members_inactive") == "1", "deactivating the p
 wp("plugin", "uninstall", "orchestra-members")
 remaining = wp_eval('global $wpdb; echo (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key LIKE \'orchestra_members_%\'");')
 check(remaining == "0", "uninstall removes all profile data")
+check(wp_eval('var_export(get_option("orchestra_members_profile_fields"));') == "false", "uninstall removes the profile fields")
 
 print()
 if failures:

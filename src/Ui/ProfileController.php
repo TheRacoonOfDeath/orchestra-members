@@ -9,6 +9,7 @@ use Orchestra\Core\Ui\Redirect;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\AccountInput;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileInput;
 use Orchestra\Members\Profile\ProfileRepository;
 use WP_User;
@@ -20,8 +21,10 @@ final class ProfileController
 {
     public const ACTION = 'orchestra_members_save_profile';
 
-    public function __construct(private readonly ProfileRepository $profiles)
-    {
+    public function __construct(
+        private readonly ProfileRepository $profiles,
+        private readonly ProfileFields $fields,
+    ) {
     }
 
     public function register(): void
@@ -42,7 +45,7 @@ final class ProfileController
 
         $post = \wp_unslash($_POST);
         $account = AccountInput::fromForm($post);
-        $profile = ProfileInput::fromForm($post);
+        $profile = ProfileInput::fromForm($post, $this->fields->all());
         $takenBy = \email_exists($account->email);
         $passwordValid = $account->currentPassword !== ''
             && \wp_check_password($account->currentPassword, $user->user_pass, $user->ID);
@@ -69,7 +72,7 @@ final class ProfileController
         }
 
         if ($this->hasOrchestraProfile($user)) {
-            $this->profiles->saveSensitiveData($user->ID, $profile->financialSupport, $profile->dietaryRestrictions);
+            $this->profiles->saveSensitiveData($user->ID, $profile->values);
         }
 
         Notices::success(\__('Your profile has been saved.', 'orchestra-members'));

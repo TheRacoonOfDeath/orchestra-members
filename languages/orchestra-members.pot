@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-16 08:28+0200\n"
+"POT-Creation-Date: 2026-10-16 09:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,50 +18,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/Admin/MembersPage.php:43 src/Admin/MembersPage.php:44
-#: src/Admin/MembersPage.php:76 src/Plugin.php:145
+#: src/Admin/MembersPage.php:47 src/Admin/MembersPage.php:48
+#: src/Admin/MembersPage.php:112 src/Plugin.php:153
 msgid "Members"
 msgstr ""
 
-#: src/Admin/MembersPage.php:63 src/Ui/MembersView.php:82
+#: src/Admin/MembersPage.php:58 src/Admin/MembersPage.php:59
+msgid "All Members"
+msgstr ""
+
+#: src/Admin/MembersPage.php:66 src/Admin/MembersPage.php:67
+#: src/Admin/MembersPage.php:85
+msgid "Profile Fields"
+msgstr ""
+
+#: src/Admin/MembersPage.php:99 src/Ui/MembersView.php:91
 msgid "You are not allowed to view this profile."
 msgstr ""
 
-#: src/Admin/ProfileSection.php:56 src/Email/MemberEmailGroups.php:45
-#: src/Ui/ProfileShortcode.php:90
+#: src/Admin/ProfileSection.php:59 src/Email/MemberEmailGroups.php:45
+#: src/Ui/ProfileShortcode.php:93
 msgid "Orchestra"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:60 src/Privacy/PersonalData.php:77
-#: src/Ui/MembersView.php:49 src/Ui/MembersView.php:137
+#: src/Admin/ProfileSection.php:63 src/Privacy/PersonalData.php:75
+#: src/Ui/MembersView.php:52 src/Ui/MembersView.php:143
 msgid "Status"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:65
+#: src/Admin/ProfileSection.php:68
 msgid ""
 "The sensitive profile data of inactive members is deleted. It can be entered "
 "again once active."
 msgstr ""
 
-#: src/Admin/ProfileSection.php:72 src/Privacy/PersonalData.php:79
-#: src/Ui/MembersView.php:97
-msgid "Financial support"
-msgstr ""
-
-#: src/Admin/ProfileSection.php:75 src/Ui/ProfileShortcode.php:94
-msgid "I need financial support, e.g. for project fees."
-msgstr ""
-
-#: src/Admin/ProfileSection.php:79 src/Privacy/PersonalData.php:85
-#: src/Ui/MembersView.php:99 src/Ui/ProfileShortcode.php:98
-msgid "Dietary restrictions"
-msgstr ""
-
-#: src/Admin/ProfileSection.php:85 src/Ui/ProfileShortcode.php:102
-msgid "Allergies, vegetarian, vegan, …"
-msgstr ""
-
-#: src/Admin/ProfileSection.php:90 src/Ui/ProfileShortcode.php:105
+#: src/Admin/ProfileSection.php:87 src/Ui/ProfileShortcode.php:104
 msgid ""
 "Only you, the organizers and the administrators can see this information."
 msgstr ""
@@ -82,7 +73,8 @@ msgstr ""
 msgid "Everyone"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersView.php:91
+#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersShortcode.php:70
+#: src/Ui/MembersView.php:105
 msgid "All members"
 msgstr ""
 
@@ -94,45 +86,37 @@ msgstr ""
 msgid "All organizers"
 msgstr ""
 
-#: src/Plugin.php:146
+#: src/Plugin.php:154
 msgid "Who plays in the orchestra."
 msgstr ""
 
-#: src/Plugin.php:152
+#: src/Plugin.php:160
 msgid "My profile"
 msgstr ""
 
-#: src/Plugin.php:153
-msgid "Your name, email address, password and dietary restrictions."
+#: src/Plugin.php:161
+msgid "Your name, email address, password and orchestra details."
 msgstr ""
 
-#: src/Plugin.php:165
+#: src/Plugin.php:173
 msgid "Orchestra Members requires Orchestra Core 0.4 or later to be active."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:38 src/Privacy/PersonalData.php:53
-#: src/Privacy/PersonalData.php:74
+#: src/Privacy/PersonalData.php:42 src/Privacy/PersonalData.php:57
+#: src/Privacy/PersonalData.php:83
 msgid "Orchestra profile"
 msgstr ""
 
-#: src/Privacy/PersonalData.php:81 src/Ui/MembersView.php:87
-msgid "Needed"
-msgstr ""
-
-#: src/Privacy/PersonalData.php:82 src/Ui/MembersView.php:88
-msgid "Not needed"
-msgstr ""
-
-#: src/Privacy/PersonalData.php:114
+#: src/Privacy/PersonalData.php:111
 msgid ""
 "The inactive status of the orchestra account was kept, so that the account "
 "stays blocked."
 msgstr ""
 
+#. translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions"
 #: src/Privacy/PersonalData.php:138
-msgid ""
-"Members can enter in their profile if they need financial support and their "
-"dietary restrictions."
+#, php-format
+msgid "Members can enter the following information in their profile: %s."
 msgstr ""
 
 #: src/Privacy/PersonalData.php:142
@@ -141,21 +125,21 @@ msgid ""
 "administrators."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:145
+#: src/Privacy/PersonalData.php:146
 msgid "It is used to plan projects and deleted when a member is set inactive."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:147
+#: src/Privacy/PersonalData.php:153
 msgid ""
 "Members who leave are set inactive instead of deleted, to preserve the "
 "history of projects."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:150
+#: src/Privacy/PersonalData.php:156
 msgid "Inactive members cannot log in."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:154
+#: src/Privacy/PersonalData.php:160
 msgid "Orchestra Members"
 msgstr ""
 
@@ -190,10 +174,90 @@ msgid ""
 "Please enter your current password to change your email address or password."
 msgstr ""
 
-#. translators: %d: maximum number of characters
-#: src/Profile/ProfileInput.php:43
+#. translators: 1: field label, 2: maximum number of characters
+#: src/Profile/ProfileField.php:85
 #, php-format
-msgid "Dietary restrictions must not be longer than %d characters."
+msgid "%1$s must not be longer than %2$d characters."
+msgstr ""
+
+#: src/Profile/ProfileField.php:96
+msgid "No"
+msgstr ""
+
+#: src/Profile/ProfileField.php:96
+msgid "Yes"
+msgstr ""
+
+#: src/Profile/ProfileField.php:108
+msgid "Text"
+msgstr ""
+
+#: src/Profile/ProfileField.php:109
+msgid "Long text"
+msgstr ""
+
+#: src/Profile/ProfileField.php:110
+msgid "Checkbox"
+msgstr ""
+
+#: src/Profile/ProfileField.php:111
+msgid "Choice list"
+msgstr ""
+
+#: src/Profile/ProfileFields.php:72
+msgid "Financial support"
+msgstr ""
+
+#: src/Profile/ProfileFields.php:74
+msgid "I need financial support, e.g. for project fees."
+msgstr ""
+
+#: src/Profile/ProfileFields.php:78
+msgid "Dietary restrictions"
+msgstr ""
+
+#: src/Profile/ProfileFields.php:80
+msgid "Allergies, vegetarian, vegan, …"
+msgstr ""
+
+#. translators: %s: field label
+#: src/Profile/ProfileFieldsInput.php:75
+#, php-format
+msgid "Please choose a type for \"%s\"."
+msgstr ""
+
+#: src/Profile/ProfileFieldsInput.php:103
+msgid "Every field needs a label."
+msgstr ""
+
+#. translators: 1: field label, 2: maximum number of characters
+#: src/Profile/ProfileFieldsInput.php:106
+#, php-format
+msgid "The label \"%1$s\" is longer than %2$d characters."
+msgstr ""
+
+#. translators: 1: field label, 2: maximum number of characters
+#: src/Profile/ProfileFieldsInput.php:111
+#, php-format
+msgid "The hint of \"%1$s\" is longer than %2$d characters."
+msgstr ""
+
+#. translators: %s: field label
+#: src/Profile/ProfileFieldsInput.php:139
+#, php-format
+msgid "Please enter the choices for \"%s\", one per line."
+msgstr ""
+
+#. translators: 1: choice, 2: maximum number of characters
+#: src/Profile/ProfileFieldsInput.php:144
+#, php-format
+msgid "The choice \"%1$s\" is longer than %2$d characters."
+msgstr ""
+
+#. translators: %s: field label
+#: src/Profile/ProfileFieldsInput.php:164
+#, php-format
+msgid "The label \"%s\" is used more than once."
 msgstr ""
 
 #: src/Status/LoginBlocker.php:57
@@ -214,119 +278,189 @@ msgstr ""
 msgid "You cannot change your own status."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:35
+#: src/Ui/MembersShortcode.php:40
 msgid "Please log in to see the members."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:38
+#: src/Ui/MembersShortcode.php:43
 msgid "You are not allowed to see the members."
 msgstr ""
 
-#: src/Ui/MembersView.php:45 src/Ui/ProfileShortcode.php:51
+#: src/Ui/MembersShortcode.php:66 src/Ui/ProfileFieldsController.php:39
+msgid "You are not allowed to change the profile fields."
+msgstr ""
+
+#: src/Ui/MembersShortcode.php:71 src/Ui/MembersView.php:76
+msgid "Profile fields"
+msgstr ""
+
+#: src/Ui/MembersView.php:48 src/Ui/ProfileShortcode.php:53
 msgid "Name"
 msgstr ""
 
-#: src/Ui/MembersView.php:47 src/Ui/MembersView.php:95
+#: src/Ui/MembersView.php:50 src/Ui/MembersView.php:97
 msgid "Email"
 msgstr ""
 
-#: src/Ui/MembersView.php:48 src/Ui/MembersView.php:96
+#: src/Ui/MembersView.php:51 src/Ui/MembersView.php:98
 msgid "Role"
 msgstr ""
 
 #. translators: %d: number of members
-#: src/Ui/MembersView.php:68
+#: src/Ui/MembersView.php:71
 #, php-format
 msgid "%d member"
 msgid_plural "%d members"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Ui/MembersView.php:71
+#: src/Ui/MembersView.php:80
 msgid "No members found."
 msgstr ""
 
-#: src/Ui/MembersView.php:107
+#: src/Ui/MembersView.php:113
 msgid "Edit your profile"
 msgstr ""
 
-#: src/Ui/MembersView.php:125
+#: src/Ui/MembersView.php:131
 msgid ""
 "Set this member inactive? They can no longer log in, and their sensitive "
 "profile data is deleted."
 msgstr ""
 
-#: src/Ui/MembersView.php:128
+#: src/Ui/MembersView.php:134
 msgid "Reactivate this member? They can log in again."
 msgstr ""
 
-#: src/Ui/MembersView.php:131
+#: src/Ui/MembersView.php:137
 msgid ""
 "Inactive members cannot log in and receive no emails. Their history is kept."
 msgstr ""
 
-#: src/Ui/MembersView.php:134
+#: src/Ui/MembersView.php:140
 msgid "Reactivated members can log in again and respond to open projects."
 msgstr ""
 
-#: src/Ui/MembersView.php:142
+#: src/Ui/MembersView.php:148
 msgid "Reactivate"
 msgstr ""
 
-#: src/Ui/MembersView.php:142
+#: src/Ui/MembersView.php:148
 msgid "Set inactive"
 msgstr ""
 
-#: src/Ui/ProfileController.php:40
+#: src/Ui/ProfileController.php:43
 msgid "You are not allowed to edit this profile."
 msgstr ""
 
-#: src/Ui/ProfileController.php:75
+#: src/Ui/ProfileController.php:78
 msgid "Your profile has been saved."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:38
+#: src/Ui/ProfileFieldsController.php:53
+msgid "The profile fields have been saved."
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:29 src/Ui/ProfileFieldsView.php:127
+msgid "Order"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:30
+msgid "Label"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:31 src/Ui/ProfileFieldsView.php:102
+msgid "Type"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:32
+msgid "Hint"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:33
+msgid "Choices"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:34
+msgid "Delete"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:39
+msgid ""
+"Members fill in these fields in their profile. Only they, the organizers and "
+"the administrators can see the answers, and the answers are deleted when a "
+"member is set inactive."
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:62
+msgid "Delete field"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:73
+msgid "+ Add field"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:75
+msgid ""
+"For checkboxes, the hint is the text next to the box. Choice lists need one "
+"choice per line. Deleting a field also deletes what the members entered in "
+"it."
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:79 src/Ui/ProfileShortcode.php:109
+msgid "Save"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:100
+msgid "New field, e.g. T-shirt size"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:101
+msgid "Label of the new field"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:142
+msgid "Choices, one per line"
+msgstr ""
+
+#: src/Ui/ProfileShortcode.php:40
 msgid "Please log in to edit your profile."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:42
+#: src/Ui/ProfileShortcode.php:44
 msgid "You are not allowed to edit your profile."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:48
+#: src/Ui/ProfileShortcode.php:50
 msgid "Account"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:55
+#: src/Ui/ProfileShortcode.php:57
 msgid "Shown to the other members."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:59
+#: src/Ui/ProfileShortcode.php:61
 msgid "Email address"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:66
+#: src/Ui/ProfileShortcode.php:68
 msgid "New password"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:69
+#: src/Ui/ProfileShortcode.php:71
 msgid "Leave empty to keep your password."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:73
+#: src/Ui/ProfileShortcode.php:75
 msgid "Repeat new password"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:80
+#: src/Ui/ProfileShortcode.php:82
 msgid "Current password"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:83
+#: src/Ui/ProfileShortcode.php:85
 msgid "Only needed to change your email address or password."
-msgstr ""
-
-#: src/Ui/ProfileShortcode.php:110
-msgid "Save"
 msgstr ""
 
 #: src/Ui/StatusController.php:41

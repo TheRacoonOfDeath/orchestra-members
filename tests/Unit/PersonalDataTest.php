@@ -6,6 +6,7 @@ namespace Orchestra\Members\Tests\Unit;
 
 use Orchestra\Core\Authorization\Roles;
 use Orchestra\Members\Privacy\PersonalData;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Tests\Fakes\WordPress;
 use PHPUnit\Framework\TestCase;
@@ -18,10 +19,11 @@ final class PersonalDataTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository();
-        $this->privacy = new PersonalData($this->profiles);
+        $fields = new ProfileFields();
+        $this->profiles = new ProfileRepository($fields);
+        $this->privacy = new PersonalData($this->profiles, $fields);
         WordPress::addUser(5, [Roles::MEMBER]);
-        $this->profiles->saveSensitiveData(5, true, 'Vegan');
+        $this->profiles->saveSensitiveData(5, ['financial_support' => '1', 'dietary_restrictions' => 'Vegan']);
     }
 
     public function testExportsTheProfile(): void
@@ -32,7 +34,7 @@ final class PersonalDataTest extends TestCase
         $this->assertCount(1, $export['data']);
         $this->assertSame([
             ['name' => 'Status', 'value' => 'Active'],
-            ['name' => 'Financial support', 'value' => 'Needed'],
+            ['name' => 'Financial support', 'value' => 'Yes'],
             ['name' => 'Dietary restrictions', 'value' => 'Vegan'],
         ], $export['data'][0]['data']);
         $this->assertSame([], $this->privacy->export('unknown@example.com')['data']);
@@ -46,8 +48,7 @@ final class PersonalDataTest extends TestCase
         $this->assertFalse($result['items_retained']);
         $profile = $this->profiles->find(5);
         $this->assertNotNull($profile);
-        $this->assertFalse($profile->financialSupport);
-        $this->assertSame('', $profile->dietaryRestrictions);
+        $this->assertSame(['financial_support' => '', 'dietary_restrictions' => ''], $profile->values);
     }
 
     public function testKeepsTheInactiveStatus(): void

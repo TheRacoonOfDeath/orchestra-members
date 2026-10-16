@@ -26,6 +26,9 @@ final class WordPress
     /** @var array<int, list<string>> user ID => capabilities */
     public static array $userCapabilities = [];
 
+    /** @var array<string, mixed> */
+    public static array $options = [];
+
     public static function reset(): void
     {
         self::$users = [];
@@ -33,6 +36,7 @@ final class WordPress
         self::$actions = [];
         self::$destroyedSessions = [];
         self::$userCapabilities = [];
+        self::$options = [];
     }
 
     /**

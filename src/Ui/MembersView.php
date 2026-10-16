@@ -13,6 +13,7 @@ use Orchestra\Members\Admin\StatusLabel;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\Member;
 use Orchestra\Members\MemberDirectory;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\StatusService;
 
@@ -25,6 +26,7 @@ final class MembersView
         private readonly MemberDirectory $directory,
         private readonly ProfileRepository $profiles,
         private readonly StatusService $status,
+        private readonly ProfileFields $fields,
     ) {
     }
 
@@ -35,8 +37,9 @@ final class MembersView
 
     /**
      * @param Closure(?int $memberId): string $url The list (null) or a member's profile
+     * @param string|null $fieldsUrl The profile fields, linked for those who may change them
      */
-    public function list(Closure $url): string
+    public function list(Closure $url, ?string $fieldsUrl = null): string
     {
         $privileged = \current_user_can(Capabilities::PROFILE_READ_OTHERS)
             || \current_user_can(Capabilities::STATUS_EDIT);
@@ -67,7 +70,13 @@ final class MembersView
         /* translators: %d: number of members */
         $count = \sprintf(\_n('%d member', '%d members', \count($members), 'orchestra-members'), \count($members));
 
-        return '<p class="orchestra-muted">' . \esc_html($count) . '</p>'
+        $toolbar = '<p class="orchestra-muted">' . \esc_html($count) . '</p>';
+        if ($fieldsUrl !== null && \current_user_can(Capabilities::FIELDS_MANAGE)) {
+            $toolbar = '<div class="orchestra-toolbar">' . $toolbar
+                . Form::link($fieldsUrl, \__('Profile fields', 'orchestra-members'), 'small') . '</div>';
+        }
+
+        return $toolbar
             . Html::table($headings, $rows, \__('No members found.', 'orchestra-members'));
     }
 
@@ -83,23 +92,20 @@ final class MembersView
         }
 
         $email = '<a href="mailto:' . \esc_attr($member->email) . '">' . \esc_html($member->email) . '</a>';
-        $support = $profile->financialSupport
-            ? \__('Needed', 'orchestra-members')
-            : \__('Not needed', 'orchestra-members');
+
+        $details = [
+            [\__('Email', 'orchestra-members'), $email],
+            [\__('Role', 'orchestra-members'), \esc_html(self::roleNames($member))],
+        ];
+        foreach ($this->fields->all() as $field) {
+            $details[] = [$field->label, ProfileFieldControl::value($field, $profile->value($field->id))];
+        }
 
         $html = '<p><a href="' . \esc_url($url(null)) . '">&larr; '
             . \esc_html__('All members', 'orchestra-members') . '</a></p>'
             . '<div class="orchestra-card"><div class="orchestra-toolbar"><h2 class="orchestra-card__title">'
             . \esc_html($member->displayName) . '</h2>' . self::statusBadge($profile->active) . '</div>'
-            . Html::details([
-                [\__('Email', 'orchestra-members'), $email],
-                [\__('Role', 'orchestra-members'), \esc_html(self::roleNames($member))],
-                [\__('Financial support', 'orchestra-members'), \esc_html($support)],
-                [
-                    \__('Dietary restrictions', 'orchestra-members'),
-                    $profile->dietaryRestrictions !== '' ? \nl2br(\esc_html($profile->dietaryRestrictions)) : '—',
-                ],
-            ]);
+            . Html::details($details);
 
         if ($memberId === \get_current_user_id() && \current_user_can(Capabilities::PROFILE_EDIT, $memberId)) {
             $editUrl = Pages::url(ProfileShortcode::TAG) ?? \admin_url('profile.php');

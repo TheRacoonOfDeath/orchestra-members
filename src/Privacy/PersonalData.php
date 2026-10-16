@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Orchestra\Members\Privacy;
 
 use Orchestra\Members\Admin\StatusLabel;
+use Orchestra\Members\Profile\ProfileField;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use WP_User;
 
@@ -16,8 +18,10 @@ final class PersonalData
 {
     private const ID = 'orchestra-members';
 
-    public function __construct(private readonly ProfileRepository $profiles)
-    {
+    public function __construct(
+        private readonly ProfileRepository $profiles,
+        private readonly ProfileFields $fields,
+    ) {
     }
 
     public function register(): void
@@ -68,24 +72,17 @@ final class PersonalData
             return ['data' => [], 'done' => true];
         }
 
+        $data = [['name' => \__('Status', 'orchestra-members'), 'value' => StatusLabel::of($profile->active)]];
+        foreach ($this->fields->all() as $field) {
+            $data[] = ['name' => $field->label, 'value' => $field->display($profile->value($field->id))];
+        }
+
         return [
             'data' => [[
                 'group_id' => self::ID,
                 'group_label' => \__('Orchestra profile', 'orchestra-members'),
                 'item_id' => 'orchestra-profile-' . $profile->userId,
-                'data' => [
-                    ['name' => \__('Status', 'orchestra-members'), 'value' => StatusLabel::of($profile->active)],
-                    [
-                        'name' => \__('Financial support', 'orchestra-members'),
-                        'value' => $profile->financialSupport
-                            ? \__('Needed', 'orchestra-members')
-                            : \__('Not needed', 'orchestra-members'),
-                    ],
-                    [
-                        'name' => \__('Dietary restrictions', 'orchestra-members'),
-                        'value' => $profile->dietaryRestrictions,
-                    ],
-                ],
+                'data' => $data,
             ]],
             'done' => true,
         ];
@@ -105,7 +102,7 @@ final class PersonalData
             return ['items_removed' => false, 'items_retained' => false, 'messages' => [], 'done' => true];
         }
 
-        $hadData = $profile->financialSupport || $profile->dietaryRestrictions !== '';
+        $hadData = $profile->hasValues();
         $this->profiles->deleteSensitiveData($profile->userId);
 
         $messages = [];
@@ -133,16 +130,25 @@ final class PersonalData
             return;
         }
 
-        $sentences = [
-            \__(
-                'Members can enter in their profile if they need financial support and their dietary restrictions.',
-                'orchestra-members'
-            ),
-            \__(
+        $sentences = [];
+        $labels = \array_map(static fn (ProfileField $field): string => $field->label, $this->fields->all());
+        if ($labels !== []) {
+            $sentences[] = \sprintf(
+                /* translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions" */
+                \__('Members can enter the following information in their profile: %s.', 'orchestra-members'),
+                \implode(', ', $labels)
+            );
+            $sentences[] = \__(
                 'This information is visible only to the member, the organizers and the administrators.',
                 'orchestra-members'
-            ),
-            \__('It is used to plan projects and deleted when a member is set inactive.', 'orchestra-members'),
+            );
+            $sentences[] = \__(
+                'It is used to plan projects and deleted when a member is set inactive.',
+                'orchestra-members'
+            );
+        }
+        $sentences = [
+            ...$sentences,
             \__(
                 'Members who leave are set inactive instead of deleted, to preserve the history of projects.',
                 'orchestra-members'

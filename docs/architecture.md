@@ -11,8 +11,23 @@ Everything is stored as user meta. There are no custom tables.
 | Meta key | Value | Meaning |
 |----------|-------|---------|
 | `orchestra_members_inactive` | `1` | Present only while the member is inactive. New users are active. |
-| `orchestra_members_financial_support` | `1` | Present only if the member needs financial support. Sensitive. |
-| `orchestra_members_dietary_restrictions` | text, ≤ 1000 characters | Sensitive. |
+| `orchestra_members_{field ID}` | see below | The value of a profile field; present only if not empty. Sensitive. |
+
+The option `orchestra_members_profile_fields` holds the profile fields, in display order. Each has a
+stable ID (derived from the label when it is created), a label, a type, a hint and, for choice
+lists, the choices. Until an administrator saves the fields, the defaults apply: "Financial
+support" (`financial_support`, checkbox) and "Dietary restrictions" (`dietary_restrictions`, long
+text), whose meta keys are those of earlier versions.
+
+| Type | Stored value |
+|------|--------------|
+| `checkbox` | `1` |
+| `text` | single line, ≤ 200 characters |
+| `textarea` | text with line breaks, ≤ 1000 characters |
+| `select` | one of the choices |
+
+The type of a field cannot be changed after it was created. Deleting a field deletes its values
+for all members. Removing a choice keeps the values already stored until the member changes them.
 
 Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,
 `orchestra_organizer`) have a profile and appear in the member list.
@@ -25,8 +40,12 @@ Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,
 | `Capabilities` | The capabilities of orchestra-members, registered with orchestra-core |
 | `MembersService` | Public API for other plugins, see [api.md](api.md) |
 | `MemberDirectory` | Finds the users with an orchestra role |
+| `Profile\ProfileFields` | The profile fields chosen by the administrators (option) |
+| `Profile\ProfileField` | One field: type, normalization and validation of its value |
+| `Profile\ProfileFieldsInput` | Reads and validates the form in which the fields are changed |
 | `Profile\ProfileRepository` | Reads and writes the user meta |
 | `Profile\ProfileInput` | Normalizes and validates the profile form |
+| `Ui\ProfileFieldsView`, `Ui\ProfileFieldsController` | The profile fields form and its handler |
 | `Status\StatusService` | Deactivation and reactivation, and who may be deactivated |
 | `Status\LoginBlocker` | Blocks inactive members on login |
 | `Admin\ProfileSection` | The "Orchestra" section on profile.php and user-edit.php |
@@ -46,9 +65,10 @@ See the catalogue in orchestra-core's `docs/capabilities.md`.
 | `orchestra_members_profile_edit` *meta* | own | own | own |
 | `orchestra_members_status_edit` | | | ✓ |
 | `orchestra_members_email_send` | | ✓ | ✓ |
+| `orchestra_members_fields_manage` | | | |
 
-Administrators have every capability. Editing other members' profiles is reserved for them
-(`user-edit.php`).
+Administrators have every capability. Editing other members' profiles (`user-edit.php`) and
+choosing the profile fields are reserved for them.
 
 ## Status rules
 

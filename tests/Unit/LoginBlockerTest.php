@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Orchestra\Members\Tests\Unit;
 
 use Orchestra\Core\Authorization\Roles;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\LoginBlocker;
 use Orchestra\Members\Tests\Fakes\WordPress;
@@ -19,7 +20,7 @@ final class LoginBlockerTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository();
+        $this->profiles = new ProfileRepository(new ProfileFields());
         $this->blocker = new LoginBlocker($this->profiles);
     }
 

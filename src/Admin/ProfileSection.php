@@ -6,8 +6,10 @@ namespace Orchestra\Members\Admin;
 
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\MemberDirectory;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileInput;
 use Orchestra\Members\Profile\ProfileRepository;
+use Orchestra\Members\Ui\ProfileFieldControl;
 use WP_Error;
 use WP_User;
 
@@ -22,8 +24,10 @@ final class ProfileSection
     /** @var list<string> Validation errors of the current request, shown by WordPress. */
     private array $errors = [];
 
-    public function __construct(private readonly ProfileRepository $profiles)
-    {
+    public function __construct(
+        private readonly ProfileRepository $profiles,
+        private readonly ProfileFields $fields,
+    ) {
     }
 
     public function register(): void
@@ -51,7 +55,6 @@ final class ProfileSection
             return;
         }
         $editable = $profile->active && \current_user_can(Capabilities::PROFILE_EDIT, $user->ID);
-        $disabled = $editable ? '' : ' disabled';
 
         echo '<h2>' . \esc_html__('Orchestra', 'orchestra-members') . '</h2>';
         \wp_nonce_field(self::NONCE_ACTION, self::NONCE_FIELD);
@@ -69,20 +72,14 @@ final class ProfileSection
         }
         echo '</td></tr>';
 
-        echo '<tr><th>' . \esc_html__('Financial support', 'orchestra-members') . '</th><td><label>'
-            . '<input type="checkbox" name="' . ProfileInput::FIELD_FINANCIAL_SUPPORT . '" value="1"'
-            . \checked($profile->financialSupport, true, false) . $disabled . '> '
-            . \esc_html__('I need financial support, e.g. for project fees.', 'orchestra-members')
-            . '</label></td></tr>';
-
-        echo '<tr><th><label for="' . ProfileInput::FIELD_DIETARY_RESTRICTIONS . '">'
-            . \esc_html__('Dietary restrictions', 'orchestra-members') . '</label></th><td>'
-            . '<textarea id="' . ProfileInput::FIELD_DIETARY_RESTRICTIONS . '" name="'
-            . ProfileInput::FIELD_DIETARY_RESTRICTIONS . '" rows="3" cols="50" maxlength="'
-            . ProfileInput::DIETARY_RESTRICTIONS_MAX_LENGTH . '"' . $disabled . '>'
-            . \esc_textarea($profile->dietaryRestrictions) . '</textarea>'
-            . '<p class="description">'
-            . \esc_html__('Allergies, vegetarian, vegan, …', 'orchestra-members') . '</p></td></tr>';
+        foreach ($this->fields->all() as $field) {
+            $id = 'orchestra-profile-' . $field->id;
+            $hint = ProfileFieldControl::hint($field);
+            echo '<tr><th><label for="' . \esc_attr($id) . '">' . \esc_html($field->label) . '</label></th><td>'
+                . ProfileFieldControl::control($field, $profile->value($field->id), $id, !$editable, 'regular-text')
+                . ($hint === '' ? '' : '<p class="description">' . \esc_html($hint) . '</p>')
+                . '</td></tr>';
+        }
 
         echo '</table>';
         echo '<p class="description">'
@@ -110,10 +107,10 @@ final class ProfileSection
             return;
         }
 
-        $input = ProfileInput::fromForm(\wp_unslash($_POST));
+        $input = ProfileInput::fromForm(\wp_unslash($_POST), $this->fields->all());
         $this->errors = $input->validate();
         if ($this->errors === []) {
-            $this->profiles->saveSensitiveData($userId, $input->financialSupport, $input->dietaryRestrictions);
+            $this->profiles->saveSensitiveData($userId, $input->values);
         }
     }
 

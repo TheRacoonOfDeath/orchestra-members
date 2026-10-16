@@ -88,6 +88,35 @@ function get_user_by(string $field, string $value): WP_User|false
     return false;
 }
 
+function get_option(string $option, mixed $default = false): mixed
+{
+    return array_key_exists($option, WordPress::$options) ? WordPress::$options[$option] : $default;
+}
+
+function update_option(string $option, mixed $value, ?bool $autoload = null): bool
+{
+    WordPress::$options[$option] = $value;
+
+    return true;
+}
+
+function remove_accents(string $text): string
+{
+    return strtr($text, ['ä' => 'a', 'ö' => 'o', 'ü' => 'u', 'ß' => 'ss', 'é' => 'e']);
+}
+
+/**
+ * Supports deleting a key for all users, as orchestra-members does.
+ */
+function delete_metadata(string $type, int $objectId, string $key, mixed $value = '', bool $all = false): bool
+{
+    foreach (WordPress::$userMeta as $userId => $meta) {
+        unset(WordPress::$userMeta[$userId][$key]);
+    }
+
+    return true;
+}
+
 function get_user_meta(int $userId, string $key, bool $single = false): mixed
 {
     return WordPress::$userMeta[$userId][$key] ?? '';

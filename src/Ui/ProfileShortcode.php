@@ -9,7 +9,7 @@ use Orchestra\Core\Ui\Html;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\AccountInput;
-use Orchestra\Members\Profile\ProfileInput;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 
 /**
@@ -20,8 +20,10 @@ final class ProfileShortcode
 {
     public const TAG = 'orchestra_profile';
 
-    public function __construct(private readonly ProfileRepository $profiles)
-    {
+    public function __construct(
+        private readonly ProfileRepository $profiles,
+        private readonly ProfileFields $fields,
+    ) {
     }
 
     public function register(): void
@@ -85,26 +87,23 @@ final class ProfileShortcode
             . '</fieldset>';
 
         $profile = $this->profiles->find($user->ID);
-        if ($profile !== null && MemberDirectory::orchestraRoles($user) !== []) {
+        $fields = $this->fields->all();
+        if ($profile !== null && $fields !== [] && MemberDirectory::orchestraRoles($user) !== []) {
             $html .= '<fieldset class="orchestra-fieldset orchestra-stack"><legend>'
-                . \esc_html__('Orchestra', 'orchestra-members') . '</legend>'
-                . '<label class="orchestra-checkbox"><input type="checkbox" name="'
-                . ProfileInput::FIELD_FINANCIAL_SUPPORT . '" value="1"'
-                . \checked($profile->financialSupport, true, false) . '> <span>'
-                . \esc_html__('I need financial support, e.g. for project fees.', 'orchestra-members')
-                . '</span></label>'
-                . Html::field(
-                    'orchestra-profile-dietary',
-                    \__('Dietary restrictions', 'orchestra-members'),
-                    '<textarea id="orchestra-profile-dietary" name="' . ProfileInput::FIELD_DIETARY_RESTRICTIONS
-                        . '" rows="3" maxlength="' . ProfileInput::DIETARY_RESTRICTIONS_MAX_LENGTH . '">'
-                        . \esc_textarea($profile->dietaryRestrictions) . '</textarea>',
-                    \__('Allergies, vegetarian, vegan, …', 'orchestra-members')
-                )
-                . '<p class="orchestra-muted">' . \esc_html__(
-                    'Only you, the organizers and the administrators can see this information.',
-                    'orchestra-members'
-                ) . '</p></fieldset>';
+                . \esc_html__('Orchestra', 'orchestra-members') . '</legend>';
+            foreach ($fields as $field) {
+                $id = 'orchestra-profile-' . $field->id;
+                $html .= Html::field(
+                    $id,
+                    $field->label,
+                    ProfileFieldControl::control($field, $profile->value($field->id), $id),
+                    ProfileFieldControl::hint($field)
+                );
+            }
+            $html .= '<p class="orchestra-muted">' . \esc_html__(
+                'Only you, the organizers and the administrators can see this information.',
+                'orchestra-members'
+            ) . '</p></fieldset>';
         }
 
         $save = Form::submit(\__('Save', 'orchestra-members'), 'primary');

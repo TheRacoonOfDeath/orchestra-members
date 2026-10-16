@@ -6,6 +6,7 @@ namespace Orchestra\Members\Tests\Unit;
 
 use Orchestra\Core\Authorization\Roles;
 use Orchestra\Members\MembersService;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\StatusService;
 use Orchestra\Members\Tests\Fakes\WordPress;
@@ -19,22 +20,21 @@ final class StatusServiceTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository();
+        $this->profiles = new ProfileRepository(new ProfileFields());
         $this->status = new StatusService($this->profiles);
     }
 
     public function testDeactivationDeletesSensitiveDataAndEndsSessions(): void
     {
         WordPress::addUser(5, [Roles::MEMBER]);
-        $this->profiles->saveSensitiveData(5, true, 'Vegan');
+        $this->profiles->saveSensitiveData(5, ['financial_support' => '1', 'dietary_restrictions' => 'Vegan']);
 
         $this->status->deactivate(5);
 
         $profile = $this->profiles->find(5);
         $this->assertNotNull($profile);
         $this->assertFalse($profile->active);
-        $this->assertFalse($profile->financialSupport);
-        $this->assertSame('', $profile->dietaryRestrictions);
+        $this->assertSame(['financial_support' => '', 'dietary_restrictions' => ''], $profile->values);
         $this->assertSame([5], WordPress::$destroyedSessions);
         $this->assertSame([[MembersService::ACTION_DEACTIVATED, [5]]], WordPress::$actions);
     }

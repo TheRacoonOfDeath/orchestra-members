@@ -29,6 +29,9 @@ final class Capabilities
     /** Set members active or inactive. */
     public const STATUS_EDIT = 'orchestra_members_status_edit';
 
+    /** Choose the fields of the orchestra profile. Administrators only. */
+    public const FIELDS_MANAGE = 'orchestra_members_fields_manage';
+
     /** Email the global groups (everyone, all members, all conductors, all organizers). */
     public const EMAIL_SEND = 'orchestra_members_email_send';
 
@@ -46,6 +49,7 @@ final class Capabilities
             ->register(self::PROFILE_EDIT_OWN, $everyone)
             ->register(self::PROFILE_EDIT_OTHERS)
             ->register(self::STATUS_EDIT, [Roles::ORGANIZER])
+            ->register(self::FIELDS_MANAGE)
             ->register(self::EMAIL_SEND, [Roles::CONDUCTOR, Roles::ORGANIZER])
             ->registerMetaCapability(
                 self::PROFILE_READ,

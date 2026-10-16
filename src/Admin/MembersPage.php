@@ -7,6 +7,7 @@ namespace Orchestra\Members\Admin;
 use Orchestra\Core\Ui\Html;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\Ui\MembersView;
+use Orchestra\Members\Ui\ProfileFieldsView;
 
 /**
  * The "Members" screen in wp-admin, showing the same {@see MembersView} as `[orchestra_members]`.
@@ -14,9 +15,12 @@ use Orchestra\Members\Ui\MembersView;
 final class MembersPage
 {
     public const SLUG = 'orchestra-members';
+    public const FIELDS_SLUG = 'orchestra-members-fields';
 
-    public function __construct(private readonly MembersView $view)
-    {
+    public function __construct(
+        private readonly MembersView $view,
+        private readonly ProfileFieldsView $fieldsView,
+    ) {
     }
 
     public function register(): void
@@ -49,6 +53,38 @@ final class MembersPage
             71
         );
         \add_action('load-' . $hookSuffix, [$this, 'authorizeProfileView']);
+        \add_submenu_page(
+            self::SLUG,
+            \__('All Members', 'orchestra-members'),
+            \__('All Members', 'orchestra-members'),
+            Capabilities::DIRECTORY_READ,
+            self::SLUG,
+            [$this, 'render']
+        );
+        \add_submenu_page(
+            self::SLUG,
+            \__('Profile Fields', 'orchestra-members'),
+            \__('Profile Fields', 'orchestra-members'),
+            Capabilities::FIELDS_MANAGE,
+            self::FIELDS_SLUG,
+            [$this, 'renderFields']
+        );
+    }
+
+    public static function fieldsUrl(): string
+    {
+        return \add_query_arg('page', self::FIELDS_SLUG, \admin_url('admin.php'));
+    }
+
+    /**
+     * @internal Submenu page callback.
+     */
+    public function renderFields(): void
+    {
+        echo Html::adminPage(
+            \__('Profile Fields', 'orchestra-members'),
+            $this->fieldsView->form()
+        ); // escaped by the view
     }
 
     /**
@@ -74,7 +110,7 @@ final class MembersPage
 
         echo Html::adminPage(
             \__('Members', 'orchestra-members'),
-            $memberId > 0 ? $this->view->member($memberId, $url) : $this->view->list($url)
+            $memberId > 0 ? $this->view->member($memberId, $url) : $this->view->list($url, self::fieldsUrl())
         ); // escaped by the view
     }
 

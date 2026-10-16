@@ -8,6 +8,7 @@ use Orchestra\Core\Authorization\Roles;
 use Orchestra\Members\Member;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\MembersService;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Tests\Fakes\WordPress;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,7 @@ final class MemberDirectoryTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository();
+        $this->profiles = new ProfileRepository(new ProfileFields());
         $this->members = new MembersService(new MemberDirectory($this->profiles), $this->profiles);
 
         WordPress::addUser(1, ['administrator'], 'Admin');

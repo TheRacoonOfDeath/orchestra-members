@@ -12,13 +12,9 @@ final class ProfileRepository
     /** Present (value "1") only while the member is inactive, so new users are active. */
     public const META_INACTIVE = 'orchestra_members_inactive';
 
-    /** Present (value "1") only if the member needs financial support. Sensitive. */
-    public const META_FINANCIAL_SUPPORT = 'orchestra_members_financial_support';
-
-    /** Sensitive. */
-    public const META_DIETARY_RESTRICTIONS = 'orchestra_members_dietary_restrictions';
-
-    public const META_KEYS = [self::META_INACTIVE, self::META_FINANCIAL_SUPPORT, self::META_DIETARY_RESTRICTIONS];
+    public function __construct(private readonly ProfileFields $fields)
+    {
+    }
 
     public function find(int $userId): ?Profile
     {
@@ -26,12 +22,12 @@ final class ProfileRepository
             return null;
         }
 
-        return new Profile(
-            $userId,
-            $this->isActive($userId),
-            $this->meta($userId, self::META_FINANCIAL_SUPPORT) === '1',
-            $this->meta($userId, self::META_DIETARY_RESTRICTIONS),
-        );
+        $values = [];
+        foreach ($this->fields->all() as $field) {
+            $values[$field->id] = $this->meta($userId, $field->metaKey());
+        }
+
+        return new Profile($userId, $this->isActive($userId), $values);
     }
 
     public function isActive(int $userId): bool
@@ -39,25 +35,38 @@ final class ProfileRepository
         return $this->meta($userId, self::META_INACTIVE) !== '1';
     }
 
-    public function saveSensitiveData(int $userId, bool $financialSupport, string $dietaryRestrictions): void
+    /**
+     * @param array<string, string> $values field ID => normalized value; fields that are missing
+     *     are left unchanged
+     */
+    public function saveSensitiveData(int $userId, array $values): void
     {
-        if ($financialSupport) {
-            \update_user_meta($userId, self::META_FINANCIAL_SUPPORT, '1');
-        } else {
-            \delete_user_meta($userId, self::META_FINANCIAL_SUPPORT);
-        }
-
-        if ($dietaryRestrictions !== '') {
-            \update_user_meta($userId, self::META_DIETARY_RESTRICTIONS, $dietaryRestrictions);
-        } else {
-            \delete_user_meta($userId, self::META_DIETARY_RESTRICTIONS);
+        foreach ($this->fields->all() as $field) {
+            $value = $values[$field->id] ?? null;
+            if ($value === null) {
+                continue;
+            }
+            if ($value !== '') {
+                \update_user_meta($userId, $field->metaKey(), $value);
+            } else {
+                \delete_user_meta($userId, $field->metaKey());
+            }
         }
     }
 
     public function deleteSensitiveData(int $userId): void
     {
-        \delete_user_meta($userId, self::META_FINANCIAL_SUPPORT);
-        \delete_user_meta($userId, self::META_DIETARY_RESTRICTIONS);
+        foreach ($this->fields->all() as $field) {
+            \delete_user_meta($userId, $field->metaKey());
+        }
+    }
+
+    /**
+     * Deletes the values of all members for a field that is removed.
+     */
+    public function deleteFieldValues(ProfileField $field): void
+    {
+        \delete_metadata('user', 0, $field->metaKey(), '', true);
     }
 
     public function setActive(int $userId, bool $active): void

@@ -15,12 +15,15 @@ use Orchestra\Members\Admin\UserListColumn;
 use Orchestra\Core\Email\EmailService;
 use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\Privacy\PersonalData;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\LoginBlocker;
 use Orchestra\Members\Status\StatusService;
 use Orchestra\Members\Ui\MembersShortcode;
 use Orchestra\Members\Ui\MembersView;
 use Orchestra\Members\Ui\ProfileController;
+use Orchestra\Members\Ui\ProfileFieldsController;
+use Orchestra\Members\Ui\ProfileFieldsView;
 use Orchestra\Members\Ui\ProfileShortcode;
 use Orchestra\Members\Ui\StatusController;
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
@@ -37,6 +40,7 @@ final class Plugin
 
     private static ?self $instance = null;
 
+    private readonly ProfileFields $fields;
     private readonly ProfileRepository $profiles;
     private readonly MemberDirectory $directory;
     private readonly StatusService $status;
@@ -44,7 +48,8 @@ final class Plugin
 
     private function __construct(private readonly string $pluginFile)
     {
-        $this->profiles = new ProfileRepository();
+        $this->fields = new ProfileFields();
+        $this->profiles = new ProfileRepository($this->fields);
         $this->directory = new MemberDirectory($this->profiles);
         $this->status = new StatusService($this->profiles);
         $this->members = new MembersService($this->directory, $this->profiles);
@@ -108,22 +113,24 @@ final class Plugin
 
         \add_action('orchestra_core_register_capabilities', [Capabilities::class, 'register']);
         \add_action('user_register', [$this, 'announceNewMember']);
-        (new PersonalData($this->profiles))->register();
+        (new PersonalData($this->profiles, $this->fields))->register();
         // The email service exists since orchestra-core 0.3.
         if (\class_exists(EmailService::class)) {
             (new MemberEmailGroups($this->directory, $this->profiles))->register();
         }
 
-        $view = new MembersView($this->directory, $this->profiles, $this->status);
+        $view = new MembersView($this->directory, $this->profiles, $this->status, $this->fields);
+        $fieldsView = new ProfileFieldsView($this->fields);
         (new StatusController($this->status))->register();
-        (new ProfileController($this->profiles))->register();
-        (new MembersShortcode($view))->register();
-        (new ProfileShortcode($this->profiles))->register();
+        (new ProfileController($this->profiles, $this->fields))->register();
+        (new ProfileFieldsController($this->fields, $this->profiles))->register();
+        (new MembersShortcode($view, $fieldsView))->register();
+        (new ProfileShortcode($this->profiles, $this->fields))->register();
         \add_action(Menu::REGISTER_ACTION, [$this, 'registerMenuItems']);
 
         if (\is_admin()) {
-            (new MembersPage($view))->register();
-            (new ProfileSection($this->profiles))->register();
+            (new MembersPage($view, $fieldsView))->register();
+            (new ProfileSection($this->profiles, $this->fields))->register();
             (new UserListColumn($this->profiles))->register();
         }
     }
@@ -151,7 +158,7 @@ final class Plugin
         $menu->add(new MenuItem(
             ProfileShortcode::TAG,
             \__('My profile', 'orchestra-members'),
-            \__('Your name, email address, password and dietary restrictions.', 'orchestra-members'),
+            \__('Your name, email address, password and orchestra details.', 'orchestra-members'),
             static fn (int $userId): bool => \user_can($userId, Capabilities::PROFILE_EDIT, $userId),
             90
         ));

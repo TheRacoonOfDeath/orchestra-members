@@ -21,7 +21,9 @@ Do not read or write the user meta of orchestra-members directly.
 | `profile(int $userId): ?Profile` | The profile including the sensitive data |
 
 `Member` has `id`, `displayName`, `email`, `roles` (orchestra roles only) and `active`.
-`Profile` has `userId`, `active`, `financialSupport` and `dietaryRestrictions`.
+`Profile` has `userId`, `active` and `values` (field ID => value for every current profile field;
+`""` if empty), and `value(string $fieldId): string`. The fields are chosen by the administrators,
+so do not rely on a particular field to exist. Checkbox values are `"1"` or `""`.
 
 Profiles contain sensitive data. Check the meta capability before showing one:
 

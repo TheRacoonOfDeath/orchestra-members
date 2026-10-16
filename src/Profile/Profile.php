@@ -9,13 +9,24 @@ namespace Orchestra\Members\Profile;
  */
 final class Profile
 {
+    /**
+     * @param array<string, string> $values Sensitive. Field ID => value, for every current
+     *     {@see ProfileField}; "" if the member has not entered anything
+     */
     public function __construct(
         public readonly int $userId,
         public readonly bool $active,
-        /** Sensitive. */
-        public readonly bool $financialSupport,
-        /** Sensitive. */
-        public readonly string $dietaryRestrictions,
+        public readonly array $values,
     ) {
+    }
+
+    public function value(string $fieldId): string
+    {
+        return $this->values[$fieldId] ?? '';
+    }
+
+    public function hasValues(): bool
+    {
+        return \array_filter($this->values, static fn (string $value): bool => $value !== '') !== [];
     }
 }
