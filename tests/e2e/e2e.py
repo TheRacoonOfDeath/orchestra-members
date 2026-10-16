@@ -12,6 +12,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import urllib.parse
 from html.parser import HTMLParser
 
 BASE = os.environ["E2E_BASE_URL"]
@@ -217,6 +218,14 @@ check("Members" in text(page) and "My profile" in text(page) and "Email" not in 
 _, page = Session().get(PAGES["orchestra_login"])
 login_form = find_form(page, orchestra_login_page=PAGES["orchestra_login"]) or (Forms(page).forms or [None])[0]
 check(login_form is not None and 'name="log"' in page, "the login page shows a login form")
+visitor = Session()
+_, page = visitor.get(PAGES["orchestra_login"] + "?redirect_to=" + urllib.parse.quote(PROFILE, safe=""))
+form = next((f for f in Forms(page).forms if "log" in dict(f["fields"])), None)
+_, final, page = visitor.request(html.unescape(form["action"]), [
+    *((k, v) for k, v in form["fields"] if k not in ("log", "pwd")), ("log", "member"), ("pwd", "pass"),
+], cookie="wordpress_test_cookie=WP%20Cookie%20check")
+check(final.rstrip("/") == PAGES["orchestra_portal"].rstrip("/") and "Hello Mia" in page,
+      "logging in on the login page leads to the start page, not the requested page")
 
 # --- Members edit their own profile on the profile page ------------------------------------
 _, page = member.get(PROFILE)
