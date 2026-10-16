@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-16 16:58+0200\n"
+"POT-Creation-Date: 2026-10-16 18:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,8 +98,8 @@ msgstr ""
 msgid "Everyone"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersShortcode.php:80
-#: src/Ui/MembersShortcode.php:93 src/Ui/MembersView.php:113
+#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersShortcode.php:81
+#: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:113
 msgid "All members"
 msgstr ""
 
@@ -303,16 +303,16 @@ msgstr ""
 msgid "You are not allowed to add members."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:81 src/Ui/MembersView.php:76
+#: src/Ui/MembersShortcode.php:82 src/Ui/MembersView.php:76
 #: src/Ui/NewMemberView.php:55
 msgid "Add member"
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:89 src/Ui/ProfileFieldsController.php:39
+#: src/Ui/MembersShortcode.php:90 src/Ui/ProfileFieldsController.php:39
 msgid "You are not allowed to change the profile fields."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:94 src/Ui/MembersView.php:79
+#: src/Ui/MembersShortcode.php:96 src/Ui/MembersView.php:79
 msgid "Profile fields"
 msgstr ""
 

@@ -77,7 +77,8 @@ final class MembersShortcode
         }
 
         return Html::page(
-            '<p><a href="' . \esc_url($listUrl) . '">&larr; ' . \esc_html__('All members', 'orchestra-members')
+            '<p class="orchestra-back"><a href="' . \esc_url($listUrl) . '">&larr; '
+                . \esc_html__('All members', 'orchestra-members')
                 . '</a></p><h2>' . \esc_html__('Add member', 'orchestra-members') . '</h2>'
                 . $this->newView->form()
         );
@@ -90,7 +91,8 @@ final class MembersShortcode
         }
 
         return Html::page(
-            '<p><a href="' . \esc_url($listUrl) . '">&larr; ' . \esc_html__('All members', 'orchestra-members')
+            '<p class="orchestra-back"><a href="' . \esc_url($listUrl) . '">&larr; '
+                . \esc_html__('All members', 'orchestra-members')
                 . '</a></p><h2>' . \esc_html__('Profile fields', 'orchestra-members') . '</h2>'
                 . $this->fieldsView->form()
         );

@@ -109,7 +109,7 @@ final class MembersView
             $details[] = [$field->label, ProfileFieldControl::value($field, $profile->value($field->id))];
         }
 
-        $html = '<p><a href="' . \esc_url($url(null)) . '">&larr; '
+        $html = '<p class="orchestra-back"><a href="' . \esc_url($url(null)) . '">&larr; '
             . \esc_html__('All members', 'orchestra-members') . '</a></p>'
             . '<div class="orchestra-card"><div class="orchestra-toolbar"><h2 class="orchestra-card__title">'
             . \esc_html($member->displayName) . '</h2>' . self::statusBadge($profile->active) . '</div>'
