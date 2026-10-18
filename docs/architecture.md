@@ -64,6 +64,7 @@ See the catalogue in orchestra-core's `docs/capabilities.md`.
 | `orchestra_members_profile_read` *meta* | own | own | own + others |
 | `orchestra_members_profile_edit` *meta* | own | own | own |
 | `orchestra_members_status_edit` | | | ✓ |
+| `orchestra_members_member_create` | | ✓ | ✓ |
 | `orchestra_members_email_send` | | ✓ | ✓ |
 | `orchestra_members_fields_manage` | | | |
 
