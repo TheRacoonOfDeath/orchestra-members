@@ -21,8 +21,9 @@ final class MemberDirectoryTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository(new ProfileFields());
-        $this->members = new MembersService(new MemberDirectory($this->profiles), $this->profiles);
+        $fields = new ProfileFields();
+        $this->profiles = new ProfileRepository($fields);
+        $this->members = new MembersService(new MemberDirectory($this->profiles), $this->profiles, $fields);
 
         WordPress::addUser(1, ['administrator'], 'Admin');
         WordPress::addUser(2, [Roles::MEMBER], 'Bea');
@@ -50,6 +51,24 @@ final class MemberDirectoryTest extends TestCase
         $this->assertFalse($this->members->member(5)->active);
         $this->assertNull($this->members->member(6));
         $this->assertNull($this->members->member(99));
+    }
+
+    public function testProvidesFirstAndLastName(): void
+    {
+        $user = WordPress::addUser(7, [Roles::MEMBER], 'Mia Muster');
+        $user->first_name = 'Mia';
+        $user->last_name = 'Muster';
+
+        $member = $this->members->member(7);
+        $this->assertSame(['Mia', 'Muster'], [$member?->firstName, $member?->lastName]);
+    }
+
+    public function testListsTheProfileFields(): void
+    {
+        $this->assertSame(
+            ['financial_support', 'dietary_restrictions'],
+            \array_map(static fn ($field): string => $field->id, $this->members->profileFields())
+        );
     }
 
     /**

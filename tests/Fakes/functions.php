@@ -15,6 +15,8 @@ class WP_User
     public array $roles = [];
     public string $display_name = '';
     public string $user_email = '';
+    public string $first_name = '';
+    public string $last_name = '';
 }
 
 class WP_Error

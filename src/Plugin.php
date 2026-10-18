@@ -55,7 +55,7 @@ final class Plugin
         $this->profiles = new ProfileRepository($this->fields);
         $this->directory = new MemberDirectory($this->profiles);
         $this->status = new StatusService($this->profiles);
-        $this->members = new MembersService($this->directory, $this->profiles);
+        $this->members = new MembersService($this->directory, $this->profiles, $this->fields);
     }
 
     public static function boot(string $pluginFile): self

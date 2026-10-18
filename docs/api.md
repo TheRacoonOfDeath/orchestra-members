@@ -19,11 +19,15 @@ Do not read or write the user meta of orchestra-members directly.
 | `members(array $roles = [], bool $includeInactive = false): list<Member>` | Members ordered by display name, optionally only with the given roles |
 | `activeMemberIds(array $roles = []): list<int>` | IDs of the active members, optionally only with the given roles |
 | `profile(int $userId): ?Profile` | The profile including the sensitive data |
+| `profileFields(): list<ProfileField>` | The profile fields chosen by the administrators, in display order (since 0.9) |
 
-`Member` has `id`, `displayName`, `email`, `roles` (orchestra roles only) and `active`.
+`Member` has `id`, `displayName`, `email`, `roles` (orchestra roles only), `active`, and since 0.9
+`firstName` and `lastName` (`""` if not set).
 `Profile` has `userId`, `active` and `values` (field ID => value for every current profile field;
 `""` if empty), and `value(string $fieldId): string`. The fields are chosen by the administrators,
 so do not rely on a particular field to exist. Checkbox values are `"1"` or `""`.
+`ProfileField` has `id`, `label` and `type`; `display(string $value)` returns the value as plain
+text, e.g. "Yes" or "No" for checkboxes.
 
 Profiles contain sensitive data. Check the meta capability before showing one:
 

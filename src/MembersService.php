@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Orchestra\Members;
 
+use Orchestra\Members\Profile\ProfileField;
+use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 
 /**
@@ -28,6 +30,7 @@ final class MembersService
     public function __construct(
         private readonly MemberDirectory $directory,
         private readonly ProfileRepository $profiles,
+        private readonly ProfileFields $fields,
     ) {
     }
 
@@ -65,5 +68,16 @@ final class MembersService
     public function profile(int $userId): ?Profile\Profile
     {
         return $this->profiles->find($userId);
+    }
+
+    /**
+     * The profile fields chosen by the administrators, e.g. for column headings. The values are
+     * in {@see Profile\Profile::$values}, by field ID.
+     *
+     * @return list<ProfileField> in display order
+     */
+    public function profileFields(): array
+    {
+        return $this->fields->all();
     }
 }

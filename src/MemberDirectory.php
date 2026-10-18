@@ -61,6 +61,14 @@ final class MemberDirectory
 
     private static function fromUser(WP_User $user, bool $active): Member
     {
-        return new Member($user->ID, $user->display_name, $user->user_email, self::orchestraRoles($user), $active);
+        return new Member(
+            $user->ID,
+            $user->display_name,
+            $user->user_email,
+            self::orchestraRoles($user),
+            $active,
+            $user->first_name,
+            $user->last_name,
+        );
     }
 }

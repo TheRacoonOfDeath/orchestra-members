@@ -18,6 +18,8 @@ final class Member
         public readonly string $email,
         public readonly array $roles,
         public readonly bool $active,
+        public readonly string $firstName = '',
+        public readonly string $lastName = '',
     ) {
     }
 }

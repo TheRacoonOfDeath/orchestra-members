@@ -16,6 +16,8 @@ orchestra needs.
 - **Tools → Export Personal Data** exports the profile; **Tools → Erase Personal Data** deletes the
   values of all profile fields. The inactive status is kept, so an erased inactive
   account stays blocked; the eraser reports it as retained.
+- Organizers can download the profiles of a project's accepted participants as a CSV file
+  (orchestra-projects). Such files leave the site; delete them when they are no longer needed.
 - **Settings → Privacy** offers a suggested text for the privacy policy, listing the current
   profile fields.
 
