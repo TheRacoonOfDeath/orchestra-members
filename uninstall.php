@@ -25,4 +25,5 @@ foreach ($orchestraMembersFields->all() as $orchestraMembersField) {
 }
 delete_metadata('user', 0, ProfileRepository::META_INACTIVE, '', true);
 delete_option(ProfileFields::OPTION);
-delete_option(ProfileFields::OPTION_FINANCIAL_SUPPORT);
+// The field for financial support could be chosen in 0.13 only.
+delete_option('orchestra_members_financial_support_field');

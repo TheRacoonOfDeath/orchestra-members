@@ -12,12 +12,6 @@ final class ProfileFields
 {
     public const OPTION = 'orchestra_members_profile_fields';
 
-    /** The ID of the checkbox field that means "needs financial support"; "" for none. */
-    public const OPTION_FINANCIAL_SUPPORT = 'orchestra_members_financial_support_field';
-
-    /** The field that means financial support until administrators choose one (a default field). */
-    public const DEFAULT_FINANCIAL_SUPPORT = 'financial_support';
-
     /** Field IDs that would collide with other user meta of orchestra-members. */
     private const RESERVED_IDS = ['inactive'];
 
@@ -62,31 +56,6 @@ final class ProfileFields
             false
         );
         $this->cache = $fields;
-    }
-
-    /**
-     * The checkbox field in which members ask for financial support, e.g. for project fees; shown to
-     * organizers next to the fees of orchestra-projects. Null if there is none.
-     */
-    public function financialSupportField(): ?ProfileField
-    {
-        $stored = \get_option(self::OPTION_FINANCIAL_SUPPORT, self::DEFAULT_FINANCIAL_SUPPORT);
-        $id = \is_string($stored) ? $stored : '';
-        foreach ($this->all() as $field) {
-            if ($field->id === $id && $field->type === ProfileField::TYPE_CHECKBOX) {
-                return $field;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param string $fieldId The ID of a checkbox field, or "" for none
-     */
-    public function saveFinancialSupportField(string $fieldId): void
-    {
-        \update_option(self::OPTION_FINANCIAL_SUPPORT, $fieldId, false);
     }
 
     /**

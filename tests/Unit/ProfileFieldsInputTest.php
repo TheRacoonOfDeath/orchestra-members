@@ -44,20 +44,6 @@ final class ProfileFieldsInputTest extends TestCase
         $this->assertEquals([$this->current[0]], $input->removed);
     }
 
-    public function testTheFinancialSupportFieldMustBeAKeptCheckbox(): void
-    {
-        $choose = fn (string $id, ?string $delete = null): ?string => ProfileFieldsInput::fromForm([
-            ProfileFieldsInput::FIELD_FINANCIAL_SUPPORT => $id,
-            ProfileFieldsInput::FIELD_DELETE => $delete,
-        ], $this->current)->financialSupportField;
-
-        $this->assertSame('support', $choose('support'));
-        $this->assertSame('', $choose('diet'), 'not a checkbox');
-        $this->assertSame('', $choose('support', 'support'), 'deleted');
-        $this->assertSame('', $choose(''));
-        $this->assertNull(ProfileFieldsInput::fromForm([], $this->current)->financialSupportField);
-    }
-
     public function testTheOrderOfTheRowsIsTheOrderOfTheFields(): void
     {
         $input = ProfileFieldsInput::fromForm([

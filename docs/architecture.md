@@ -19,10 +19,6 @@ lists, the choices. Until an administrator saves the fields, the defaults apply:
 support" (`financial_support`, checkbox) and "Dietary restrictions" (`dietary_restrictions`, long
 text), whose meta keys are those of earlier versions.
 
-One checkbox field can be chosen as the field for financial support (option
-`orchestra_members_financial_support_field`; until it is set, `financial_support` counts).
-orchestra-projects shows it to organizers next to the project fees (`MembersService::financialSupportField()`).
-
 | Type | Stored value |
 |------|--------------|
 | `checkbox` | `1` |

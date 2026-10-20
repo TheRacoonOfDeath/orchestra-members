@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Orchestra\Members\Ui;
 
 use Orchestra\Core\Ui\Form;
-use Orchestra\Core\Ui\Html;
 use Orchestra\Members\Profile\ProfileField;
 use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileFieldsInput;
@@ -84,38 +83,10 @@ final class ProfileFieldsView
                     . ' the box.',
                 'orchestra-members'
             ) . '</p>'
-            . $this->financialSupportSelect()
             . '<div class="orchestra-actions">' . Form::submit(\__('Save', 'orchestra-members'), 'primary') . '</div>'
             . '</form>';
 
         return $html;
-    }
-
-    /**
-     * Which checkbox field means that a member needs financial support. Organizers see it next to
-     * the fees of the projects.
-     */
-    private function financialSupportSelect(): string
-    {
-        $current = $this->fields->financialSupportField()->id ?? '';
-        $options = '<option value="">' . \esc_html__('None', 'orchestra-members') . '</option>';
-        foreach ($this->fields->all() as $field) {
-            if ($field->type === ProfileField::TYPE_CHECKBOX) {
-                $options .= '<option value="' . \esc_attr($field->id) . '"'
-                    . \selected($field->id, $current, false) . '>' . \esc_html($field->label) . '</option>';
-            }
-        }
-
-        return Html::field(
-            'orchestra-members-financial-support',
-            \__('Field for financial support', 'orchestra-members'),
-            '<select id="orchestra-members-financial-support" name="' . ProfileFieldsInput::FIELD_FINANCIAL_SUPPORT
-                . '">' . $options . '</select>',
-            \__(
-                'Organizers see this checkbox next to the fees of the projects. New fields can be chosen once saved.',
-                'orchestra-members'
-            )
-        );
     }
 
     private static function newRow(string $key): string

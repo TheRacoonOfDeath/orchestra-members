@@ -531,8 +531,6 @@ check(find_form(page, action="orchestra_members_save_profile_fields") is None,
 _, page = admin.get(FIELDS)
 fields_form = find_form(page, action="orchestra_members_save_profile_fields")
 check(fields_form is not None and "Financial support" in page, "administrators see the current profile fields")
-check(re.search(r'<option value="financial_support"\s+selected', page) is not None,
-      "the default field means financial support until administrators choose another one")
 check(["orchestra_delete_profile_field", "financial_support"] in fields_form["buttons"]
       and "data-orchestra-sortable" in page and "data-orchestra-drag-handle" in page,
       "every field has a delete button and a drag handle")
@@ -552,8 +550,6 @@ _, page = admin.submit(fields_form, {
 check("The profile fields have been saved." in text(page), "administrator saves the profile fields")
 check(meta(member_id, "orchestra_members_financial_support") == "",
       "deleting a field deletes what the members entered in it")
-check(wp_eval('echo get_option("orchestra_members_financial_support_field", "unset");') == "",
-      "deleting the financial support field leaves no field for it")
 _, page = member.get(PROFILE)
 check("Financial support" not in page and "Diet" in page and "Soprano" in page
       and page.index("Voice") < page.index("Diet"), "members see the chosen fields in the chosen order")
