@@ -39,7 +39,7 @@ final class MemberEmailGroupsTest extends TestCase
         $this->groups->registerGroups($registry);
 
         $recipients = [];
-        foreach ($registry->all() as $group) {
+        foreach (\array_filter($registry->all(), static fn ($group): bool => $group->listed) as $group) {
             $recipients[$group->id] = $group->recipientIds();
             $this->assertSame(Capabilities::EMAIL_SEND, $group->capability);
         }
@@ -49,6 +49,20 @@ final class MemberEmailGroupsTest extends TestCase
             MemberEmailGroups::CONDUCTORS => [4],
             MemberEmailGroups::ORGANIZERS => [3],
         ], $recipients);
+    }
+
+    public function testRegistersAnUnlistedGroupPerMemberForOrganizers(): void
+    {
+        $registry = new EmailGroupRegistry();
+        $this->groups->registerGroups($registry);
+
+        $group = $registry->find(MemberEmailGroups::memberGroupId(2));
+        $this->assertNotNull($group);
+        $this->assertFalse($group->listed);
+        $this->assertSame('Bea', $group->label);
+        $this->assertSame([2], $group->recipientIds());
+        $this->assertSame(Capabilities::EMAIL_MEMBER, $group->capability);
+        $this->assertNull($registry->find(MemberEmailGroups::memberGroupId(1)), 'only orchestra users');
     }
 
     public function testOnlyConductorsAndOrganizersMayEmailThem(): void

@@ -10,7 +10,9 @@ use Orchestra\Core\Ui\Form;
 use Orchestra\Core\Ui\Html;
 use Orchestra\Core\Ui\Pages;
 use Orchestra\Members\Admin\StatusLabel;
+use Orchestra\Email\Plugin as EmailPlugin;
 use Orchestra\Members\Capabilities;
+use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\Member;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\ProfileFields;
@@ -119,6 +121,14 @@ final class MembersView
             $editUrl = Pages::url(ProfileShortcode::TAG) ?? \admin_url('profile.php');
             $html .= '<div class="orchestra-card__actions">'
                 . Form::link($editUrl, \__('Edit your profile', 'orchestra-members')) . '</div>';
+        } elseif (
+            $profile->active
+            && \current_user_can(Capabilities::EMAIL_MEMBER)
+            && MemberEmailGroups::singleMemberAvailable()
+        ) {
+            $composeUrl = EmailPlugin::instance()->email()->composeUrl([MemberEmailGroups::memberGroupId($memberId)]);
+            $html .= '<div class="orchestra-card__actions">'
+                . Form::link($composeUrl, \__('Write an email', 'orchestra-members'), 'small') . '</div>';
         }
         $html .= '</div>';
 

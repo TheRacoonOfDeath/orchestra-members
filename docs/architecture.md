@@ -70,6 +70,7 @@ See the catalogue in orchestra-core's `docs/capabilities.md`.
 | `orchestra_members_status_edit` | | | ✓ |
 | `orchestra_members_member_create` | | ✓ | ✓ |
 | `orchestra_members_email_send` | | ✓ | ✓ |
+| `orchestra_members_email_member` | | | ✓ |
 | `orchestra_members_fields_manage` | | | |
 
 Administrators have every capability. Editing other members' profiles (`user-edit.php`) and
@@ -88,6 +89,11 @@ choosing the profile fields are reserved for them.
 
 When orchestra-email is active, orchestra-members registers these groups for it, listed under
 "Orchestra". Emailing them requires `orchestra_members_email_send`.
+
+With orchestra-email 0.5 there is also an unlisted group per member (`orchestra_members_member_{id}`,
+under "Members"), which `orchestra_members_email_member` (organizers) may email. It is not offered
+when writing an email; "Write an email" on an active member's profile opens the email page with it
+preselected.
 
 | Group ID | Recipients |
 |----------|------------|

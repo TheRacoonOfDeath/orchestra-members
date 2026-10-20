@@ -41,6 +41,9 @@ final class Capabilities
     /** Email the global groups (everyone, all members, all conductors, all organizers). */
     public const EMAIL_SEND = 'orchestra_members_email_send';
 
+    /** Email a single member, from their profile. */
+    public const EMAIL_MEMBER = 'orchestra_members_email_member';
+
     /**
      * @internal Hooked to `orchestra_core_register_capabilities`.
      */
@@ -58,6 +61,7 @@ final class Capabilities
             ->register(self::MEMBER_CREATE, [Roles::CONDUCTOR, Roles::ORGANIZER])
             ->register(self::FIELDS_MANAGE)
             ->register(self::EMAIL_SEND, [Roles::CONDUCTOR, Roles::ORGANIZER])
+            ->register(self::EMAIL_MEMBER, [Roles::ORGANIZER])
             ->registerMetaCapability(
                 self::PROFILE_READ,
                 OwnershipMapper::forUsers(self::PROFILE_READ_OWN, self::PROFILE_READ_OTHERS)

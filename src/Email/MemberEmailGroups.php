@@ -7,6 +7,7 @@ namespace Orchestra\Members\Email;
 use Orchestra\Core\Authorization\Roles;
 use Orchestra\Email\EmailGroupRegistry;
 use Orchestra\Email\EmailService;
+use Orchestra\Email\Plugin as EmailPlugin;
 use Orchestra\Email\RecipientGroup;
 use Orchestra\Members\Capabilities;
 use Orchestra\Members\MemberDirectory;
@@ -24,6 +25,8 @@ final class MemberEmailGroups
     public const MEMBERS = 'orchestra_members_members';
     public const CONDUCTORS = 'orchestra_members_conductors';
     public const ORGANIZERS = 'orchestra_members_organizers';
+    /** Followed by the user ID: a single member, see {@see memberGroupId()}. */
+    private const MEMBER_PREFIX = 'orchestra_members_member_';
 
     public function __construct(
         private readonly MemberDirectory $directory,
@@ -59,6 +62,40 @@ final class MemberEmailGroups
                 Capabilities::EMAIL_SEND
             ));
         }
+
+        // A group per member, offered only from the member's profile. Unlisted groups exist since
+        // orchestra-email 0.5; with an older version they would be listed, so they are left out.
+        if (!\property_exists(RecipientGroup::class, 'listed')) {
+            return;
+        }
+        foreach ($this->directory->members([]) as $member) {
+            $registry->add(new RecipientGroup(
+                self::memberGroupId($member->id),
+                $member->displayName,
+                \__('Members', 'orchestra-members'),
+                static fn (): array => [$member->id],
+                Capabilities::EMAIL_MEMBER,
+                [],
+                false
+            ));
+        }
+    }
+
+    /**
+     * The email group of a single member, for {@see EmailService::composeUrl()}.
+     */
+    public static function memberGroupId(int $userId): string
+    {
+        return self::MEMBER_PREFIX . $userId;
+    }
+
+    /**
+     * Whether organizers can write to single members: orchestra-email 0.5 runs.
+     */
+    public static function singleMemberAvailable(): bool
+    {
+        return \class_exists(EmailPlugin::class) && EmailPlugin::running()
+            && \property_exists(RecipientGroup::class, 'listed');
     }
 
     /**

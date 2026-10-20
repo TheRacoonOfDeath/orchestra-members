@@ -23,7 +23,8 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
   - setting a member inactive ends their sessions and deletes their sensitive profile data
 - Email groups for [orchestra-email](https://github.com/TheRacoonOfDeath/orchestra-email), if it is
   installed: everyone, all members, all conductors and all organizers; inactive members never
-  receive group emails
+  receive group emails. Organizers write to a single member from the member's profile
+  (orchestra-email 0.5 or later)
 - Export and erasure of the profile data with the WordPress privacy tools, and a suggested
   privacy policy text
 - An API for the other Orchestra plugins

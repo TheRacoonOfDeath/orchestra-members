@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-16 18:20+0200\n"
+"POT-Creation-Date: 2026-10-20 22:43+0200\n"
 "PO-Revision-Date: 2026-10-16 00:00+0000\n"
 "Last-Translator: Julian Nickerl\n"
 "Language-Team: German\n"
@@ -34,7 +34,8 @@ msgid "Please choose a role."
 msgstr "Bitte wähle eine Rolle."
 
 #: src/Admin/MembersPage.php:50 src/Admin/MembersPage.php:51
-#: src/Admin/MembersPage.php:137 src/Plugin.php:158
+#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:75
+#: src/Plugin.php:158
 msgid "Members"
 msgstr "Mitglieder"
 
@@ -52,17 +53,17 @@ msgstr "Mitglied hinzufügen"
 msgid "Profile Fields"
 msgstr "Profilfelder"
 
-#: src/Admin/MembersPage.php:124 src/Ui/MembersView.php:99
+#: src/Admin/MembersPage.php:124 src/Ui/MembersView.php:101
 msgid "You are not allowed to view this profile."
 msgstr "Du darfst dieses Profil nicht ansehen."
 
-#: src/Admin/ProfileSection.php:59 src/Email/MemberEmailGroups.php:45
+#: src/Admin/ProfileSection.php:59 src/Email/MemberEmailGroups.php:48
 #: src/Ui/ProfileShortcode.php:93
 msgid "Orchestra"
 msgstr "Orchester"
 
 #: src/Admin/ProfileSection.php:63 src/Privacy/PersonalData.php:75
-#: src/Ui/MembersView.php:53 src/Ui/MembersView.php:151
+#: src/Ui/MembersView.php:55 src/Ui/MembersView.php:161
 msgid "Status"
 msgstr "Status"
 
@@ -92,20 +93,20 @@ msgstr "Inaktiv"
 msgid "Orchestra status"
 msgstr "Orchesterstatus"
 
-#: src/Email/MemberEmailGroups.php:47
+#: src/Email/MemberEmailGroups.php:50
 msgid "Everyone"
 msgstr "Alle"
 
-#: src/Email/MemberEmailGroups.php:48 src/Ui/MembersShortcode.php:81
-#: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:113
+#: src/Email/MemberEmailGroups.php:51 src/Ui/MembersShortcode.php:81
+#: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:115
 msgid "All members"
 msgstr "Alle Mitglieder"
 
-#: src/Email/MemberEmailGroups.php:49
+#: src/Email/MemberEmailGroups.php:52
 msgid "All conductors"
 msgstr "Alle Dirigenten"
 
-#: src/Email/MemberEmailGroups.php:50
+#: src/Email/MemberEmailGroups.php:53
 msgid "All organizers"
 msgstr "Alle Organisatoren"
 
@@ -315,7 +316,7 @@ msgstr "Du darfst die Mitglieder nicht sehen."
 msgid "You are not allowed to add members."
 msgstr "Du darfst keine Mitglieder hinzufügen."
 
-#: src/Ui/MembersShortcode.php:82 src/Ui/MembersView.php:76
+#: src/Ui/MembersShortcode.php:82 src/Ui/MembersView.php:78
 #: src/Ui/NewMemberView.php:55
 msgid "Add member"
 msgstr "Mitglied hinzufügen"
@@ -324,41 +325,45 @@ msgstr "Mitglied hinzufügen"
 msgid "You are not allowed to change the profile fields."
 msgstr "Du darfst die Profilfelder nicht ändern."
 
-#: src/Ui/MembersShortcode.php:96 src/Ui/MembersView.php:79
+#: src/Ui/MembersShortcode.php:96 src/Ui/MembersView.php:81
 msgid "Profile fields"
 msgstr "Profilfelder"
 
-#: src/Ui/MembersView.php:49 src/Ui/ProfileShortcode.php:53
+#: src/Ui/MembersView.php:51 src/Ui/ProfileShortcode.php:53
 msgid "Name"
 msgstr "Name"
 
-#: src/Ui/MembersView.php:51 src/Ui/MembersView.php:105
+#: src/Ui/MembersView.php:53 src/Ui/MembersView.php:107
 #: src/Ui/NewMemberView.php:32
 msgid "Email"
 msgstr "E-Mail"
 
-#: src/Ui/MembersView.php:52 src/Ui/MembersView.php:106
+#: src/Ui/MembersView.php:54 src/Ui/MembersView.php:108
 #: src/Ui/NewMemberView.php:45
 msgid "Role"
 msgstr "Rolle"
 
 #. translators: %d: number of members
-#: src/Ui/MembersView.php:72
+#: src/Ui/MembersView.php:74
 #, php-format
 msgid "%d member"
 msgid_plural "%d members"
 msgstr[0] "%d Mitglied"
 msgstr[1] "%d Mitglieder"
 
-#: src/Ui/MembersView.php:88
+#: src/Ui/MembersView.php:90
 msgid "No members found."
 msgstr "Keine Mitglieder gefunden."
 
-#: src/Ui/MembersView.php:121
+#: src/Ui/MembersView.php:123
 msgid "Edit your profile"
 msgstr "Dein Profil bearbeiten"
 
-#: src/Ui/MembersView.php:139
+#: src/Ui/MembersView.php:131
+msgid "Write an email"
+msgstr "E-Mail schreiben"
+
+#: src/Ui/MembersView.php:149
 msgid ""
 "Set this member inactive? They can no longer log in, and their sensitive "
 "profile data is deleted."
@@ -366,28 +371,28 @@ msgstr ""
 "Dieses Mitglied auf inaktiv setzen? Es kann sich dann nicht mehr anmelden, "
 "und seine sensiblen Profildaten werden gelöscht."
 
-#: src/Ui/MembersView.php:142
+#: src/Ui/MembersView.php:152
 msgid "Reactivate this member? They can log in again."
 msgstr "Dieses Mitglied reaktivieren? Es kann sich dann wieder einloggen."
 
-#: src/Ui/MembersView.php:145
+#: src/Ui/MembersView.php:155
 msgid ""
 "Inactive members cannot log in and receive no emails. Their history is kept."
 msgstr ""
 "Inaktive Mitglieder können sich nicht anmelden und erhalten keine E-Mails. "
 "Ihr Verlauf bleibt erhalten."
 
-#: src/Ui/MembersView.php:148
+#: src/Ui/MembersView.php:158
 msgid "Reactivated members can log in again and respond to open projects."
 msgstr ""
 "Reaktivierte Mitglieder können sich wieder anmelden und auf offene Projekte "
 "antworten."
 
-#: src/Ui/MembersView.php:156
+#: src/Ui/MembersView.php:166
 msgid "Reactivate"
 msgstr "Reaktivieren"
 
-#: src/Ui/MembersView.php:156
+#: src/Ui/MembersView.php:166
 msgid "Set inactive"
 msgstr "Inaktiv setzen"
 

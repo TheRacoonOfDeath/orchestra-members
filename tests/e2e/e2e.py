@@ -458,10 +458,31 @@ status, _ = member2.post(ADMIN_POST, [("action", "orchestra_email_send"), ("grou
                                       ("subject", "Spam"), ("body", "Spam"), ("_wpnonce", "x")])
 check(status == 403 and len(log_rows()) == 2, "members cannot send emails")
 
+# --- Emails to a single member (orchestra-email 0.5) -----------------------------------------
+member_group = f"orchestra_members_member_{member2_id}"
+_, page = organizer.get(member_url(member2_id))
+check("Write an email" in page and f"groups%5B%5D={member_group}" in page.replace("&#038;", "&"),
+      "organizers write to a member from the profile")
+_, page = organizer.get(EMAIL)
+check(member_group not in page, "single members are not listed when writing an email")
+_, page = organizer.get(EMAIL + f"&groups%5B%5D={member_group}")
+check(re.search(f'value="{member_group}"\\s+checked', page) is not None, "the link preselects the member")
+page = compose(organizer, [member_group], "Just you", "Hello Max", "review")
+check("Just you" in page and 'class="orchestra-email-preview"' in page and 'sandbox=""' in page,
+      "the review shows a preview of the email")
+before = len(mails())
+compose(organizer, [member_group], "Just you", "Hello Max", "send")
+check(sorted(m["to"] for m in mails()[before:]) == ["member2@example.com", "organizer@example.com"],
+      "the email goes to the member, with a copy for the sender")
+page = compose(conductor, [member_group], "Just you", "Hello", "review")
+check("not allowed to email one of the selected groups" in page, "conductors cannot write to single members")
+_, page = conductor.get(member_url(member2_id))
+check("Write an email" not in page, "conductors have no email button on profiles")
+
 wp_eval('global $wpdb; $wpdb->query("UPDATE {$wpdb->prefix}orchestra_core_email_log SET created_at = \'2020-01-01 00:00:00\''
         ' WHERE subject = \'Board\'");')
 wp("cron", "event", "run", "orchestra_core_email_purge")
-check([r["subject"] for r in log_rows()] == ["Rehearsal"], "log entries are deleted after 12 months")
+check([r["subject"] for r in log_rows()] == ["Rehearsal", "Just you"], "log entries are deleted after 12 months")
 
 # --- Reactivation ---------------------------------------------------------------------------
 _, page = organizer.get(member_url(member_id))

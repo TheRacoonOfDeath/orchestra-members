@@ -29,6 +29,7 @@ final class CapabilitiesTest extends TestCase
         ], $byRole[Roles::CONDUCTOR]);
         $this->assertSame([
             Capabilities::DIRECTORY_READ,
+            Capabilities::EMAIL_MEMBER,
             Capabilities::EMAIL_SEND,
             Capabilities::MEMBER_CREATE,
             Capabilities::PROFILE_EDIT_OWN,
