@@ -419,9 +419,13 @@ check(rows[-1]["body"] is None, "the text is deleted after sending")
 check(sorted(m["to"] for m in sent) == ["conductor@example.com", "member2@example.com", "organizer@example.com"],
       "one email per recipient, inactive members excluded")
 first = sent[0]
-check(first["subject"] == "Rehearsal" and first["message"].startswith("Hello all,\nsee you on Monday.")
-      and "Sent by Olga" in first["message"] and "Orchestra: Everyone" in first["message"],
-      "the email contains the message and who sent it to which group")
+own = next(m for m in sent if m["to"] == "organizer@example.com")
+others = [m for m in sent if m["to"] != "organizer@example.com"]
+check(first["subject"] == "Rehearsal" and all("Hello all,<br />\nsee you on Monday." in m["message"] for m in sent)
+      and "Sent by Olga" in own["message"] and "Orchestra: Everyone" in own["message"],
+      "the sender's copy contains the message and who sent it to which group")
+check(all("Sent by" not in m["message"] and "Orchestra: Everyone" not in m["message"] for m in others),
+      "the other recipients do not see the footer with sender and groups")
 check(any(h.startswith("Reply-To:") and "organizer@example.com" in h for h in first["headers"]),
       "replies go to the sender")
 _, page = organizer.get(LOG)
