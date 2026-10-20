@@ -13,7 +13,10 @@ use Orchestra\Core\Authorization\Roles;
  */
 final class Capabilities
 {
-    /** See the names of all members. */
+    /**
+     * See the names of all members. Members do not need the list: they see who takes part in a
+     * project on the project page.
+     */
     public const DIRECTORY_READ = 'orchestra_members_directory_read';
 
     /** Meta capability, checked with a user ID: read a member's profile. */
@@ -46,7 +49,7 @@ final class Capabilities
         $everyone = [Roles::MEMBER, Roles::CONDUCTOR, Roles::ORGANIZER];
 
         $registry
-            ->register(self::DIRECTORY_READ, $everyone)
+            ->register(self::DIRECTORY_READ, [Roles::CONDUCTOR, Roles::ORGANIZER])
             ->register(self::PROFILE_READ_OWN, $everyone)
             ->register(self::PROFILE_READ_OTHERS, [Roles::ORGANIZER])
             ->register(self::PROFILE_EDIT_OWN, $everyone)

@@ -11,8 +11,9 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 - Profile fields chosen by the administrators on the members page (**Profile fields**) or under
   **Members → Profile Fields**: text, long text, checkbox or choice list. New installations start
   with "Financial support" and "Dietary restrictions"
-- `[orchestra_members]` (and **Members** in wp-admin): names of all members for everyone; emails,
-  roles, status, profiles and status changes for organizers
+- `[orchestra_members]` (and **Members** in wp-admin): names of all members for conductors and
+  organizers; emails, roles, status, profiles and status changes for organizers. Members do not
+  see the list; they see who takes part on each project's page
 - Active / inactive status, changed by organizers
 - Adding WordPress users to the orchestra on the members page (**Add member**) or under
   **Members → Add Member**: conductors and organizers add members, administrators also choose the

@@ -32,6 +32,10 @@ for all members. Removing a choice keeps the values already stored until the mem
 Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,
 `orchestra_organizer`) have a profile and appear in the member list.
 
+The member list is for conductors and organizers. Members do not see it (since 0.10, see the
+capabilities below): they see who takes part in a project on the project's page in
+orchestra-projects, and their own profile under "My profile".
+
 ## Components
 
 | Class | Responsibility |
@@ -60,7 +64,7 @@ See the catalogue in orchestra-core's `docs/capabilities.md`.
 
 | Capability | Member | Conductor | Organizer |
 |-----------|:------:|:---------:|:---------:|
-| `orchestra_members_directory_read` | ✓ | ✓ | ✓ |
+| `orchestra_members_directory_read` | | ✓ | ✓ |
 | `orchestra_members_profile_read` *meta* | own | own | own + others |
 | `orchestra_members_profile_edit` *meta* | own | own | own |
 | `orchestra_members_status_edit` | | | ✓ |

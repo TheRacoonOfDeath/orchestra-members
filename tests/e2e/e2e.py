@@ -212,8 +212,9 @@ check('id="wpadminbar"' in page, "administrators keep the admin toolbar")
 _, final, _ = Session("admin", "admin").request("/wp-admin/")
 check("/wp-admin/" in final, "administrators keep wp-admin")
 _, page = member.get(PAGES["orchestra_portal"])
-check("Members" in text(page) and "My profile" in text(page) and "Email" not in text(page).split("Hello", 1)[1],
-      "the start page lists the areas the member can use")
+check("My profile" in text(page) and "Who plays in the orchestra." not in page
+      and "Email" not in text(page).split("Hello", 1)[1],
+      "the start page lists the areas the member can use, without the member list")
 
 _, page = Session().get(PAGES["orchestra_login"])
 login_form = find_form(page, orchestra_login_page=PAGES["orchestra_login"]) or (Forms(page).forms or [None])[0]
@@ -274,14 +275,17 @@ check("Dietary restrictions" not in page, "users without an orchestra role have 
 
 # --- Member list and profile visibility -----------------------------------------------------
 _, page = member.get(MEMBERS)
-check(all(n in page for n in ["Olga", "Carl", "Max", "Mia"]), "members see the member list")
-check("member2@example.com" not in page and "Gluten-free" not in page, "members only see names in the list")
-check(re.search(r">\s*(Sam|admin)\s*<", page) is None, "list contains only orchestra users")
-_, page = member.get(member_url(member_id))
+check("not allowed to see the members" in page and "Olga" not in page,
+      "members do not see the member list; they see who takes part on the project pages")
+_, page = member.get(PROFILE)
 check("Vegetarian" in page, "members can view their own profile")
 _, page = member.get(member_url(member2_id))
-check("not allowed to view this profile" in page and "Gluten-free" not in page, "members cannot view other profiles")
+check("not allowed" in page and "Gluten-free" not in page, "members cannot view other profiles")
 conductor = Session("conductor")
+_, page = conductor.get(MEMBERS)
+check(all(n in page for n in ["Olga", "Carl", "Max", "Mia"]), "conductors see the member list")
+check("member2@example.com" not in page and "Gluten-free" not in page, "conductors only see names in the list")
+check(re.search(r">\s*(Sam|admin)\s*<", page) is None, "list contains only orchestra users")
 _, page = conductor.get(member_url(member2_id))
 check("not allowed to view this profile" in page, "conductors cannot view other profiles")
 _, page = sub.get(MEMBERS)
@@ -347,8 +351,8 @@ check(INACTIVE_MESSAGE in page and "orchestra-login" in page, "the login page sh
 
 _, page = organizer.get(MEMBERS)
 check("Mia" in page and "Inactive" in page, "organizers see inactive members")
-_, page = member2.get(MEMBERS)
-check("Mia" not in page, "members do not see inactive members")
+_, page = conductor.get(MEMBERS)
+check("Olga" in page and "Mia" not in page, "conductors do not see inactive members")
 _, page = admin.get(f"/wp-admin/user-edit.php?user_id={member_id}")
 check("is deleted. It can be entered again" in page and "disabled" in page,
       "the profile of an inactive member cannot be filled in")
@@ -534,7 +538,7 @@ NEW_MEMBER = MEMBERS + ("&" if "?" in MEMBERS else "?") + "orchestra_members_vie
 _, page = organizer.get(MEMBERS)
 check("orchestra_members_view=new" in page, "the member list links to the form for adding members")
 _, page = member.get(NEW_MEMBER)
-check("not allowed to add members" in page, "members cannot add members")
+check("not allowed" in page and 'name="email"' not in page, "members cannot add members")
 _, page = conductor.get(NEW_MEMBER)
 form = find_form(page, action="orchestra_members_add_member")
 check(form is not None and 'name="role"' not in page, "conductors add members without choosing a role")
