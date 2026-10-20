@@ -36,6 +36,10 @@ The member list is for conductors and organizers. Members do not see it (since 0
 capabilities below): they see who takes part in a project on the project's page in
 orchestra-projects, and their own profile under "My profile".
 
+The list has a search (`orchestra_members_q`) in names, and for organizers also in email
+addresses, and organizers filter it by status (`orchestra_members_status`: active, inactive) and
+role (`orchestra_members_role`), see `MemberFilter`.
+
 ## Components
 
 | Class | Responsibility |

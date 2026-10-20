@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 22:43+0200\n"
+"POT-Creation-Date: 2026-10-20 22:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Profile Fields"
 msgstr ""
 
-#: src/Admin/MembersPage.php:124 src/Ui/MembersView.php:101
+#: src/Admin/MembersPage.php:124 src/Ui/MembersView.php:188
 msgid "You are not allowed to view this profile."
 msgstr ""
 
@@ -68,7 +68,8 @@ msgid "Orchestra"
 msgstr ""
 
 #: src/Admin/ProfileSection.php:63 src/Privacy/PersonalData.php:75
-#: src/Ui/MembersView.php:55 src/Ui/MembersView.php:161
+#: src/Ui/MembersView.php:62 src/Ui/MembersView.php:146
+#: src/Ui/MembersView.php:248
 msgid "Status"
 msgstr ""
 
@@ -83,11 +84,11 @@ msgid ""
 "Only you, the organizers and the administrators can see this information."
 msgstr ""
 
-#: src/Admin/StatusLabel.php:11
+#: src/Admin/StatusLabel.php:11 src/Ui/MembersView.php:148
 msgid "Active"
 msgstr ""
 
-#: src/Admin/StatusLabel.php:11
+#: src/Admin/StatusLabel.php:11 src/Ui/MembersView.php:149
 msgid "Inactive"
 msgstr ""
 
@@ -100,7 +101,7 @@ msgid "Everyone"
 msgstr ""
 
 #: src/Email/MemberEmailGroups.php:51 src/Ui/MembersShortcode.php:81
-#: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:115
+#: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:202
 msgid "All members"
 msgstr ""
 
@@ -304,7 +305,7 @@ msgstr ""
 msgid "You are not allowed to add members."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:82 src/Ui/MembersView.php:78
+#: src/Ui/MembersShortcode.php:82 src/Ui/MembersView.php:92
 #: src/Ui/NewMemberView.php:55
 msgid "Add member"
 msgstr ""
@@ -313,68 +314,101 @@ msgstr ""
 msgid "You are not allowed to change the profile fields."
 msgstr ""
 
-#: src/Ui/MembersShortcode.php:96 src/Ui/MembersView.php:81
+#: src/Ui/MembersShortcode.php:96 src/Ui/MembersView.php:95
 msgid "Profile fields"
 msgstr ""
 
-#: src/Ui/MembersView.php:51 src/Ui/ProfileShortcode.php:53
+#: src/Ui/MembersView.php:58 src/Ui/MembersView.php:143
+#: src/Ui/ProfileShortcode.php:53
 msgid "Name"
 msgstr ""
 
-#: src/Ui/MembersView.php:53 src/Ui/MembersView.php:107
+#: src/Ui/MembersView.php:60 src/Ui/MembersView.php:194
 #: src/Ui/NewMemberView.php:32
 msgid "Email"
 msgstr ""
 
-#: src/Ui/MembersView.php:54 src/Ui/MembersView.php:108
-#: src/Ui/NewMemberView.php:45
+#: src/Ui/MembersView.php:61 src/Ui/MembersView.php:153
+#: src/Ui/MembersView.php:195 src/Ui/NewMemberView.php:45
 msgid "Role"
 msgstr ""
 
 #. translators: %d: number of members
-#: src/Ui/MembersView.php:74
+#: src/Ui/MembersView.php:82
 #, php-format
 msgid "%d member"
 msgid_plural "%d members"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Ui/MembersView.php:90
+#. translators: 1: number of members found, 2: number of all members
+#: src/Ui/MembersView.php:85
+#, php-format
+msgid "%1$d of %2$d member"
+msgid_plural "%1$d of %2$d members"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Ui/MembersView.php:104
 msgid "No members found."
 msgstr ""
 
-#: src/Ui/MembersView.php:123
+#: src/Ui/MembersView.php:140
+msgid "Search members"
+msgstr ""
+
+#: src/Ui/MembersView.php:142
+msgid "Name or email address"
+msgstr ""
+
+#: src/Ui/MembersView.php:147
+msgid "All statuses"
+msgstr ""
+
+#: src/Ui/MembersView.php:154
+msgid "All roles"
+msgstr ""
+
+#: src/Ui/MembersView.php:158
+msgid "Filter"
+msgstr ""
+
+#: src/Ui/MembersView.php:160
+msgid "Show all"
+msgstr ""
+
+#: src/Ui/MembersView.php:210
 msgid "Edit your profile"
 msgstr ""
 
-#: src/Ui/MembersView.php:131
+#: src/Ui/MembersView.php:218
 msgid "Write an email"
 msgstr ""
 
-#: src/Ui/MembersView.php:149
+#: src/Ui/MembersView.php:236
 msgid ""
 "Set this member inactive? They can no longer log in, and their sensitive "
 "profile data is deleted."
 msgstr ""
 
-#: src/Ui/MembersView.php:152
+#: src/Ui/MembersView.php:239
 msgid "Reactivate this member? They can log in again."
 msgstr ""
 
-#: src/Ui/MembersView.php:155
+#: src/Ui/MembersView.php:242
 msgid ""
 "Inactive members cannot log in and receive no emails. Their history is kept."
 msgstr ""
 
-#: src/Ui/MembersView.php:158
+#: src/Ui/MembersView.php:245
 msgid "Reactivated members can log in again and respond to open projects."
 msgstr ""
 
-#: src/Ui/MembersView.php:166
+#: src/Ui/MembersView.php:253
 msgid "Reactivate"
 msgstr ""
 
-#: src/Ui/MembersView.php:166
+#: src/Ui/MembersView.php:253
 msgid "Set inactive"
 msgstr ""
 

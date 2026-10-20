@@ -13,7 +13,8 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
   with "Financial support" and "Dietary restrictions"
 - `[orchestra_members]` (and **Members** in wp-admin): names of all members for conductors and
   organizers; emails, roles, status, profiles and status changes for organizers. Members do not
-  see the list; they see who takes part on each project's page
+  see the list; they see who takes part on each project's page. The list can be searched by name
+  (organizers also by email address) and filtered by status and role
 - Active / inactive status, changed by organizers
 - Adding WordPress users to the orchestra on the members page (**Add member**) or under
   **Members → Add Member**: conductors and organizers add members, administrators also choose the

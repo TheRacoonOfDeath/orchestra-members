@@ -15,6 +15,7 @@ use Orchestra\Members\Capabilities;
 use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\Member;
 use Orchestra\Members\MemberDirectory;
+use Orchestra\Members\MemberFilter;
 use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 use Orchestra\Members\Status\StatusService;
@@ -24,6 +25,10 @@ use Orchestra\Members\Status\StatusService;
  */
 final class MembersView
 {
+    public const SEARCH_PARAMETER = 'orchestra_members_q';
+    public const STATUS_PARAMETER = 'orchestra_members_status';
+    public const ROLE_PARAMETER = 'orchestra_members_role';
+
     public function __construct(
         private readonly MemberDirectory $directory,
         private readonly ProfileRepository $profiles,
@@ -46,7 +51,9 @@ final class MembersView
     {
         $privileged = \current_user_can(Capabilities::PROFILE_READ_OTHERS)
             || \current_user_can(Capabilities::STATUS_EDIT);
-        $members = $this->directory->members([], $privileged);
+        $all = $this->directory->members([], $privileged);
+        $filter = self::filter($privileged);
+        $members = $filter->apply($all);
 
         $headings = [\__('Name', 'orchestra-members')];
         if ($privileged) {
@@ -70,8 +77,15 @@ final class MembersView
             $rows[] = $row;
         }
 
-        /* translators: %d: number of members */
-        $count = \sprintf(\_n('%d member', '%d members', \count($members), 'orchestra-members'), \count($members));
+        $count = $filter->isEmpty()
+            /* translators: %d: number of members */
+            ? \sprintf(\_n('%d member', '%d members', \count($all), 'orchestra-members'), \count($all))
+            : \sprintf(
+                /* translators: 1: number of members found, 2: number of all members */
+                \_n('%1$d of %2$d member', '%1$d of %2$d members', \count($all), 'orchestra-members'),
+                \count($members),
+                \count($all)
+            );
 
         $actions = '';
         if ($newUrl !== null && \current_user_can(Capabilities::MEMBER_CREATE)) {
@@ -86,8 +100,81 @@ final class MembersView
                 . '</div></div>';
         }
 
-        return $toolbar
+        return $toolbar . self::filterForm($url(null), $filter, $privileged)
             . Html::table($headings, $rows, \__('No members found.', 'orchestra-members'));
+    }
+
+    private static function filter(bool $privileged): MemberFilter
+    {
+        $value = static fn (string $key): string => \is_string($_GET[$key] ?? null)
+            ? \sanitize_text_field(\wp_unslash($_GET[$key]))
+            : '';
+        $status = $value(self::STATUS_PARAMETER);
+        $role = $value(self::ROLE_PARAMETER);
+
+        return new MemberFilter(
+            $value(self::SEARCH_PARAMETER),
+            $privileged && \in_array($status, [MemberFilter::ACTIVE, MemberFilter::INACTIVE], true) ? $status : '',
+            $privileged && isset(Roles::displayNames()[$role]) ? $role : '',
+            $privileged
+        );
+    }
+
+    /**
+     * Search for everyone who sees the list; status and role filters for those who see them.
+     */
+    private static function filterForm(string $listUrl, MemberFilter $filter, bool $privileged): string
+    {
+        $base = \remove_query_arg([self::SEARCH_PARAMETER, self::STATUS_PARAMETER, self::ROLE_PARAMETER], $listUrl);
+        // The page's own query, e.g. ?page_id=5 or ?page=orchestra-members, survives the GET form.
+        $hidden = '';
+        \parse_str((string) \wp_parse_url($base, PHP_URL_QUERY), $query);
+        foreach ($query as $key => $value) {
+            if (\is_string($value)) {
+                $hidden .= Form::hidden((string) $key, $value);
+            }
+        }
+
+        $html = '<form method="get" action="' . \esc_url($base) . '" class="orchestra-actions">' . $hidden
+            . '<input type="search" name="' . self::SEARCH_PARAMETER . '" value="' . \esc_attr($filter->search) . '"'
+            . ' aria-label="' . \esc_attr__('Search members', 'orchestra-members') . '" placeholder="'
+            . \esc_attr($privileged
+                ? \__('Name or email address', 'orchestra-members')
+                : \__('Name', 'orchestra-members'))
+            . '" style="width:auto;min-width:14rem">';
+        if ($privileged) {
+            $html .= self::select(self::STATUS_PARAMETER, \__('Status', 'orchestra-members'), [
+                '' => \__('All statuses', 'orchestra-members'),
+                MemberFilter::ACTIVE => \__('Active', 'orchestra-members'),
+                MemberFilter::INACTIVE => \__('Inactive', 'orchestra-members'),
+            ], $filter->status);
+            $html .= self::select(
+                self::ROLE_PARAMETER,
+                \__('Role', 'orchestra-members'),
+                ['' => \__('All roles', 'orchestra-members')] + Roles::displayNames(),
+                $filter->role
+            );
+        }
+        $html .= Form::submit(\__('Filter', 'orchestra-members'), 'small');
+        if (!$filter->isEmpty()) {
+            $html .= Form::link($base, \__('Show all', 'orchestra-members'), 'link');
+        }
+
+        return $html . '</form>';
+    }
+
+    /**
+     * @param array<string, string> $options
+     */
+    private static function select(string $name, string $label, array $options, string $selected): string
+    {
+        $html = '<select name="' . \esc_attr($name) . '" aria-label="' . \esc_attr($label) . '" style="width:auto">';
+        foreach ($options as $value => $optionLabel) {
+            $html .= '<option value="' . \esc_attr((string) $value) . '"' . \selected((string) $value, $selected, false)
+                . '>' . \esc_html($optionLabel) . '</option>';
+        }
+
+        return $html . '</select>';
     }
 
     /**
