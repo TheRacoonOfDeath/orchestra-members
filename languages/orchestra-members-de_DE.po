@@ -169,7 +169,7 @@ msgstr ""
 
 #: src/Privacy/PersonalData.php:156
 msgid "Inactive members cannot log in."
-msgstr "Inaktive Mitglieder können sich nicht anmelden."
+msgstr "Inaktive Mitglieder können sich nicht einloggen."
 
 #: src/Privacy/PersonalData.php:160
 msgid "Orchestra Members"
@@ -305,7 +305,7 @@ msgstr "Du kannst deinen eigenen Status nicht ändern."
 
 #: src/Ui/MembersShortcode.php:43
 msgid "Please log in to see the members."
-msgstr "Bitte melde dich an, um die Mitglieder zu sehen."
+msgstr "Bitte logge dich ein, um die Mitglieder zu sehen."
 
 #: src/Ui/MembersShortcode.php:46
 msgid "You are not allowed to see the members."
@@ -368,7 +368,7 @@ msgstr ""
 
 #: src/Ui/MembersView.php:142
 msgid "Reactivate this member? They can log in again."
-msgstr "Dieses Mitglied reaktivieren? Es kann sich dann wieder anmelden."
+msgstr "Dieses Mitglied reaktivieren? Es kann sich dann wieder einloggen."
 
 #: src/Ui/MembersView.php:145
 msgid ""
@@ -511,7 +511,7 @@ msgstr "Auswahlmöglichkeiten, eine pro Zeile"
 
 #: src/Ui/ProfileShortcode.php:40
 msgid "Please log in to edit your profile."
-msgstr "Bitte melde dich an, um dein Profil zu bearbeiten."
+msgstr "Bitte logge dich ein, um dein Profil zu bearbeiten."
 
 #: src/Ui/ProfileShortcode.php:44
 msgid "You are not allowed to edit your profile."

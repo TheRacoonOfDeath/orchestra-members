@@ -220,13 +220,19 @@ _, page = Session().get(PAGES["orchestra_login"])
 login_form = find_form(page, orchestra_login_page=PAGES["orchestra_login"]) or (Forms(page).forms or [None])[0]
 check(login_form is not None and 'name="log"' in page, "the login page shows a login form")
 visitor = Session()
-_, page = visitor.get(PAGES["orchestra_login"] + "?redirect_to=" + urllib.parse.quote(PROFILE, safe=""))
+login_page = PAGES["orchestra_login"]
+_, page = visitor.get(login_page + ("&" if "?" in login_page else "?") + "redirect_to=" + urllib.parse.quote(PROFILE, safe=""))
 form = next((f for f in Forms(page).forms if "log" in dict(f["fields"])), None)
 _, final, page = visitor.request(html.unescape(form["action"]), [
     *((k, v) for k, v in form["fields"] if k not in ("log", "pwd")), ("log", "member"), ("pwd", "pass"),
 ], cookie="wordpress_test_cookie=WP%20Cookie%20check")
-check(final.rstrip("/") == PAGES["orchestra_portal"].rstrip("/") and "Hello Mia" in page,
-      "logging in on the login page leads to the start page, not the requested page")
+check(final.rstrip("/") == PROFILE.rstrip("/") and "Dietary restrictions" in page,
+      "logging in on the login page returns to the requested page")
+download = wp_eval('echo admin_url("admin-post.php?action=orchestra_library_download&file=1");')
+login_link = wp_eval(f'echo wp_login_url("{download}");')
+check(login_link.startswith(PAGES["orchestra_login"]) and urllib.parse.quote(download, safe="") in login_link,
+      "protected links send visitors to the Orchestra login page and back")
+check("wp-login.php" in wp_eval('echo wp_login_url(admin_url("edit.php"));'), "wp-admin keeps the WordPress login")
 
 # --- Members edit their own profile on the profile page ------------------------------------
 _, page = member.get(PROFILE)
