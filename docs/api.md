@@ -20,6 +20,7 @@ Do not read or write the user meta of orchestra-members directly.
 | `activeMemberIds(array $roles = []): list<int>` | IDs of the active members, optionally only with the given roles |
 | `profile(int $userId): ?Profile` | The profile including the sensitive data |
 | `profileFields(): list<ProfileField>` | The profile fields chosen by the administrators, in display order (since 0.9) |
+| `financialSupportField(): ?ProfileField` | The checkbox field in which members ask for financial support, or null (since 0.13) |
 
 `Member` has `id`, `displayName`, `email`, `roles` (orchestra roles only), `active`, and since 0.9
 `firstName` and `lastName` (`""` if not set).

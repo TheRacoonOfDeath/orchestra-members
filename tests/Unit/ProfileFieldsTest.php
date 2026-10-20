@@ -46,6 +46,25 @@ final class ProfileFieldsTest extends TestCase
         $this->assertSame([], (new ProfileFields())->all());
     }
 
+    public function testTheDefaultFieldMeansFinancialSupportUntilAnotherIsChosen(): void
+    {
+        $fields = new ProfileFields();
+        $this->assertSame('financial_support', $fields->financialSupportField()?->id);
+
+        $fields->save([
+            new ProfileField('financial_support', 'Financial support', ProfileField::TYPE_CHECKBOX),
+            new ProfileField('reduced_fee', 'Reduced fee', ProfileField::TYPE_CHECKBOX),
+            new ProfileField('diet', 'Diet', ProfileField::TYPE_TEXT),
+        ]);
+        $fields->saveFinancialSupportField('reduced_fee');
+        $this->assertSame('reduced_fee', $fields->financialSupportField()?->id);
+
+        $fields->saveFinancialSupportField('diet');
+        $this->assertNull($fields->financialSupportField(), 'only checkboxes');
+        $fields->saveFinancialSupportField('');
+        $this->assertNull($fields->financialSupportField());
+    }
+
     public function testIgnoresBrokenStoredFields(): void
     {
         WordPress::$options[ProfileFields::OPTION] = [

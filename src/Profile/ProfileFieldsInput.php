@@ -21,17 +21,21 @@ final class ProfileFieldsInput
     public const FIELD_NEW_FIELDS = 'orchestra_new_profile_fields';
     public const FIELD_ORDER = 'orchestra_profile_field_order';
     public const FIELD_DELETE = 'orchestra_delete_profile_field';
+    public const FIELD_FINANCIAL_SUPPORT = 'orchestra_financial_support_field';
     public const NEW_KEY_PREFIX = 'new:';
 
     /**
      * @param list<ProfileField> $fields The fields to save, in display order
      * @param list<ProfileField> $removed Fields to delete, including their values
      * @param list<string> $errors If not empty, nothing may be saved
+     * @param string|null $financialSupportField The chosen checkbox field ("" for none), null if the
+     *        form did not send the choice
      */
     private function __construct(
         public readonly array $fields,
         public readonly array $removed,
         public readonly array $errors,
+        public readonly ?string $financialSupportField = null,
     ) {
     }
 
@@ -102,7 +106,21 @@ final class ProfileFieldsInput
         \usort($positioned, static fn (array $a, array $b): int => $a[0] <=> $b[0]);
         $fields = \array_map(static fn (array $entry): ProfileField => $entry[1], $positioned);
 
-        return new self($fields, $removed, [...$errors, ...self::duplicateErrors($fields)]);
+        $financial = $post[self::FIELD_FINANCIAL_SUPPORT] ?? null;
+        if (\is_string($financial) && $financial !== '') {
+            $checkbox = \array_filter(
+                $fields,
+                static fn (ProfileField $f): bool => $f->id === $financial && $f->type === ProfileField::TYPE_CHECKBOX
+            );
+            $financial = $checkbox === [] ? '' : $financial;
+        }
+
+        return new self(
+            $fields,
+            $removed,
+            [...$errors, ...self::duplicateErrors($fields)],
+            \is_string($financial) ? $financial : null
+        );
     }
 
     /**

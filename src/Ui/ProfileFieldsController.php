@@ -46,6 +46,9 @@ final class ProfileFieldsController
         }
 
         $this->fields->save($input->fields);
+        if ($input->financialSupportField !== null) {
+            $this->fields->saveFinancialSupportField($input->financialSupportField);
+        }
         foreach ($input->removed as $field) {
             $this->profiles->deleteFieldValues($field);
         }

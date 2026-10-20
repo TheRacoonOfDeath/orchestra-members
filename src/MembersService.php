@@ -80,4 +80,13 @@ final class MembersService
     {
         return $this->fields->all();
     }
+
+    /**
+     * The checkbox field in which members ask for financial support, chosen by the administrators in
+     * the profile fields; null if there is none. Since 0.13.
+     */
+    public function financialSupportField(): ?ProfileField
+    {
+        return $this->fields->financialSupportField();
+    }
 }
