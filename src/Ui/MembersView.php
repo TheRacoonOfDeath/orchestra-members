@@ -78,11 +78,12 @@ final class MembersView
         }
 
         $count = $filter->isEmpty()
-            /* translators: %d: number of members */
-            ? \sprintf(\_n('%d member', '%d members', \count($all), 'orchestra-members'), \count($all))
+            // "People", not "members": the list also contains conductors and organizers.
+            /* translators: %d: number of people in the list */
+            ? \sprintf(\_n('%d person', '%d people', \count($all), 'orchestra-members'), \count($all))
             : \sprintf(
-                /* translators: 1: number of members found, 2: number of all members */
-                \_n('%1$d of %2$d member', '%1$d of %2$d members', \count($all), 'orchestra-members'),
+                /* translators: 1: number of people found, 2: number of all people in the list */
+                \_n('%1$d of %2$d person', '%1$d of %2$d people', \count($all), 'orchestra-members'),
                 \count($members),
                 \count($all)
             );
