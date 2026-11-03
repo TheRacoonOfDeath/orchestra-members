@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 18:30+0100\n"
+"POT-Creation-Date: 2026-11-03 18:57+0100\n"
 "PO-Revision-Date: 2026-10-16 00:00+0000\n"
 "Last-Translator: Julian Nickerl\n"
 "Language-Team: German\n"
@@ -215,32 +215,32 @@ msgstr ""
 "Passwort zu ändern."
 
 #. translators: 1: field label, 2: maximum number of characters
-#: src/Profile/ProfileField.php:85
+#: src/Profile/ProfileField.php:144
 #, php-format
 msgid "%1$s must not be longer than %2$d characters."
 msgstr "„%1$s“ darf höchstens %2$d Zeichen lang sein."
 
-#: src/Profile/ProfileField.php:96
+#: src/Profile/ProfileField.php:155
 msgid "No"
 msgstr "Nein"
 
-#: src/Profile/ProfileField.php:96
+#: src/Profile/ProfileField.php:155
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Profile/ProfileField.php:108
+#: src/Profile/ProfileField.php:167
 msgid "Text"
 msgstr "Text"
 
-#: src/Profile/ProfileField.php:109
+#: src/Profile/ProfileField.php:168
 msgid "Long text"
 msgstr "Langer Text"
 
-#: src/Profile/ProfileField.php:110
+#: src/Profile/ProfileField.php:169
 msgid "Checkbox"
 msgstr "Ankreuzfeld"
 
-#: src/Profile/ProfileField.php:111
+#: src/Profile/ProfileField.php:170
 msgid "Choice list"
 msgstr "Auswahlliste"
 
@@ -261,41 +261,41 @@ msgid "Allergies, vegetarian, vegan, …"
 msgstr "Allergien, vegetarisch, vegan, …"
 
 #. translators: %s: field label
-#: src/Profile/ProfileFieldsInput.php:88
+#: src/Profile/ProfileFieldsInput.php:87
 #, php-format
 msgid "Please choose a type for \"%s\"."
 msgstr "Bitte wähle einen Typ für „%s“."
 
-#: src/Profile/ProfileFieldsInput.php:115
+#: src/Profile/ProfileFieldsInput.php:131
 msgid "Every field needs a label."
 msgstr "Jedes Feld braucht eine Bezeichnung."
 
 #. translators: 1: field label, 2: maximum number of characters
-#: src/Profile/ProfileFieldsInput.php:118
+#: src/Profile/ProfileFieldsInput.php:134
 #, php-format
 msgid "The label \"%1$s\" is longer than %2$d characters."
 msgstr "Die Bezeichnung „%1$s“ ist länger als %2$d Zeichen."
 
 #. translators: 1: field label, 2: maximum number of characters
-#: src/Profile/ProfileFieldsInput.php:123
+#: src/Profile/ProfileFieldsInput.php:139
 #, php-format
 msgid "The hint of \"%1$s\" is longer than %2$d characters."
 msgstr "Der Hinweis zu „%1$s“ ist länger als %2$d Zeichen."
 
 #. translators: %s: field label
-#: src/Profile/ProfileFieldsInput.php:151
+#: src/Profile/ProfileFieldsInput.php:167
 #, php-format
 msgid "Please enter the choices for \"%s\", one per line."
 msgstr "Bitte gib die Auswahlmöglichkeiten für „%s“ ein, eine pro Zeile."
 
 #. translators: 1: choice, 2: maximum number of characters
-#: src/Profile/ProfileFieldsInput.php:156
+#: src/Profile/ProfileFieldsInput.php:172
 #, php-format
 msgid "The choice \"%1$s\" is longer than %2$d characters."
 msgstr "Die Auswahlmöglichkeit „%1$s“ ist länger als %2$d Zeichen."
 
 #. translators: %s: field label
-#: src/Profile/ProfileFieldsInput.php:176
+#: src/Profile/ProfileFieldsInput.php:192
 #, php-format
 msgid "The label \"%s\" is used more than once."
 msgstr "Die Bezeichnung „%s“ wird mehrfach verwendet."
@@ -305,8 +305,8 @@ msgid ""
 "Your account has been marked as inactive. Please contact the orchestra's "
 "organizers to reactivate it."
 msgstr ""
-"Dein Konto wurde als inaktiv markiert. Bitte wende dich an die "
-"Organisatoren des Orchesters, um es wieder zu aktivieren."
+"Dein Konto wurde als inaktiv markiert. Bitte wende dich an die Organisatoren "
+"des Orchesters, um es wieder zu aktivieren."
 
 #: src/Status/StatusService.php:31
 msgid "Only users with an orchestra role can be set inactive."
@@ -476,6 +476,21 @@ msgstr "Du darfst dieses Profil nicht bearbeiten."
 msgid "Your profile has been saved."
 msgstr "Dein Profil wurde gespeichert."
 
+#: src/Ui/ProfileFieldControl.php:52 src/Ui/ProfileFieldsView.php:75
+#: src/Ui/ProfileFieldsView.php:124
+msgid "Other"
+msgstr "Sonstiges"
+
+#. translators: %s: field label
+#: src/Ui/ProfileFieldControl.php:54
+#, php-format
+msgid "%s: other answer"
+msgstr "%s: eigene Antwort"
+
+#: src/Ui/ProfileFieldControl.php:59
+msgid "Other: please specify"
+msgstr "Sonstiges: bitte angeben"
+
 #: src/Ui/ProfileFieldsController.php:53
 msgid "The profile fields have been saved."
 msgstr "Die Profilfelder wurden gespeichert."
@@ -490,7 +505,7 @@ msgstr ""
 "Organisatoren und die Administratoren sehen die Angaben, und sie werden "
 "gelöscht, wenn ein Mitglied auf inaktiv gesetzt wird."
 
-#: src/Ui/ProfileFieldsView.php:39 src/Ui/ProfileFieldsView.php:86
+#: src/Ui/ProfileFieldsView.php:39 src/Ui/ProfileFieldsView.php:90
 #: src/Ui/ProfileShortcode.php:109
 msgid "Save"
 msgstr "Speichern"
@@ -506,23 +521,27 @@ msgstr ""
 msgid "Delete"
 msgstr "Löschen"
 
-#: src/Ui/ProfileFieldsView.php:62 src/Ui/ProfileFieldsView.php:110
+#: src/Ui/ProfileFieldsView.php:62 src/Ui/ProfileFieldsView.php:114
 msgid "Label"
 msgstr "Bezeichnung"
 
-#: src/Ui/ProfileFieldsView.php:66 src/Ui/ProfileFieldsView.php:114
+#: src/Ui/ProfileFieldsView.php:66 src/Ui/ProfileFieldsView.php:118
 msgid "Hint"
 msgstr "Hinweis"
 
-#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:116
+#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:119
+msgid "Default"
+msgstr "Voreinstellung"
+
+#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:121
 msgid "Choices"
 msgstr "Auswahlmöglichkeiten"
 
-#: src/Ui/ProfileFieldsView.php:80
+#: src/Ui/ProfileFieldsView.php:84
 msgid "+ Add field"
 msgstr "+ Feld hinzufügen"
 
-#: src/Ui/ProfileFieldsView.php:82
+#: src/Ui/ProfileFieldsView.php:86
 msgid ""
 "Drag the fields by their handle to change the order. For checkboxes, the "
 "hint is the text next to the box."
@@ -530,37 +549,63 @@ msgstr ""
 "Ziehe die Felder an ihrem Griff, um die Reihenfolge zu ändern. Bei "
 "Ankreuzfeldern steht der Hinweis neben dem Kästchen."
 
-#: src/Ui/ProfileFieldsView.php:103
+#: src/Ui/ProfileFieldsView.php:107
 msgid "New field"
 msgstr "Neues Feld"
 
-#: src/Ui/ProfileFieldsView.php:104
+#: src/Ui/ProfileFieldsView.php:108
 msgid "Type"
 msgstr "Typ"
 
-#: src/Ui/ProfileFieldsView.php:107
+#: src/Ui/ProfileFieldsView.php:111
 msgid "Remove"
 msgstr "Entfernen"
 
-#: src/Ui/ProfileFieldsView.php:112
+#: src/Ui/ProfileFieldsView.php:116
 msgid "New field, e.g. T-shirt size"
 msgstr "Neues Feld, z. B. T-Shirt-Größe"
 
-#: src/Ui/ProfileFieldsView.php:117
+#: src/Ui/ProfileFieldsView.php:122
 msgid "Only for choice lists: one choice per line"
 msgstr "Nur für Auswahllisten: eine Auswahlmöglichkeit pro Zeile"
 
 #. translators: %s: field label
-#: src/Ui/ProfileFieldsView.php:142
+#: src/Ui/ProfileFieldsView.php:148
 #, php-format
 msgid "Move \"%s\""
 msgstr "„%s“ verschieben"
 
-#: src/Ui/ProfileFieldsView.php:147
+#: src/Ui/ProfileFieldsView.php:153
 msgid "Drag to change the order, or use the arrow keys"
 msgstr "Ziehen, um die Reihenfolge zu ändern, oder die Pfeiltasten verwenden"
 
-#: src/Ui/ProfileFieldsView.php:164
+#: src/Ui/ProfileFieldsView.php:170
+msgid "Ticked by default (only for checkboxes)"
+msgstr "Standardmäßig angekreuzt (nur für Ankreuzfelder)"
+
+#: src/Ui/ProfileFieldsView.php:171
+msgid "Ticked by default"
+msgstr "Standardmäßig angekreuzt"
+
+#: src/Ui/ProfileFieldsView.php:172
+msgid "Counts as the answer of members who have not answered yet."
+msgstr "Gilt als Antwort der Mitglieder, die noch nicht geantwortet haben."
+
+#: src/Ui/ProfileFieldsView.php:182
+msgid "Offer \"Other\" with a free-text answer (only for choice lists)"
+msgstr "„Sonstiges“ mit eigener Antwort anbieten (nur für Auswahllisten)"
+
+#: src/Ui/ProfileFieldsView.php:183
+msgid "Offer \"Other\" with a free-text answer"
+msgstr "„Sonstiges“ mit eigener Antwort anbieten"
+
+#. translators: %d: maximum number of characters
+#: src/Ui/ProfileFieldsView.php:186
+#, php-format
+msgid "Members can write their own answer, at most %d characters."
+msgstr "Mitglieder können eine eigene Antwort schreiben, höchstens %d Zeichen."
+
+#: src/Ui/ProfileFieldsView.php:205
 msgid "Choices, one per line"
 msgstr "Auswahlmöglichkeiten, eine pro Zeile"
 

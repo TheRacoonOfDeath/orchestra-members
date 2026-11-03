@@ -94,4 +94,24 @@ final class ProfileFieldsInputTest extends TestCase
             'The label "voice" is used more than once.',
         ], $input->errors);
     }
+
+    public function testReadsTheDefaultOfCheckboxesAndTheOtherAnswerOfChoiceLists(): void
+    {
+        $input = ProfileFieldsInput::fromForm([
+            ProfileFieldsInput::FIELD_FIELDS => [
+                'support' => ['label' => 'Support', 'hint' => '', 'checked' => '1', 'other' => '1'],
+                'diet' => ['label' => 'Diet', 'hint' => '', 'checked' => '1'],
+            ],
+            ProfileFieldsInput::FIELD_NEW_FIELDS => [
+                '0' => ['label' => 'Voice', 'type' => 'select', 'choices' => 'Alto', 'checked' => '1', 'other' => '1'],
+            ],
+        ], $this->current);
+
+        $this->assertSame([], $input->errors);
+        $this->assertEquals([
+            new ProfileField('support', 'Support', ProfileField::TYPE_CHECKBOX, '', [], true),
+            new ProfileField('diet', 'Diet', ProfileField::TYPE_TEXTAREA),
+            new ProfileField('voice', 'Voice', ProfileField::TYPE_SELECT, '', ['Alto'], false, true),
+        ], $input->fields, 'each option only applies to its type');
+    }
 }

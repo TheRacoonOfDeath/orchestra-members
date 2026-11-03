@@ -22,12 +22,15 @@ final class ProfileRepository
             return null;
         }
 
+        // The profile of inactive members was deleted; a default would pretend an answer.
+        $active = $this->isActive($userId);
         $values = [];
         foreach ($this->fields->all() as $field) {
-            $values[$field->id] = $this->meta($userId, $field->metaKey());
+            $stored = $this->meta($userId, $field->metaKey());
+            $values[$field->id] = $active || $stored !== '' ? $field->fromStored($stored) : '';
         }
 
-        return new Profile($userId, $this->isActive($userId), $values);
+        return new Profile($userId, $active, $values);
     }
 
     public function isActive(int $userId): bool
@@ -46,12 +49,27 @@ final class ProfileRepository
             if ($value === null) {
                 continue;
             }
+            $value = $field->stored($value);
             if ($value !== '') {
                 \update_user_meta($userId, $field->metaKey(), $value);
             } else {
                 \delete_user_meta($userId, $field->metaKey());
             }
         }
+    }
+
+    /**
+     * Whether anything of the profile is stored, also an unticked checkbox. Defaults do not count.
+     */
+    public function hasSensitiveData(int $userId): bool
+    {
+        foreach ($this->fields->all() as $field) {
+            if ($this->meta($userId, $field->metaKey()) !== '') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function deleteSensitiveData(int $userId): void

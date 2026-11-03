@@ -25,7 +25,9 @@ Do not read or write the user meta of orchestra-members directly.
 `firstName` and `lastName` (`""` if not set).
 `Profile` has `userId`, `active` and `values` (field ID => value for every current profile field;
 `""` if empty), and `value(string $fieldId): string`. The fields are chosen by the administrators,
-so do not rely on a particular field to exist. Checkbox values are `"1"` or `""`.
+so do not rely on a particular field to exist. Checkbox values are `"1"` or `""`, with the field's
+default for members who have not answered yet. A choice list's value is one of its choices or,
+if it offers "Other" (`ProfileField::$allowsOther`), the member's own answer.
 `ProfileField` has `id`, `label` and `type`; `display(string $value)` returns the value as plain
 text, e.g. "Yes" or "No" for checkboxes.
 

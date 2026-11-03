@@ -34,8 +34,9 @@ final class ProfileFieldControl
                     . \checked($value, '1', false) . '> <span>'
                     . \esc_html($field->hint !== '' ? $field->hint : $field->label) . '</span></label>';
             case ProfileField::TYPE_SELECT:
+                $other = $field->otherText($value);
                 // A value whose choice was removed stays selectable until it is changed.
-                $choices = $value !== '' && !\in_array($value, $field->choices, true)
+                $choices = $value !== '' && $other === '' && !\in_array($value, $field->choices, true)
                     ? [...$field->choices, $value]
                     : $field->choices;
                 $options = '<option value="">—</option>';
@@ -43,8 +44,20 @@ final class ProfileFieldControl
                     $options .= '<option value="' . \esc_attr($choice) . '"' . \selected($value, $choice, false) . '>'
                         . \esc_html($choice) . '</option>';
                 }
+                if (!$field->allowsOther) {
+                    return '<select' . $attributes . '>' . $options . '</select>';
+                }
 
-                return '<select' . $attributes . '>' . $options . '</select>';
+                $options .= '<option value="' . ProfileField::OTHER . '"' . \selected($other !== '', true, false) . '>'
+                    . \esc_html__('Other', 'orchestra-members') . '</option>';
+                /* translators: %s: field label */
+                $otherLabel = \sprintf(\__('%s: other answer', 'orchestra-members'), $field->label);
+
+                return '<span class="orchestra-choice-other"><select' . $attributes . '>' . $options . '</select>'
+                    . ' <input type="text" name="' . \esc_attr(ProfileField::OTHER_FIELD . '[' . $field->id . ']') . '"'
+                    . $classAttribute . ' maxlength="' . ProfileField::OTHER_MAX_LENGTH . '" value="'
+                    . \esc_attr($other) . '" placeholder="' . \esc_attr__('Other: please specify', 'orchestra-members')
+                    . '" aria-label="' . \esc_attr($otherLabel) . '"' . ($disabled ? ' disabled' : '') . '></span>';
             case ProfileField::TYPE_TEXTAREA:
                 return '<textarea' . $attributes . $classAttribute . ' rows="3" maxlength="' . $field->maxLength()
                     . '">' . \esc_textarea($value) . '</textarea>';

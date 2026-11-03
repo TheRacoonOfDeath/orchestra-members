@@ -102,7 +102,7 @@ final class PersonalData
             return ['items_removed' => false, 'items_retained' => false, 'messages' => [], 'done' => true];
         }
 
-        $hadData = $profile->hasValues();
+        $hadData = $this->profiles->hasSensitiveData($profile->userId);
         $this->profiles->deleteSensitiveData($profile->userId);
 
         $messages = [];

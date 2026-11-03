@@ -569,6 +569,46 @@ stored = json.loads(wp("option", "get", "orchestra_members_profile_fields", "--f
 check("used more than once" in text(page) and [f["id"] for f in stored] == ["voice", "dietary_restrictions"],
       "invalid profile fields are rejected with a message and not saved")
 
+
+def profile_value(uid, field_id):
+    return wp_eval(f'echo Orchestra\\Members\\Plugin::instance()->members()->profile({uid})?->value("{field_id}");')
+
+
+_, page = admin.submit(find_form(admin.get(FIELDS)[1], action="orchestra_members_save_profile_fields"), {
+    "orchestra_profile_fields[voice][other]": "1",
+    "orchestra_new_profile_fields[0][label]": "Photos",
+    "orchestra_new_profile_fields[0][type]": "checkbox",
+    "orchestra_new_profile_fields[0][hint]": "Photos of me may be published",
+    "orchestra_new_profile_fields[0][checked]": "1",
+})
+stored = {f["id"]: f for f in json.loads(wp("option", "get", "orchestra_members_profile_fields", "--format=json"))}
+check(stored["photos"]["checked"] is True and stored["voice"]["other"] is True,
+      "administrators set a checkbox default and offer a free-text answer")
+_, page = admin.get(FIELDS)
+check('name="orchestra_profile_fields[photos][checked]" value="1" checked' in page
+      and 'name="orchestra_profile_fields[voice][other]" value="1" checked' in page,
+      "the field editor shows both options")
+check(profile_value(member2_id, "photos") == "1" and meta(member2_id, "orchestra_members_photos") == "",
+      "a member who has not answered has the default, without anything stored")
+_, page = member.get(PROFILE)
+check(re.search(r'name="orchestra_members_photos"[^>]*checked', page) is not None
+      and 'value="__other__"' in page and 'name="orchestra_members_other[voice]"' in page,
+      "the profile shows the default ticked and the free-text answer")
+member.submit(find_form(page, action="orchestra_members_save_profile"), {
+    "orchestra_members_photos": None, "orchestra_members_voice": "__other__",
+    "orchestra_members_other[voice]": "Bass"})
+check(meta(member_id, "orchestra_members_photos") == "0" and profile_value(member_id, "photos") == ""
+      and meta(member_id, "orchestra_members_voice") == "Bass", "members untick the default and write their own answer")
+_, page = member.get(PROFILE)
+check(re.search(r'name="orchestra_members_photos"[^>]*checked', page) is None
+      and re.search(r'value="__other__"\s+selected', page) is not None and 'value="Bass"' in page,
+      "the profile shows the unticked box and the free-text answer")
+_, page = organizer.get(member_url(member_id))
+check("Bass" in text(page), "organizers see the free-text answer")
+member.submit(find_form(member.get(PROFILE)[1], action="orchestra_members_save_profile"), {
+    "orchestra_members_voice": "", "orchestra_members_other[voice]": "x" * 101})
+check(meta(member_id, "orchestra_members_voice") == "Bass", "free-text answers longer than 100 characters are rejected")
+
 # --- Conductors, organizers and administrators add members ---------------------------------
 NEW_MEMBER = MEMBERS + ("&" if "?" in MEMBERS else "?") + "orchestra_members_view=new"
 _, page = organizer.get(MEMBERS)

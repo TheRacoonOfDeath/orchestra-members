@@ -11,7 +11,7 @@ Everything is stored as user meta. There are no custom tables.
 | Meta key | Value | Meaning |
 |----------|-------|---------|
 | `orchestra_members_inactive` | `1` | Present only while the member is inactive. New users are active. |
-| `orchestra_members_{field ID}` | see below | The value of a profile field; present only if not empty. Sensitive. |
+| `orchestra_members_{field ID}` | see below | The value of a profile field; present only if not empty or an unticked checkbox. Sensitive. |
 
 The option `orchestra_members_profile_fields` holds the profile fields, in display order. Each has a
 stable ID (derived from the label when it is created), a label, a type, a hint and, for choice
@@ -21,10 +21,23 @@ text), whose meta keys are those of earlier versions.
 
 | Type | Stored value |
 |------|--------------|
-| `checkbox` | `1` |
+| `checkbox` | `1` (ticked) or `0` (unticked) |
 | `text` | single line, ≤ 200 characters |
 | `textarea` | text with line breaks, ≤ 1000 characters |
-| `select` | one of the choices |
+| `select` | one of the choices, or the free-text answer (≤ 100 characters) |
+
+A checkbox can be ticked by default (`checked` in the option). The default is the answer of an
+active member who has not answered the field yet (nothing stored), everywhere: on the profile, in
+the member view, the participants CSV of orchestra-projects and the privacy export. Unticking is
+stored as `0`, so it is kept when the default changes. Inactive members have no defaults, since
+their profile was deleted; after a reactivation the default applies again. Up to 0.15, unticked
+checkboxes were not stored, so turning on a default also ticks the box of members who unticked it
+before 0.16 and have not saved their profile since.
+
+A choice list can offer "Other" with a free-text answer (`other` in the option): the profile shows
+an "Other" choice and a text box (`orchestra_members_other[ID]`). The text counts when "Other" or
+nothing is chosen and is stored as the value; a value that is not one of the choices is shown as
+the free-text answer. Without the option, such a value is a removed choice (see below).
 
 The type of a field cannot be changed after it was created. Deleting a field deletes its values
 for all members. Removing a choice keeps the values already stored until the member changes them.

@@ -24,9 +24,4 @@ final class Profile
     {
         return $this->values[$fieldId] ?? '';
     }
-
-    public function hasValues(): bool
-    {
-        return \array_filter($this->values, static fn (string $value): bool => $value !== '') !== [];
-    }
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 18:30+0100\n"
+"POT-Creation-Date: 2026-11-03 18:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -204,32 +204,32 @@ msgid ""
 msgstr ""
 
 #. translators: 1: field label, 2: maximum number of characters
-#: src/Profile/ProfileField.php:85
+#: src/Profile/ProfileField.php:144
 #, php-format
 msgid "%1$s must not be longer than %2$d characters."
 msgstr ""
 
-#: src/Profile/ProfileField.php:96
+#: src/Profile/ProfileField.php:155
 msgid "No"
 msgstr ""
 
-#: src/Profile/ProfileField.php:96
+#: src/Profile/ProfileField.php:155
 msgid "Yes"
 msgstr ""
 
-#: src/Profile/ProfileField.php:108
+#: src/Profile/ProfileField.php:167
 msgid "Text"
 msgstr ""
 
-#: src/Profile/ProfileField.php:109
+#: src/Profile/ProfileField.php:168
 msgid "Long text"
 msgstr ""
 
-#: src/Profile/ProfileField.php:110
+#: src/Profile/ProfileField.php:169
 msgid "Checkbox"
 msgstr ""
 
-#: src/Profile/ProfileField.php:111
+#: src/Profile/ProfileField.php:170
 msgid "Choice list"
 msgstr ""
 
@@ -250,41 +250,41 @@ msgid "Allergies, vegetarian, vegan, …"
 msgstr ""
 
 #. translators: %s: field label
-#: src/Profile/ProfileFieldsInput.php:88
+#: src/Profile/ProfileFieldsInput.php:87
 #, php-format
 msgid "Please choose a type for \"%s\"."
 msgstr ""
 
-#: src/Profile/ProfileFieldsInput.php:115
+#: src/Profile/ProfileFieldsInput.php:131
 msgid "Every field needs a label."
 msgstr ""
 
 #. translators: 1: field label, 2: maximum number of characters
-#: src/Profile/ProfileFieldsInput.php:118
+#: src/Profile/ProfileFieldsInput.php:134
 #, php-format
 msgid "The label \"%1$s\" is longer than %2$d characters."
 msgstr ""
 
 #. translators: 1: field label, 2: maximum number of characters
-#: src/Profile/ProfileFieldsInput.php:123
+#: src/Profile/ProfileFieldsInput.php:139
 #, php-format
 msgid "The hint of \"%1$s\" is longer than %2$d characters."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Profile/ProfileFieldsInput.php:151
+#: src/Profile/ProfileFieldsInput.php:167
 #, php-format
 msgid "Please enter the choices for \"%s\", one per line."
 msgstr ""
 
 #. translators: 1: choice, 2: maximum number of characters
-#: src/Profile/ProfileFieldsInput.php:156
+#: src/Profile/ProfileFieldsInput.php:172
 #, php-format
 msgid "The choice \"%1$s\" is longer than %2$d characters."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Profile/ProfileFieldsInput.php:176
+#: src/Profile/ProfileFieldsInput.php:192
 #, php-format
 msgid "The label \"%s\" is used more than once."
 msgstr ""
@@ -452,6 +452,21 @@ msgstr ""
 msgid "Your profile has been saved."
 msgstr ""
 
+#: src/Ui/ProfileFieldControl.php:52 src/Ui/ProfileFieldsView.php:75
+#: src/Ui/ProfileFieldsView.php:124
+msgid "Other"
+msgstr ""
+
+#. translators: %s: field label
+#: src/Ui/ProfileFieldControl.php:54
+#, php-format
+msgid "%s: other answer"
+msgstr ""
+
+#: src/Ui/ProfileFieldControl.php:59
+msgid "Other: please specify"
+msgstr ""
+
 #: src/Ui/ProfileFieldsController.php:53
 msgid "The profile fields have been saved."
 msgstr ""
@@ -463,7 +478,7 @@ msgid ""
 "member is set inactive."
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:39 src/Ui/ProfileFieldsView.php:86
+#: src/Ui/ProfileFieldsView.php:39 src/Ui/ProfileFieldsView.php:90
 #: src/Ui/ProfileShortcode.php:109
 msgid "Save"
 msgstr ""
@@ -477,59 +492,89 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:62 src/Ui/ProfileFieldsView.php:110
+#: src/Ui/ProfileFieldsView.php:62 src/Ui/ProfileFieldsView.php:114
 msgid "Label"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:66 src/Ui/ProfileFieldsView.php:114
+#: src/Ui/ProfileFieldsView.php:66 src/Ui/ProfileFieldsView.php:118
 msgid "Hint"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:116
+#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:119
+msgid "Default"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:121
 msgid "Choices"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:80
+#: src/Ui/ProfileFieldsView.php:84
 msgid "+ Add field"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:82
+#: src/Ui/ProfileFieldsView.php:86
 msgid ""
 "Drag the fields by their handle to change the order. For checkboxes, the "
 "hint is the text next to the box."
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:103
+#: src/Ui/ProfileFieldsView.php:107
 msgid "New field"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:104
+#: src/Ui/ProfileFieldsView.php:108
 msgid "Type"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:107
+#: src/Ui/ProfileFieldsView.php:111
 msgid "Remove"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:112
+#: src/Ui/ProfileFieldsView.php:116
 msgid "New field, e.g. T-shirt size"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:117
+#: src/Ui/ProfileFieldsView.php:122
 msgid "Only for choice lists: one choice per line"
 msgstr ""
 
 #. translators: %s: field label
-#: src/Ui/ProfileFieldsView.php:142
+#: src/Ui/ProfileFieldsView.php:148
 #, php-format
 msgid "Move \"%s\""
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:147
+#: src/Ui/ProfileFieldsView.php:153
 msgid "Drag to change the order, or use the arrow keys"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:164
+#: src/Ui/ProfileFieldsView.php:170
+msgid "Ticked by default (only for checkboxes)"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:171
+msgid "Ticked by default"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:172
+msgid "Counts as the answer of members who have not answered yet."
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:182
+msgid "Offer \"Other\" with a free-text answer (only for choice lists)"
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:183
+msgid "Offer \"Other\" with a free-text answer"
+msgstr ""
+
+#. translators: %d: maximum number of characters
+#: src/Ui/ProfileFieldsView.php:186
+#, php-format
+msgid "Members can write their own answer, at most %d characters."
+msgstr ""
+
+#: src/Ui/ProfileFieldsView.php:205
 msgid "Choices, one per line"
 msgstr ""
 

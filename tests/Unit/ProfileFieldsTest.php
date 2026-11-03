@@ -35,12 +35,13 @@ final class ProfileFieldsTest extends TestCase
     public function testSavedFieldsReplaceTheDefaults(): void
     {
         $fields = new ProfileFields();
-        $fields->save([new ProfileField('voice', 'Voice', ProfileField::TYPE_SELECT, '', ['Soprano', 'Alto'])]);
+        $saved = [
+            new ProfileField('voice', 'Voice', ProfileField::TYPE_SELECT, '', ['Soprano', 'Alto'], false, true),
+            new ProfileField('photos', 'Photos', ProfileField::TYPE_CHECKBOX, '', [], true),
+        ];
+        $fields->save($saved);
 
-        $this->assertEquals(
-            [new ProfileField('voice', 'Voice', ProfileField::TYPE_SELECT, '', ['Soprano', 'Alto'])],
-            (new ProfileFields())->all()
-        );
+        $this->assertEquals($saved, (new ProfileFields())->all());
 
         $fields->save([]);
         $this->assertSame([], (new ProfileFields())->all());

@@ -6,7 +6,8 @@ namespace Orchestra\Members\Profile;
 
 /**
  * Normalizes and validates the profile fields submitted in a form. Each field is submitted under
- * its {@see ProfileField::metaKey()}.
+ * its {@see ProfileField::metaKey()}, the free-text answers of choice lists under
+ * `orchestra_members_other[ID]` ({@see ProfileField::OTHER_FIELD}).
  */
 final class ProfileInput
 {
@@ -26,9 +27,10 @@ final class ProfileInput
      */
     public static function fromForm(array $post, array $fields): self
     {
+        $other = \is_array($post[ProfileField::OTHER_FIELD] ?? null) ? $post[ProfileField::OTHER_FIELD] : [];
         $values = [];
         foreach ($fields as $field) {
-            $values[$field->id] = $field->normalize($post[$field->metaKey()] ?? '');
+            $values[$field->id] = $field->normalize($post[$field->metaKey()] ?? '', $other[$field->id] ?? '');
         }
 
         return new self($fields, $values);

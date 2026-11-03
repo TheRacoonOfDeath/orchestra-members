@@ -67,8 +67,12 @@ final class ProfileFieldsView
                     self::textInput($name . '[hint]', $field->hint, ProfileField::HINT_MAX_LENGTH),
                 ],
             ];
+            if ($field->type === ProfileField::TYPE_CHECKBOX) {
+                $cells[] = [\__('Default', 'orchestra-members'), self::checkedInput($name, $field->checkedByDefault)];
+            }
             if ($field->type === ProfileField::TYPE_SELECT) {
                 $cells[] = [\__('Choices', 'orchestra-members'), self::choicesInput($name, $field->choices)];
+                $cells[] = [\__('Other', 'orchestra-members'), self::otherInput($name, $field->allowsOther)];
             }
             $html .= self::row($cells);
         }
@@ -112,10 +116,12 @@ final class ProfileFieldsView
                     . '" placeholder="' . \esc_attr__('New field, e.g. T-shirt size', 'orchestra-members') . '">',
             ],
             [\__('Hint', 'orchestra-members'), self::textInput($name . '[hint]', '', ProfileField::HINT_MAX_LENGTH)],
+            [\__('Default', 'orchestra-members'), self::checkedInput($name, false, true)],
             [
                 \__('Choices', 'orchestra-members'),
                 self::choicesInput($name, [], \__('Only for choice lists: one choice per line', 'orchestra-members')),
             ],
+            [\__('Other', 'orchestra-members'), self::otherInput($name, false, true)],
         ]);
     }
 
@@ -153,6 +159,41 @@ final class ProfileFieldsView
     {
         return '<input type="text" name="' . \esc_attr($name) . '" value="' . \esc_attr($value) . '" maxlength="'
             . $maxLength . '"' . ($required ? ' required' : '') . '>';
+    }
+
+    private static function checkedInput(string $name, bool $checked, bool $newField = false): string
+    {
+        return self::checkbox(
+            $name . '[checked]',
+            $checked,
+            $newField
+                ? \__('Ticked by default (only for checkboxes)', 'orchestra-members')
+                : \__('Ticked by default', 'orchestra-members'),
+            \__('Counts as the answer of members who have not answered yet.', 'orchestra-members')
+        );
+    }
+
+    private static function otherInput(string $name, bool $checked, bool $newField = false): string
+    {
+        return self::checkbox(
+            $name . '[other]',
+            $checked,
+            $newField
+                ? \__('Offer "Other" with a free-text answer (only for choice lists)', 'orchestra-members')
+                : \__('Offer "Other" with a free-text answer', 'orchestra-members'),
+            \sprintf(
+                /* translators: %d: maximum number of characters */
+                \__('Members can write their own answer, at most %d characters.', 'orchestra-members'),
+                ProfileField::OTHER_MAX_LENGTH
+            )
+        );
+    }
+
+    private static function checkbox(string $name, bool $checked, string $label, string $hint): string
+    {
+        return '<label class="orchestra-checkbox"><input type="checkbox" name="' . \esc_attr($name) . '" value="1"'
+            . \checked($checked, true, false) . '> <span>' . \esc_html($label) . '</span></label>'
+            . '<span class="orchestra-muted">' . \esc_html($hint) . '</span>';
     }
 
     /**

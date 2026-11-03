@@ -24,6 +24,16 @@ final class ProfileField
     public const CHOICE_MAX_LENGTH = 100;
     public const TEXT_MAX_LENGTH = 200;
     public const TEXTAREA_MAX_LENGTH = 1000;
+    public const OTHER_MAX_LENGTH = 100;
+
+    /** The form value of the choice "Other" of a choice list with a free-text answer. */
+    public const OTHER = '__other__';
+
+    /** The form field of the free-text answers: `orchestra_members_other[ID]`. */
+    public const OTHER_FIELD = 'orchestra_members_other';
+
+    /** Stored for an unticked checkbox, so that it differs from a checkbox never answered. */
+    public const UNCHECKED = '0';
 
     private const META_PREFIX = 'orchestra_members_';
 
@@ -31,6 +41,9 @@ final class ProfileField
      * @param string $id Stable key; the label can change
      * @param string $hint Help text; the text next to the box for checkboxes
      * @param list<string> $choices Only for {@see TYPE_SELECT}
+     * @param bool $checkedByDefault Only for {@see TYPE_CHECKBOX}: the answer of members who have
+     *     not answered yet
+     * @param bool $allowsOther Only for {@see TYPE_SELECT}: offers "Other" with a free-text answer
      */
     public function __construct(
         public readonly string $id,
@@ -38,6 +51,8 @@ final class ProfileField
         public readonly string $type,
         public readonly string $hint = '',
         public readonly array $choices = [],
+        public readonly bool $checkedByDefault = false,
+        public readonly bool $allowsOther = false,
     ) {
     }
 
@@ -51,14 +66,21 @@ final class ProfileField
 
     public function maxLength(): int
     {
-        return $this->type === self::TYPE_TEXTAREA ? self::TEXTAREA_MAX_LENGTH : self::TEXT_MAX_LENGTH;
+        return match ($this->type) {
+            self::TYPE_TEXTAREA => self::TEXTAREA_MAX_LENGTH,
+            self::TYPE_SELECT => self::OTHER_MAX_LENGTH,
+            default => self::TEXT_MAX_LENGTH,
+        };
     }
 
     /**
-     * The value to store for submitted form data: "1" or "" for checkboxes, one of the choices or
-     * "" for choice lists, text without tags and control characters otherwise.
+     * The value for submitted form data: "1" or "" for checkboxes, one of the choices, the
+     * free-text answer or "" for choice lists, text without tags and control characters otherwise.
+     *
+     * The free-text answer counts if "Other" or nothing is chosen, so that it also works without
+     * choosing "Other" first.
      */
-    public function normalize(mixed $submitted): string
+    public function normalize(mixed $submitted, mixed $other = ''): string
     {
         if (!\is_string($submitted)) {
             return '';
@@ -66,10 +88,47 @@ final class ProfileField
 
         return match ($this->type) {
             self::TYPE_CHECKBOX => $submitted === '1' ? '1' : '',
-            self::TYPE_SELECT => \in_array($submitted, $this->choices, true) ? $submitted : '',
+            self::TYPE_SELECT => match (true) {
+                \in_array($submitted, $this->choices, true) => $submitted,
+                $this->allowsOther && ($submitted === self::OTHER || $submitted === '') && \is_string($other)
+                    => Text::singleLine($other),
+                default => '',
+            },
             self::TYPE_TEXTAREA => Text::multiLine($submitted),
             default => Text::singleLine($submitted),
         };
+    }
+
+    /**
+     * The user meta to store for a value, or "" to delete it. Unticked checkboxes are stored.
+     */
+    public function stored(string $value): string
+    {
+        return $this->type === self::TYPE_CHECKBOX && $value !== '1' ? self::UNCHECKED : $value;
+    }
+
+    /**
+     * The value for stored user meta ("" if there is none). A checkbox that has never been answered
+     * has its default.
+     */
+    public function fromStored(string $stored): string
+    {
+        if ($this->type !== self::TYPE_CHECKBOX) {
+            return $stored;
+        }
+        if ($stored === '') {
+            return $this->checkedByDefault ? '1' : '';
+        }
+
+        return $stored === '1' ? '1' : '';
+    }
+
+    /**
+     * The free-text answer of a choice list, or "" if the value is one of the choices.
+     */
+    public function otherText(string $value): string
+    {
+        return $this->allowsOther && $value !== '' && !\in_array($value, $this->choices, true) ? $value : '';
     }
 
     /**
@@ -113,7 +172,9 @@ final class ProfileField
     }
 
     /**
-     * @return array{id: string, label: string, type: string, hint: string, choices: list<string>}
+     * @return array{
+     *     id: string, label: string, type: string, hint: string, choices: list<string>, checked: bool, other: bool
+     * }
      */
     public function toArray(): array
     {
@@ -123,6 +184,8 @@ final class ProfileField
             'type' => $this->type,
             'hint' => $this->hint,
             'choices' => $this->choices,
+            'checked' => $this->checkedByDefault,
+            'other' => $this->allowsOther,
         ];
     }
 
@@ -146,6 +209,8 @@ final class ProfileField
             $type,
             \is_string($hint) ? $hint : '',
             $type === self::TYPE_SELECT ? \array_values(\array_filter($choices, 'is_string')) : [],
+            $type === self::TYPE_CHECKBOX && ($data['checked'] ?? false) === true,
+            $type === self::TYPE_SELECT && ($data['other'] ?? false) === true,
         );
     }
 }

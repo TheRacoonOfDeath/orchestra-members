@@ -7,8 +7,10 @@ namespace Orchestra\Members\Profile;
 /**
  * Reads the form in which administrators change the profile fields.
  *
- * Existing fields are submitted as `orchestra_profile_fields[ID][label|hint|choices]`, new ones as
- * `orchestra_new_profile_fields[INDEX][label|type|hint|choices]`. The order is the order of the
+ * Existing fields are submitted as `orchestra_profile_fields[ID][...]` with `label`, `hint`,
+ * `choices`, `checked` and `other`, new ones as `orchestra_new_profile_fields[INDEX][...]` with a
+ * `type` in addition. `checked` (ticked by default, checkboxes) and `other` (free-text answer,
+ * choice lists) are "1" if set. The order is the order of the
  * rows: each row submits its key (the field ID, or "new:INDEX") in `orchestra_profile_field_order[]`.
  * The delete button of a field submits its ID as `orchestra_delete_profile_field`.
  *
@@ -71,10 +73,7 @@ final class ProfileFieldsInput
             $label = self::text($row, 'label');
             [$choices, $choiceErrors] = self::choices($field->type, $label, $row);
             $errors = [...$errors, ...self::labelErrors($label, self::text($row, 'hint')), ...$choiceErrors];
-            $positioned[] = [
-                $position,
-                new ProfileField($field->id, $label, $field->type, self::text($row, 'hint'), $choices),
-            ];
+            $positioned[] = [$position, self::field($field->id, $label, $field->type, $row, $choices)];
         }
 
         foreach ($new as $key => $row) {
@@ -95,7 +94,7 @@ final class ProfileFieldsInput
             $taken[] = $id;
             $positioned[] = [
                 $order[self::NEW_KEY_PREFIX . $key] ?? $unordered++,
-                new ProfileField($id, $label, $type, self::text($row, 'hint'), $choices),
+                self::field($id, $label, $type, $row, $choices),
             ];
         }
 
@@ -103,6 +102,23 @@ final class ProfileFieldsInput
         $fields = \array_map(static fn (array $entry): ProfileField => $entry[1], $positioned);
 
         return new self($fields, $removed, [...$errors, ...self::duplicateErrors($fields)]);
+    }
+
+    /**
+     * @param array<mixed> $row
+     * @param list<string> $choices
+     */
+    private static function field(string $id, string $label, string $type, array $row, array $choices): ProfileField
+    {
+        return new ProfileField(
+            $id,
+            $label,
+            $type,
+            self::text($row, 'hint'),
+            $choices,
+            $type === ProfileField::TYPE_CHECKBOX && ($row['checked'] ?? null) === '1',
+            $type === ProfileField::TYPE_SELECT && ($row['other'] ?? null) === '1',
+        );
     }
 
     /**
