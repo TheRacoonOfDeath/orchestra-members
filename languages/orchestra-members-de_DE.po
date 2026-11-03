@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 18:57+0100\n"
+"POT-Creation-Date: 2026-11-03 19:36+0100\n"
 "PO-Revision-Date: 2026-10-16 00:00+0000\n"
 "Last-Translator: Julian Nickerl\n"
 "Language-Team: German\n"
@@ -477,7 +477,7 @@ msgid "Your profile has been saved."
 msgstr "Dein Profil wurde gespeichert."
 
 #: src/Ui/ProfileFieldControl.php:52 src/Ui/ProfileFieldsView.php:75
-#: src/Ui/ProfileFieldsView.php:124
+#: src/Ui/ProfileFieldsView.php:126
 msgid "Other"
 msgstr "Sonstiges"
 
@@ -529,11 +529,11 @@ msgstr "Bezeichnung"
 msgid "Hint"
 msgstr "Hinweis"
 
-#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:119
+#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:120
 msgid "Default"
 msgstr "Voreinstellung"
 
-#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:121
+#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:122
 msgid "Choices"
 msgstr "Auswahlmöglichkeiten"
 
@@ -553,7 +553,7 @@ msgstr ""
 msgid "New field"
 msgstr "Neues Feld"
 
-#: src/Ui/ProfileFieldsView.php:108
+#: src/Ui/ProfileFieldsView.php:109
 msgid "Type"
 msgstr "Typ"
 
@@ -565,47 +565,39 @@ msgstr "Entfernen"
 msgid "New field, e.g. T-shirt size"
 msgstr "Neues Feld, z. B. T-Shirt-Größe"
 
-#: src/Ui/ProfileFieldsView.php:122
-msgid "Only for choice lists: one choice per line"
-msgstr "Nur für Auswahllisten: eine Auswahlmöglichkeit pro Zeile"
+#: src/Ui/ProfileFieldsView.php:123
+msgid "One choice per line"
+msgstr "Eine Auswahlmöglichkeit pro Zeile"
 
 #. translators: %s: field label
-#: src/Ui/ProfileFieldsView.php:148
+#: src/Ui/ProfileFieldsView.php:153
 #, php-format
 msgid "Move \"%s\""
 msgstr "„%s“ verschieben"
 
-#: src/Ui/ProfileFieldsView.php:153
+#: src/Ui/ProfileFieldsView.php:158
 msgid "Drag to change the order, or use the arrow keys"
 msgstr "Ziehen, um die Reihenfolge zu ändern, oder die Pfeiltasten verwenden"
 
-#: src/Ui/ProfileFieldsView.php:170
-msgid "Ticked by default (only for checkboxes)"
-msgstr "Standardmäßig angekreuzt (nur für Ankreuzfelder)"
-
-#: src/Ui/ProfileFieldsView.php:171
+#: src/Ui/ProfileFieldsView.php:174
 msgid "Ticked by default"
 msgstr "Standardmäßig angekreuzt"
 
-#: src/Ui/ProfileFieldsView.php:172
+#: src/Ui/ProfileFieldsView.php:175
 msgid "Counts as the answer of members who have not answered yet."
 msgstr "Gilt als Antwort der Mitglieder, die noch nicht geantwortet haben."
 
-#: src/Ui/ProfileFieldsView.php:182
-msgid "Offer \"Other\" with a free-text answer (only for choice lists)"
-msgstr "„Sonstiges“ mit eigener Antwort anbieten (nur für Auswahllisten)"
-
-#: src/Ui/ProfileFieldsView.php:183
+#: src/Ui/ProfileFieldsView.php:184
 msgid "Offer \"Other\" with a free-text answer"
 msgstr "„Sonstiges“ mit eigener Antwort anbieten"
 
 #. translators: %d: maximum number of characters
-#: src/Ui/ProfileFieldsView.php:186
+#: src/Ui/ProfileFieldsView.php:187
 #, php-format
 msgid "Members can write their own answer, at most %d characters."
 msgstr "Mitglieder können eine eigene Antwort schreiben, höchstens %d Zeichen."
 
-#: src/Ui/ProfileFieldsView.php:205
+#: src/Ui/ProfileFieldsView.php:206
 msgid "Choices, one per line"
 msgstr "Auswahlmöglichkeiten, eine pro Zeile"
 
@@ -672,6 +664,15 @@ msgstr "Das Mitglied ist inaktiv. Seine sensiblen Profildaten wurden gelöscht."
 #~ msgid_plural "%d members"
 #~ msgstr[0] "%d Mitglied"
 #~ msgstr[1] "%d Mitglieder"
+
+#~ msgid "Offer \"Other\" with a free-text answer (only for choice lists)"
+#~ msgstr "„Sonstiges“ mit eigener Antwort anbieten (nur für Auswahllisten)"
+
+#~ msgid "Only for choice lists: one choice per line"
+#~ msgstr "Nur für Auswahllisten: eine Auswahlmöglichkeit pro Zeile"
+
+#~ msgid "Ticked by default (only for checkboxes)"
+#~ msgstr "Standardmäßig angekreuzt (nur für Ankreuzfelder)"
 
 #~ msgid ""
 #~ "Your account has been marked as inactive. Please contact an administrator "

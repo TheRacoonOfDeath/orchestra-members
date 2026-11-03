@@ -39,7 +39,10 @@ an "Other" choice and a text box (`orchestra_members_other[ID]`). The text count
 nothing is chosen and is stored as the value; a value that is not one of the choices is shown as
 the free-text answer. Without the option, such a value is a removed choice (see below).
 
-The type of a field cannot be changed after it was created. Deleting a field deletes its values
+The type of a field cannot be changed after it was created. In the row of a new field, only the
+options of the chosen type are shown ("Ticked by default" for checkboxes, "Choices" and "Other"
+for choice lists), with `data-orchestra-switch` of orchestra-core 0.14; with an older core or
+without JavaScript all are shown, and the options of other types are ignored when saving. Deleting a field deletes its values
 for all members. Removing a choice keeps the values already stored until the member changes them.
 
 Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,

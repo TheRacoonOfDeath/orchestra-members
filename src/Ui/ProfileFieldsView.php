@@ -105,8 +105,8 @@ final class ProfileFieldsView
             ['', self::header(
                 ProfileFieldsInput::NEW_KEY_PREFIX . $key,
                 \__('New field', 'orchestra-members'),
-                '<select name="' . \esc_attr($name) . '[type]" aria-label="' . \esc_attr__('Type', 'orchestra-members')
-                    . '">' . $options . '</select>',
+                '<select name="' . \esc_attr($name) . '[type]" data-orchestra-switch aria-label="'
+                    . \esc_attr__('Type', 'orchestra-members') . '">' . $options . '</select>',
                 '<button type="button" class="orchestra-button orchestra-button--small" data-orchestra-remove-row>'
                     . \esc_html__('Remove', 'orchestra-members') . '</button>'
             )],
@@ -116,23 +116,28 @@ final class ProfileFieldsView
                     . '" placeholder="' . \esc_attr__('New field, e.g. T-shirt size', 'orchestra-members') . '">',
             ],
             [\__('Hint', 'orchestra-members'), self::textInput($name . '[hint]', '', ProfileField::HINT_MAX_LENGTH)],
-            [\__('Default', 'orchestra-members'), self::checkedInput($name, false, true)],
+            // Shown for the chosen type only (data-orchestra-switch of orchestra-core 0.14).
+            [\__('Default', 'orchestra-members'), self::checkedInput($name, false), ProfileField::TYPE_CHECKBOX],
             [
                 \__('Choices', 'orchestra-members'),
-                self::choicesInput($name, [], \__('Only for choice lists: one choice per line', 'orchestra-members')),
+                self::choicesInput($name, [], \__('One choice per line', 'orchestra-members')),
+                ProfileField::TYPE_SELECT,
             ],
-            [\__('Other', 'orchestra-members'), self::otherInput($name, false, true)],
+            [\__('Other', 'orchestra-members'), self::otherInput($name, false), ProfileField::TYPE_SELECT],
         ]);
     }
 
     /**
-     * @param list<array{string, string}> $cells Label (plain text, "" for none) and content (HTML)
+     * @param list<array{0: string, 1: string, 2?: string}> $cells Label (plain text, "" for none),
+     *     content (HTML) and, for new fields, the type the cell is shown for
      */
     private static function row(array $cells): string
     {
         $html = '<tr>';
-        foreach ($cells as [$label, $cell]) {
-            $html .= '<td data-label="' . \esc_attr($label) . '"><div class="orchestra-cell">' . $cell . '</div></td>';
+        foreach ($cells as $cell) {
+            $showFor = isset($cell[2]) ? ' data-orchestra-show-for="' . \esc_attr($cell[2]) . '"' : '';
+            $html .= '<td data-label="' . \esc_attr($cell[0]) . '"' . $showFor . '><div class="orchestra-cell">'
+                . $cell[1] . '</div></td>';
         }
 
         return $html . '</tr>';
@@ -161,26 +166,22 @@ final class ProfileFieldsView
             . $maxLength . '"' . ($required ? ' required' : '') . '>';
     }
 
-    private static function checkedInput(string $name, bool $checked, bool $newField = false): string
+    private static function checkedInput(string $name, bool $checked): string
     {
         return self::checkbox(
             $name . '[checked]',
             $checked,
-            $newField
-                ? \__('Ticked by default (only for checkboxes)', 'orchestra-members')
-                : \__('Ticked by default', 'orchestra-members'),
+            \__('Ticked by default', 'orchestra-members'),
             \__('Counts as the answer of members who have not answered yet.', 'orchestra-members')
         );
     }
 
-    private static function otherInput(string $name, bool $checked, bool $newField = false): string
+    private static function otherInput(string $name, bool $checked): string
     {
         return self::checkbox(
             $name . '[other]',
             $checked,
-            $newField
-                ? \__('Offer "Other" with a free-text answer (only for choice lists)', 'orchestra-members')
-                : \__('Offer "Other" with a free-text answer', 'orchestra-members'),
+            \__('Offer "Other" with a free-text answer', 'orchestra-members'),
             \sprintf(
                 /* translators: %d: maximum number of characters */
                 \__('Members can write their own answer, at most %d characters.', 'orchestra-members'),

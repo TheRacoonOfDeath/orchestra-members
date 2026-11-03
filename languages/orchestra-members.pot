@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 18:57+0100\n"
+"POT-Creation-Date: 2026-11-03 19:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -453,7 +453,7 @@ msgid "Your profile has been saved."
 msgstr ""
 
 #: src/Ui/ProfileFieldControl.php:52 src/Ui/ProfileFieldsView.php:75
-#: src/Ui/ProfileFieldsView.php:124
+#: src/Ui/ProfileFieldsView.php:126
 msgid "Other"
 msgstr ""
 
@@ -500,11 +500,11 @@ msgstr ""
 msgid "Hint"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:119
+#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:120
 msgid "Default"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:121
+#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:122
 msgid "Choices"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgstr ""
 msgid "New field"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:108
+#: src/Ui/ProfileFieldsView.php:109
 msgid "Type"
 msgstr ""
 
@@ -534,47 +534,39 @@ msgstr ""
 msgid "New field, e.g. T-shirt size"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:122
-msgid "Only for choice lists: one choice per line"
+#: src/Ui/ProfileFieldsView.php:123
+msgid "One choice per line"
 msgstr ""
 
 #. translators: %s: field label
-#: src/Ui/ProfileFieldsView.php:148
+#: src/Ui/ProfileFieldsView.php:153
 #, php-format
 msgid "Move \"%s\""
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:153
+#: src/Ui/ProfileFieldsView.php:158
 msgid "Drag to change the order, or use the arrow keys"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:170
-msgid "Ticked by default (only for checkboxes)"
-msgstr ""
-
-#: src/Ui/ProfileFieldsView.php:171
+#: src/Ui/ProfileFieldsView.php:174
 msgid "Ticked by default"
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:172
+#: src/Ui/ProfileFieldsView.php:175
 msgid "Counts as the answer of members who have not answered yet."
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:182
-msgid "Offer \"Other\" with a free-text answer (only for choice lists)"
-msgstr ""
-
-#: src/Ui/ProfileFieldsView.php:183
+#: src/Ui/ProfileFieldsView.php:184
 msgid "Offer \"Other\" with a free-text answer"
 msgstr ""
 
 #. translators: %d: maximum number of characters
-#: src/Ui/ProfileFieldsView.php:186
+#: src/Ui/ProfileFieldsView.php:187
 #, php-format
 msgid "Members can write their own answer, at most %d characters."
 msgstr ""
 
-#: src/Ui/ProfileFieldsView.php:205
+#: src/Ui/ProfileFieldsView.php:206
 msgid "Choices, one per line"
 msgstr ""
 
