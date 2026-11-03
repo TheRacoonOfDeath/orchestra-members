@@ -53,11 +53,11 @@ final class ProfileFieldControl
                 /* translators: %s: field label */
                 $otherLabel = \sprintf(\__('%s: other answer', 'orchestra-members'), $field->label);
 
-                return '<span class="orchestra-choice-other"><select' . $attributes . '>' . $options . '</select>'
+                return '<div class="orchestra-stack"><select' . $attributes . '>' . $options . '</select>'
                     . ' <input type="text" name="' . \esc_attr(ProfileField::OTHER_FIELD . '[' . $field->id . ']') . '"'
                     . $classAttribute . ' maxlength="' . ProfileField::OTHER_MAX_LENGTH . '" value="'
                     . \esc_attr($other) . '" placeholder="' . \esc_attr__('Other: please specify', 'orchestra-members')
-                    . '" aria-label="' . \esc_attr($otherLabel) . '"' . ($disabled ? ' disabled' : '') . '></span>';
+                    . '" aria-label="' . \esc_attr($otherLabel) . '"' . ($disabled ? ' disabled' : '') . '></div>';
             case ProfileField::TYPE_TEXTAREA:
                 return '<textarea' . $attributes . $classAttribute . ' rows="3" maxlength="' . $field->maxLength()
                     . '">' . \esc_textarea($value) . '</textarea>';
