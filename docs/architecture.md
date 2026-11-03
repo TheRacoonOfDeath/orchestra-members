@@ -32,6 +32,21 @@ for all members. Removing a choice keeps the values already stored until the mem
 Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,
 `orchestra_organizer`) have a profile and appear in the member list.
 
+### Orchestra role next to other roles
+
+A user has at most one Orchestra role, which can come in addition to other WordPress roles (e.g.
+an administrator who plays, or an editor of the website). WordPress's own screens offer a single
+role, and saving the "Role" dropdown on user-edit.php replaces all roles. Therefore, for users with
+`promote_user` (administrators), the "Orchestra" section of profile.php and user-edit.php has an
+"Orchestra role" choice (none, Member, Conductor, Organizer), the Orchestra roles are left out of
+the "Role" dropdown on user-edit.php (`editable_roles`), and the Orchestra role is saved on
+`profile_update`, after WordPress has saved the dropdown (`Account\OrchestraRole`). The role
+choice on **Users → Add New** and "Change role to…" in the user list are unchanged.
+
+"Add member" (conductors and organizers) refuses email addresses that already have an account:
+they cannot see or change accounts that are not Orchestra accounts, and an administrator gives
+such an account its Orchestra role.
+
 The member list is for conductors and organizers. Members do not see it (since 0.10, see the
 capabilities below): they see who takes part in a project on the project's page in
 orchestra-projects, and their own profile under "My profile".
@@ -56,7 +71,8 @@ role (`orchestra_members_role`), see `MemberFilter`.
 | `Ui\ProfileFieldsView`, `Ui\ProfileFieldsController` | The profile fields form and its handler |
 | `Status\StatusService` | Deactivation and reactivation, and who may be deactivated |
 | `Status\LoginBlocker` | Blocks inactive members on login |
-| `Admin\ProfileSection` | The "Orchestra" section on profile.php and user-edit.php |
+| `Admin\ProfileSection` | The "Orchestra" section on profile.php and user-edit.php, with the Orchestra role for administrators |
+| `Account\OrchestraRole` | Sets the Orchestra role of a user and keeps their other roles |
 | `Admin\MembersPage` | The **Members** screen and the status form |
 | `Admin\UserListColumn` | The status column in **Users → All Users** |
 | `Privacy\PersonalData` | Exporter, eraser and privacy policy text |

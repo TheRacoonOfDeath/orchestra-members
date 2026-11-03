@@ -30,7 +30,7 @@ privacy policy and delete or anonymize the account when a former member asks for
 - The `authenticate` filter (priority 100) runs after WordPress has checked the password. With a
   wrong password the normal error is shown, so nobody can find out the status of an account
   without knowing its password. With the correct password the member is told that the account is
-  inactive and that they should contact an administrator.
+  inactive and that they should contact the organizers.
 - Application passwords (REST API) are blocked through `wp_authenticate_application_password_errors`.
 - Deactivating a member ends all their sessions, so they are logged out immediately.
 - Password resets still work, but the new password cannot be used to log in.

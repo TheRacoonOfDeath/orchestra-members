@@ -19,6 +19,9 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 - Adding WordPress users to the orchestra on the members page (**Add member**) or under
   **Members → Add Member**: conductors and organizers add members, administrators also choose the
   role. The new member receives the WordPress email with a link to set a password.
+- An Orchestra role next to the WordPress role, chosen by administrators in the "Orchestra" section
+  of the WordPress profile screen, e.g. for an administrator who plays or an editor of the website
+  who is a member. No role editor plugin is needed
   - inactive members cannot log in, also not with application passwords; after entering the
     correct password they are told that their account is inactive
   - setting a member inactive ends their sessions and deletes their sensitive profile data
@@ -31,7 +34,10 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 - An API for the other Orchestra plugins
 
 Accounts are created by administrators (**Users → Add New**, role "Orchestra Member", "Orchestra
-Conductor" or "Orchestra Organizer"). There is no self-registration.
+Conductor" or "Orchestra Organizer"). There is no self-registration. Existing accounts of the site
+get an Orchestra role from an administrator (**Users → All Users**, "Change role to…" for several
+at once, or "Orchestra role" on the user's profile to keep their other role); "Add member" refuses
+email addresses that already have an account.
 
 ## Installation
 

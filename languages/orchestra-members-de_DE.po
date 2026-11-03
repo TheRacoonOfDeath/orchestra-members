@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-22 15:36+0200\n"
+"POT-Creation-Date: 2026-11-03 18:30+0100\n"
 "PO-Revision-Date: 2026-10-16 00:00+0000\n"
 "Last-Translator: Julian Nickerl\n"
 "Language-Team: German\n"
@@ -57,30 +57,46 @@ msgstr "Profilfelder"
 msgid "You are not allowed to view this profile."
 msgstr "Du darfst dieses Profil nicht ansehen."
 
-#: src/Admin/ProfileSection.php:59 src/Email/MemberEmailGroups.php:48
+#: src/Admin/ProfileSection.php:67 src/Email/MemberEmailGroups.php:48
 #: src/Ui/ProfileShortcode.php:93
 msgid "Orchestra"
 msgstr "Orchester"
 
-#: src/Admin/ProfileSection.php:63 src/Privacy/PersonalData.php:75
+#: src/Admin/ProfileSection.php:81 src/Ui/ProfileShortcode.php:104
+msgid ""
+"Only you, the organizers and the administrators can see this information."
+msgstr ""
+"Nur du, die Organisatoren und die Administratoren können diese Angaben sehen."
+
+#: src/Admin/ProfileSection.php:92
+msgid "None"
+msgstr "Keine"
+
+#: src/Admin/ProfileSection.php:97
+msgid "Orchestra role"
+msgstr "Orchesterrolle"
+
+#: src/Admin/ProfileSection.php:101
+msgid ""
+"In addition to the WordPress role, e.g. for an administrator who plays in "
+"the orchestra."
+msgstr ""
+"Zusätzlich zur WordPress-Rolle, z. B. für einen Administrator, der im "
+"Orchester spielt."
+
+#: src/Admin/ProfileSection.php:111 src/Privacy/PersonalData.php:75
 #: src/Ui/MembersView.php:62 src/Ui/MembersView.php:147
 #: src/Ui/MembersView.php:249
 msgid "Status"
 msgstr "Status"
 
-#: src/Admin/ProfileSection.php:68
+#: src/Admin/ProfileSection.php:116
 msgid ""
 "The sensitive profile data of inactive members is deleted. It can be entered "
 "again once active."
 msgstr ""
 "Die sensiblen Profildaten inaktiver Mitglieder werden gelöscht. Sie können "
 "nach der Reaktivierung erneut eingegeben werden."
-
-#: src/Admin/ProfileSection.php:87 src/Ui/ProfileShortcode.php:104
-msgid ""
-"Only you, the organizers and the administrators can see this information."
-msgstr ""
-"Nur du, die Organisatoren und die Administratoren können diese Angaben sehen."
 
 #: src/Admin/StatusLabel.php:11 src/Ui/MembersView.php:149
 msgid "Active"
@@ -286,11 +302,11 @@ msgstr "Die Bezeichnung „%s“ wird mehrfach verwendet."
 
 #: src/Status/LoginBlocker.php:57
 msgid ""
-"Your account has been marked as inactive. Please contact an administrator to "
-"reactivate it."
+"Your account has been marked as inactive. Please contact the orchestra's "
+"organizers to reactivate it."
 msgstr ""
-"Dein Konto wurde als inaktiv markiert. Bitte wende dich an einen "
-"Administrator, um es zu reaktivieren."
+"Dein Konto wurde als inaktiv markiert. Bitte wende dich an die "
+"Organisatoren des Orchesters, um es wieder zu aktivieren."
 
 #: src/Status/StatusService.php:31
 msgid "Only users with an orchestra role can be set inactive."
@@ -611,3 +627,10 @@ msgstr "Das Mitglied ist inaktiv. Seine sensiblen Profildaten wurden gelöscht."
 #~ msgid_plural "%d members"
 #~ msgstr[0] "%d Mitglied"
 #~ msgstr[1] "%d Mitglieder"
+
+#~ msgid ""
+#~ "Your account has been marked as inactive. Please contact an administrator "
+#~ "to reactivate it."
+#~ msgstr ""
+#~ "Dein Konto wurde als inaktiv markiert. Bitte wende dich an einen "
+#~ "Administrator, um es zu reaktivieren."

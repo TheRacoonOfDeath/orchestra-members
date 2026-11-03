@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-22 15:36+0200\n"
+"POT-Creation-Date: 2026-11-03 18:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,26 +62,40 @@ msgstr ""
 msgid "You are not allowed to view this profile."
 msgstr ""
 
-#: src/Admin/ProfileSection.php:59 src/Email/MemberEmailGroups.php:48
+#: src/Admin/ProfileSection.php:67 src/Email/MemberEmailGroups.php:48
 #: src/Ui/ProfileShortcode.php:93
 msgid "Orchestra"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:63 src/Privacy/PersonalData.php:75
+#: src/Admin/ProfileSection.php:81 src/Ui/ProfileShortcode.php:104
+msgid ""
+"Only you, the organizers and the administrators can see this information."
+msgstr ""
+
+#: src/Admin/ProfileSection.php:92
+msgid "None"
+msgstr ""
+
+#: src/Admin/ProfileSection.php:97
+msgid "Orchestra role"
+msgstr ""
+
+#: src/Admin/ProfileSection.php:101
+msgid ""
+"In addition to the WordPress role, e.g. for an administrator who plays in "
+"the orchestra."
+msgstr ""
+
+#: src/Admin/ProfileSection.php:111 src/Privacy/PersonalData.php:75
 #: src/Ui/MembersView.php:62 src/Ui/MembersView.php:147
 #: src/Ui/MembersView.php:249
 msgid "Status"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:68
+#: src/Admin/ProfileSection.php:116
 msgid ""
 "The sensitive profile data of inactive members is deleted. It can be entered "
 "again once active."
-msgstr ""
-
-#: src/Admin/ProfileSection.php:87 src/Ui/ProfileShortcode.php:104
-msgid ""
-"Only you, the organizers and the administrators can see this information."
 msgstr ""
 
 #: src/Admin/StatusLabel.php:11 src/Ui/MembersView.php:149
@@ -277,8 +291,8 @@ msgstr ""
 
 #: src/Status/LoginBlocker.php:57
 msgid ""
-"Your account has been marked as inactive. Please contact an administrator to "
-"reactivate it."
+"Your account has been marked as inactive. Please contact the orchestra's "
+"organizers to reactivate it."
 msgstr ""
 
 #: src/Status/StatusService.php:31

@@ -54,7 +54,7 @@ final class LoginBlocker
     public static function message(): string
     {
         return \__(
-            'Your account has been marked as inactive. Please contact an administrator to reactivate it.',
+            'Your account has been marked as inactive. Please contact the orchestra\'s organizers to reactivate it.',
             'orchestra-members'
         );
     }

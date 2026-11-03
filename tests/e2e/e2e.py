@@ -601,6 +601,41 @@ status, _ = member.post("/wp-admin/admin-post.php", [
 check(status == 403 and wp_eval('echo email_exists("forged@example.com") ? "yes" : "no";') == "no",
       "members cannot add members by posting the form")
 
+# --- Orchestra role next to the WordPress role ----------------------------------------------
+def roles(login):
+    return sorted(wp("user", "get", login, "--field=roles").split(", "))
+
+
+def profile_form(session, url):
+    return find_form(session.get(url)[1], action="update")
+
+
+_, page = admin.get("/wp-admin/profile.php")
+check('name="orchestra_members_role"' in page, "administrators choose their own Orchestra role")
+admin.submit(profile_form(admin, "/wp-admin/profile.php"), {"orchestra_members_role": "orchestra_member"})
+check(roles("admin") == ["administrator", "orchestra_member"], "an administrator also becomes a member")
+_, page = organizer.get(MEMBERS)
+check(f"orchestra_member={admin_id}" in html.unescape(page), "the administrator appears in the member list")
+
+edit_sub = f"/wp-admin/user-edit.php?user_id={sub_id}"
+_, page = admin.get(edit_sub)
+role_select = re.search(r'<select name="role" id="role">(.*?)</select>', page, re.S)
+check(role_select is not None and "orchestra_" not in role_select.group(1),
+      "the WordPress role dropdown leaves out the Orchestra roles")
+admin.submit(profile_form(admin, edit_sub), {"orchestra_members_role": "orchestra_organizer"})
+check(roles("sub") == ["orchestra_organizer", "subscriber"], "the Orchestra role is added next to the WordPress role")
+admin.submit(profile_form(admin, edit_sub))
+check(roles("sub") == ["orchestra_organizer", "subscriber"], "saving the profile again keeps both roles")
+admin.submit(profile_form(admin, edit_sub), {"role": "editor", "orchestra_members_role": "orchestra_member"})
+check(roles("sub") == ["editor", "orchestra_member"], "both roles can be changed at the same time")
+admin.submit(profile_form(admin, edit_sub), {"orchestra_members_role": ""})
+check(roles("sub") == ["editor"], "the Orchestra role can be removed")
+admin.submit(profile_form(admin, f"/wp-admin/user-edit.php?user_id={member2_id}"))
+check(roles("member2") == ["orchestra_member"], "a member without a WordPress role keeps the Orchestra role")
+forged = profile_form(admin, edit_sub)
+admin.submit(forged, {"orchestra_members_role": "administrator"})
+check(roles("sub") == ["editor"], "only Orchestra roles can be chosen in the Orchestra section")
+
 # --- Uninstall ------------------------------------------------------------------------------
 _, page = organizer.get(member_url(member2_id))
 organizer.submit(find_form(page, action="orchestra_members_set_status"))
