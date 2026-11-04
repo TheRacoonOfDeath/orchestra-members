@@ -68,10 +68,13 @@ final class MembersView
             if (\current_user_can(Capabilities::PROFILE_READ, $member->id)) {
                 $name = '<a href="' . \esc_url($url($member->id)) . '">' . $name . '</a>';
             }
-            $row = ['<strong>' . $name . '</strong>'];
+            $row = ['<strong class="orchestra-compact-title">' . $name . '</strong>'];
             if ($privileged) {
-                $row[] = '<a href="mailto:' . \esc_attr($member->email) . '">' . \esc_html($member->email) . '</a>';
-                $row[] = \esc_html(self::roleNames($member));
+                // Long addresses end with "…" instead of running out of the row; the title shows all.
+                $row[] = '<a class="orchestra-ellipsis orchestra-compact-line" href="mailto:'
+                    . \esc_attr($member->email) . '" title="' . \esc_attr($member->email) . '">'
+                    . \esc_html($member->email) . '</a>';
+                $row[] = '<span class="orchestra-compact-meta">' . \esc_html(self::roleNames($member)) . '</span>';
                 $row[] = self::statusBadge($member->active);
             }
             $rows[] = $row;
@@ -102,7 +105,7 @@ final class MembersView
         }
 
         return $toolbar . self::filterForm($url(null), $filter, $privileged)
-            . Html::table($headings, $rows, \__('No members found.', 'orchestra-members'));
+            . Html::table($headings, $rows, \__('No members found.', 'orchestra-members'), false, true);
     }
 
     private static function filter(bool $privileged): MemberFilter
@@ -156,7 +159,8 @@ final class MembersView
                 $filter->role
             );
         }
-        $html .= Form::submit(\__('Filter', 'orchestra-members'), 'small');
+        // As high as the fields next to it.
+        $html .= Form::submit(\__('Filter', 'orchestra-members'));
         if (!$filter->isEmpty()) {
             $html .= Form::link($base, \__('Show all', 'orchestra-members'), 'link');
         }

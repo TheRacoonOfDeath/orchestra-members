@@ -100,7 +100,8 @@ final class ProfileShortcode
                     ProfileFieldControl::hint($field)
                 );
             }
-            $html .= '<p class="orchestra-muted">' . \esc_html__(
+            // Set apart, so that it does not read like the hint of the last field.
+            $html .= '<p class="orchestra-muted orchestra-footnote">' . \esc_html__(
                 'Only you, the organizers and the administrators can see this information.',
                 'orchestra-members'
             ) . '</p></fieldset>';
