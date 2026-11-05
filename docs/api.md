@@ -37,6 +37,13 @@ Profiles contain sensitive data. Check the meta capability before showing one:
 if (current_user_can(\Orchestra\Members\Capabilities::PROFILE_READ, $userId)) { … }
 ```
 
+## Email filters
+
+With orchestra-email running, orchestra-members hooks `orchestra_email_recipients` (removes
+inactive members from every email) and, with orchestra-email 0.10, `orchestra_email_automatic_recipients`
+(removes members who turned automatic emails off in their profile). Plugins that send automatic
+emails therefore need no check of their own.
+
 ## Actions
 
 | Action | Arguments | Fired |

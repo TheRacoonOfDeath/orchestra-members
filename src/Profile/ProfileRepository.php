@@ -12,6 +12,9 @@ final class ProfileRepository
     /** Present (value "1") only while the member is inactive, so new users are active. */
     public const META_INACTIVE = 'orchestra_members_inactive';
 
+    /** Present (value "1") only while the member does not want automatic emails. Not sensitive. */
+    public const META_NO_AUTOMATIC_EMAILS = 'orchestra_members_no_automatic_emails';
+
     public function __construct(private readonly ProfileFields $fields)
     {
     }
@@ -105,6 +108,36 @@ final class ProfileRepository
     {
         $ids = \get_users([
             'meta_key' => self::META_INACTIVE,
+            'meta_value' => '1',
+            'fields' => 'ID',
+        ]);
+
+        return \array_values(\array_map('intval', $ids));
+    }
+
+    public function receivesAutomaticEmails(int $userId): bool
+    {
+        return $this->meta($userId, self::META_NO_AUTOMATIC_EMAILS) !== '1';
+    }
+
+    public function setReceivesAutomaticEmails(int $userId, bool $receives): void
+    {
+        if ($receives) {
+            \delete_user_meta($userId, self::META_NO_AUTOMATIC_EMAILS);
+        } else {
+            \update_user_meta($userId, self::META_NO_AUTOMATIC_EMAILS, '1');
+        }
+    }
+
+    /**
+     * IDs of the users who turned automatic emails off.
+     *
+     * @return list<int>
+     */
+    public function noAutomaticEmailsUserIds(): array
+    {
+        $ids = \get_users([
+            'meta_key' => self::META_NO_AUTOMATIC_EMAILS,
             'meta_value' => '1',
             'fields' => 'ID',
         ]);

@@ -12,6 +12,7 @@ Everything is stored as user meta. There are no custom tables.
 |----------|-------|---------|
 | `orchestra_members_inactive` | `1` | Present only while the member is inactive. New users are active. |
 | `orchestra_members_{field ID}` | see below | The value of a profile field; present only if not empty or an unticked checkbox. Sensitive. |
+| `orchestra_members_no_automatic_emails` | `1` | Present only while the member turned automatic emails off. Not sensitive; kept when the member is set inactive. |
 
 The option `orchestra_members_profile_fields` holds the profile fields, in display order. Each has a
 stable ID (derived from the label when it is created), a label, a type, a hint and, for choice
@@ -143,3 +144,13 @@ preselected.
 
 It also removes inactive members from **every** group, including those of other plugins, through
 `orchestra_email_recipients`.
+
+## Automatic emails
+
+With orchestra-email 0.10, which sends automatic emails (e.g. orchestra-projects' email about
+changed parts), the profile (`[orchestra_profile]` and the "Orchestra" section in wp-admin) has a
+section **Emails** with "Send me automatic emails", ticked by default. Members who untick it
+receive no automatic email from any plugin: `orchestra_email_automatic_recipients` removes them,
+also from emails already queued. Emails written by conductors and organizers still reach them. The
+form sends a hidden marker with the checkbox, so that saving a form without it (e.g. while
+orchestra-email is off) does not turn the emails off.

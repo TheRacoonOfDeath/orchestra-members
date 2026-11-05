@@ -30,6 +30,8 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
   installed: everyone, all members, all conductors and all organizers; inactive members never
   receive group emails. Organizers write to a single member from the member's profile
   (orchestra-email 0.5 or later)
+- Members turn automatic emails (e.g. about changed parts) off in their profile (orchestra-email 0.10
+  or later)
 - Export and erasure of the profile data with the WordPress privacy tools, and a suggested
   privacy policy text
 - An API for the other Orchestra plugins

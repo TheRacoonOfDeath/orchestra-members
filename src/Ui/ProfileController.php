@@ -7,6 +7,7 @@ namespace Orchestra\Members\Ui;
 use Orchestra\Core\Ui\Notices;
 use Orchestra\Core\Ui\Redirect;
 use Orchestra\Members\Capabilities;
+use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\AccountInput;
 use Orchestra\Members\Profile\ProfileFields;
@@ -73,6 +74,10 @@ final class ProfileController
 
         if ($this->hasOrchestraProfile($user)) {
             $this->profiles->saveSensitiveData($user->ID, $profile->values);
+        }
+        $automatic = MemberEmailGroups::automaticChoice($post);
+        if ($automatic !== null && MemberDirectory::orchestraRoles($user) !== []) {
+            $this->profiles->setReceivesAutomaticEmails($user->ID, $automatic);
         }
 
         Notices::success(\__('Your profile has been saved.', 'orchestra-members'));

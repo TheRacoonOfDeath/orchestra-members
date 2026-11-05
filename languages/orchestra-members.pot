@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 22:08+0100\n"
+"POT-Creation-Date: 2026-11-05 19:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgid "Please choose a role."
 msgstr ""
 
 #: src/Admin/MembersPage.php:50 src/Admin/MembersPage.php:51
-#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:75
+#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:120
 #: src/Plugin.php:158
 msgid "Members"
 msgstr ""
@@ -62,40 +62,48 @@ msgstr ""
 msgid "You are not allowed to view this profile."
 msgstr ""
 
-#: src/Admin/ProfileSection.php:67 src/Email/MemberEmailGroups.php:48
-#: src/Ui/ProfileShortcode.php:93
+#: src/Admin/ProfileSection.php:68 src/Email/MemberEmailGroups.php:93
+#: src/Ui/ProfileShortcode.php:94
 msgid "Orchestra"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:81 src/Ui/ProfileShortcode.php:105
+#: src/Admin/ProfileSection.php:82 src/Ui/ProfileShortcode.php:106
 msgid ""
 "Only you, the organizers and the administrators can see this information."
 msgstr ""
 
-#: src/Admin/ProfileSection.php:92
+#: src/Admin/ProfileSection.php:93
 msgid "None"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:97
+#: src/Admin/ProfileSection.php:98
 msgid "Orchestra role"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:101
+#: src/Admin/ProfileSection.php:102
 msgid ""
 "In addition to the WordPress role, e.g. for an administrator who plays in "
 "the orchestra."
 msgstr ""
 
-#: src/Admin/ProfileSection.php:111 src/Privacy/PersonalData.php:75
+#: src/Admin/ProfileSection.php:112 src/Privacy/PersonalData.php:76
 #: src/Ui/MembersView.php:62 src/Ui/MembersView.php:150
 #: src/Ui/MembersView.php:253
 msgid "Status"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:116
+#: src/Admin/ProfileSection.php:117
 msgid ""
 "The sensitive profile data of inactive members is deleted. It can be entered "
 "again once active."
+msgstr ""
+
+#: src/Admin/ProfileSection.php:126 src/Ui/ProfileShortcode.php:113
+msgid "Emails"
+msgstr ""
+
+#: src/Admin/ProfileSection.php:133 src/Ui/ProfileShortcode.php:118
+msgid "Send me automatic emails, e.g. when my parts change"
 msgstr ""
 
 #: src/Admin/StatusLabel.php:11 src/Ui/MembersView.php:152
@@ -110,20 +118,20 @@ msgstr ""
 msgid "Orchestra status"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:50
+#: src/Email/MemberEmailGroups.php:95
 msgid "Everyone"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:51 src/Ui/MembersShortcode.php:81
+#: src/Email/MemberEmailGroups.php:96 src/Ui/MembersShortcode.php:81
 #: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:207
 msgid "All members"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:52
+#: src/Email/MemberEmailGroups.php:97
 msgid "All conductors"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:53
+#: src/Email/MemberEmailGroups.php:98
 msgid "All organizers"
 msgstr ""
 
@@ -144,43 +152,55 @@ msgid "Orchestra Members requires Orchestra Core 0.4 or later to be active."
 msgstr ""
 
 #: src/Privacy/PersonalData.php:42 src/Privacy/PersonalData.php:57
-#: src/Privacy/PersonalData.php:83
+#: src/Privacy/PersonalData.php:91
 msgid "Orchestra profile"
 msgstr ""
 
-#: src/Privacy/PersonalData.php:111
+#: src/Privacy/PersonalData.php:78
+msgid "Automatic emails"
+msgstr ""
+
+#: src/Privacy/PersonalData.php:80 src/Profile/ProfileField.php:155
+msgid "Yes"
+msgstr ""
+
+#: src/Privacy/PersonalData.php:81 src/Profile/ProfileField.php:155
+msgid "No"
+msgstr ""
+
+#: src/Privacy/PersonalData.php:119
 msgid ""
 "The inactive status of the orchestra account was kept, so that the account "
 "stays blocked."
 msgstr ""
 
 #. translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions"
-#: src/Privacy/PersonalData.php:138
+#: src/Privacy/PersonalData.php:146
 #, php-format
 msgid "Members can enter the following information in their profile: %s."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:142
+#: src/Privacy/PersonalData.php:150
 msgid ""
 "This information is visible only to the member, the organizers and the "
 "administrators."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:146
+#: src/Privacy/PersonalData.php:154
 msgid "It is used to plan projects and deleted when a member is set inactive."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:153
+#: src/Privacy/PersonalData.php:161
 msgid ""
 "Members who leave are set inactive instead of deleted, to preserve the "
 "history of projects."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:156
+#: src/Privacy/PersonalData.php:164
 msgid "Inactive members cannot log in."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:160
+#: src/Privacy/PersonalData.php:168
 msgid "Orchestra Members"
 msgstr ""
 
@@ -207,14 +227,6 @@ msgstr ""
 #: src/Profile/ProfileField.php:144
 #, php-format
 msgid "%1$s must not be longer than %2$d characters."
-msgstr ""
-
-#: src/Profile/ProfileField.php:155
-msgid "No"
-msgstr ""
-
-#: src/Profile/ProfileField.php:155
-msgid "Yes"
 msgstr ""
 
 #: src/Profile/ProfileField.php:167
@@ -333,7 +345,7 @@ msgid "Profile fields"
 msgstr ""
 
 #: src/Ui/MembersView.php:58 src/Ui/MembersView.php:147
-#: src/Ui/ProfileShortcode.php:53
+#: src/Ui/ProfileShortcode.php:54
 msgid "Name"
 msgstr ""
 
@@ -444,11 +456,11 @@ msgstr ""
 msgid "The new member receives an email with a link to set a password."
 msgstr ""
 
-#: src/Ui/ProfileController.php:43
+#: src/Ui/ProfileController.php:44
 msgid "You are not allowed to edit this profile."
 msgstr ""
 
-#: src/Ui/ProfileController.php:78
+#: src/Ui/ProfileController.php:83
 msgid "Your profile has been saved."
 msgstr ""
 
@@ -479,7 +491,7 @@ msgid ""
 msgstr ""
 
 #: src/Ui/ProfileFieldsView.php:39 src/Ui/ProfileFieldsView.php:90
-#: src/Ui/ProfileShortcode.php:110
+#: src/Ui/ProfileShortcode.php:125
 msgid "Save"
 msgstr ""
 
@@ -570,44 +582,48 @@ msgstr ""
 msgid "Choices, one per line"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:40
+#: src/Ui/ProfileShortcode.php:41
 msgid "Please log in to edit your profile."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:44
+#: src/Ui/ProfileShortcode.php:45
 msgid "You are not allowed to edit your profile."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:50
+#: src/Ui/ProfileShortcode.php:51
 msgid "Account"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:57
+#: src/Ui/ProfileShortcode.php:58
 msgid "Shown to the other members."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:61
+#: src/Ui/ProfileShortcode.php:62
 msgid "Email address"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:68
+#: src/Ui/ProfileShortcode.php:69
 msgid "New password"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:71
+#: src/Ui/ProfileShortcode.php:72
 msgid "Leave empty to keep your password."
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:75
+#: src/Ui/ProfileShortcode.php:76
 msgid "Repeat new password"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:82
+#: src/Ui/ProfileShortcode.php:83
 msgid "Current password"
 msgstr ""
 
-#: src/Ui/ProfileShortcode.php:85
+#: src/Ui/ProfileShortcode.php:86
 msgid "Only needed to change your email address or password."
+msgstr ""
+
+#: src/Ui/ProfileShortcode.php:120
+msgid "Emails that conductors and organizers write to you are sent either way."
 msgstr ""
 
 #: src/Ui/StatusController.php:41

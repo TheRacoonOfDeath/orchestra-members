@@ -7,6 +7,7 @@ namespace Orchestra\Members\Ui;
 use Orchestra\Core\Ui\Form;
 use Orchestra\Core\Ui\Html;
 use Orchestra\Members\Capabilities;
+use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\AccountInput;
 use Orchestra\Members\Profile\ProfileFields;
@@ -105,6 +106,20 @@ final class ProfileShortcode
                 'Only you, the organizers and the administrators can see this information.',
                 'orchestra-members'
             ) . '</p></fieldset>';
+        }
+
+        if (MemberEmailGroups::automaticAvailable() && MemberDirectory::orchestraRoles($user) !== []) {
+            $html .= '<fieldset class="orchestra-fieldset orchestra-stack"><legend>'
+                . \esc_html__('Emails', 'orchestra-members') . '</legend>'
+                . Form::hidden(MemberEmailGroups::FIELD_AUTOMATIC_SHOWN, '1')
+                . '<label class="orchestra-checkbox"><input type="checkbox" name="'
+                . MemberEmailGroups::FIELD_AUTOMATIC . '" value="1"'
+                . \checked($this->profiles->receivesAutomaticEmails($user->ID), true, false) . '> <span>'
+                . \esc_html__('Send me automatic emails, e.g. when my parts change', 'orchestra-members')
+                . '</span></label><span class="orchestra-field__hint">' . \esc_html__(
+                    'Emails that conductors and organizers write to you are sent either way.',
+                    'orchestra-members'
+                ) . '</span></fieldset>';
         }
 
         $save = Form::submit(\__('Save', 'orchestra-members'), 'primary');

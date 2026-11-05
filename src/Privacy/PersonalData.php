@@ -72,7 +72,15 @@ final class PersonalData
             return ['data' => [], 'done' => true];
         }
 
-        $data = [['name' => \__('Status', 'orchestra-members'), 'value' => StatusLabel::of($profile->active)]];
+        $data = [
+            ['name' => \__('Status', 'orchestra-members'), 'value' => StatusLabel::of($profile->active)],
+            [
+                'name' => \__('Automatic emails', 'orchestra-members'),
+                'value' => $this->profiles->receivesAutomaticEmails($profile->userId)
+                    ? \__('Yes', 'orchestra-members')
+                    : \__('No', 'orchestra-members'),
+            ],
+        ];
         foreach ($this->fields->all() as $field) {
             $data[] = ['name' => $field->label, 'value' => $field->display($profile->value($field->id))];
         }

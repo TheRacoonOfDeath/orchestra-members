@@ -25,6 +25,12 @@ Keeping inactive members (name and email in the WordPress user, history in orche
 needs a legal basis such as the orchestra's legitimate interest in its history. State it in the
 privacy policy and delete or anonymize the account when a former member asks for erasure.
 
+## Automatic emails
+
+Whether a member receives automatic emails (`orchestra_members_no_automatic_emails`) is not
+sensitive. It is part of the personal data export and kept when the member is set inactive or the
+profile is erased.
+
 ## Inactive members
 
 - The `authenticate` filter (priority 100) runs after WordPress has checked the password. With a

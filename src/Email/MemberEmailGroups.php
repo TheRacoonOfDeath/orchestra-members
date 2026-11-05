@@ -34,10 +34,55 @@ final class MemberEmailGroups
     ) {
     }
 
+    /** Fields of the profile form: the checkbox, and a marker that the checkbox was shown. */
+    public const FIELD_AUTOMATIC = 'orchestra_members_automatic_emails';
+    public const FIELD_AUTOMATIC_SHOWN = 'orchestra_members_automatic_emails_shown';
+
     public function register(): void
     {
         \add_action(EmailService::REGISTER_GROUPS_ACTION, [$this, 'registerGroups']);
         \add_filter(EmailService::RECIPIENTS_FILTER, [$this, 'removeInactive']);
+        if (self::automaticAvailable()) {
+            \add_filter(EmailService::AUTOMATIC_RECIPIENTS_FILTER, [$this, 'removeOptedOut']);
+        }
+    }
+
+    /**
+     * Whether orchestra-email sends automatic emails (since 0.10), so members can turn them off.
+     */
+    public static function automaticAvailable(): bool
+    {
+        return \class_exists(EmailPlugin::class) && EmailPlugin::running()
+            && \defined(EmailService::class . '::AUTOMATIC_RECIPIENTS_FILTER');
+    }
+
+    /**
+     * The choice of the profile form, or null if the form did not show it.
+     *
+     * @param array<mixed> $post
+     */
+    public static function automaticChoice(array $post): ?bool
+    {
+        return ($post[self::FIELD_AUTOMATIC_SHOWN] ?? '') === '1'
+            ? ($post[self::FIELD_AUTOMATIC] ?? '') === '1'
+            : null;
+    }
+
+    /**
+     * Members who turned automatic emails off in their profile receive none, from any plugin.
+     *
+     * @internal Hooked to `orchestra_email_automatic_recipients`.
+     * @param array<mixed> $userIds
+     * @return array<mixed>
+     */
+    public function removeOptedOut(array $userIds): array
+    {
+        $optedOut = \array_flip($this->profiles->noAutomaticEmailsUserIds());
+
+        return \array_values(\array_filter(
+            $userIds,
+            static fn (mixed $id): bool => !\is_int($id) || !isset($optedOut[$id])
+        ));
     }
 
     /**

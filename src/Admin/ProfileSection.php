@@ -7,6 +7,7 @@ namespace Orchestra\Members\Admin;
 use Orchestra\Core\Authorization\Roles;
 use Orchestra\Members\Account\OrchestraRole;
 use Orchestra\Members\Capabilities;
+use Orchestra\Members\Email\MemberEmailGroups;
 use Orchestra\Members\MemberDirectory;
 use Orchestra\Members\Profile\Profile;
 use Orchestra\Members\Profile\ProfileFields;
@@ -120,6 +121,19 @@ final class ProfileSection
         }
         echo '</td></tr>';
 
+        if (MemberEmailGroups::automaticAvailable()) {
+            $canEdit = \current_user_can(Capabilities::PROFILE_EDIT, $user->ID);
+            echo '<tr><th>' . \esc_html__('Emails', 'orchestra-members') . '</th><td>'
+                . ($canEdit
+                    ? '<input type="hidden" name="' . MemberEmailGroups::FIELD_AUTOMATIC_SHOWN . '" value="1">'
+                    : '')
+                . '<label><input type="checkbox" name="' . MemberEmailGroups::FIELD_AUTOMATIC . '" value="1"'
+                . \checked($this->profiles->receivesAutomaticEmails($user->ID), true, false)
+                . \disabled(!$canEdit, true, false) . '> '
+                . \esc_html__('Send me automatic emails, e.g. when my parts change', 'orchestra-members')
+                . '</label></td></tr>';
+        }
+
         foreach ($this->fields->all() as $field) {
             $id = 'orchestra-profile-' . $field->id;
             $hint = ProfileFieldControl::hint($field);
@@ -135,14 +149,18 @@ final class ProfileSection
      */
     public function save(int $userId): void
     {
-        if (!self::verifiedNonce()) {
-            return;
-        }
-        if (!\current_user_can(Capabilities::PROFILE_EDIT, $userId) || !$this->profiles->isActive($userId)) {
+        if (!self::verifiedNonce() || !\current_user_can(Capabilities::PROFILE_EDIT, $userId)) {
             return;
         }
         $user = \get_userdata($userId);
         if (!$user instanceof WP_User || MemberDirectory::orchestraRoles($user) === []) {
+            return;
+        }
+        $automatic = MemberEmailGroups::automaticChoice($_POST);
+        if ($automatic !== null) {
+            $this->profiles->setReceivesAutomaticEmails($userId, $automatic);
+        }
+        if (!$this->profiles->isActive($userId)) {
             return;
         }
 

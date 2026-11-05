@@ -34,6 +34,7 @@ final class PersonalDataTest extends TestCase
         $this->assertCount(1, $export['data']);
         $this->assertSame([
             ['name' => 'Status', 'value' => 'Active'],
+            ['name' => 'Automatic emails', 'value' => 'Yes'],
             ['name' => 'Financial support', 'value' => 'Yes'],
             ['name' => 'Dietary restrictions', 'value' => 'Vegan'],
         ], $export['data'][0]['data']);

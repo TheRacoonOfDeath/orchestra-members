@@ -79,4 +79,25 @@ final class MemberEmailGroupsTest extends TestCase
     {
         $this->assertSame([2, 3], $this->groups->removeInactive([2, 5, 3]));
     }
+
+    public function testMembersWhoTurnedAutomaticEmailsOffReceiveNone(): void
+    {
+        $this->profiles->setReceivesAutomaticEmails(3, false);
+
+        $this->assertSame([2, 5], $this->groups->removeOptedOut([2, 3, 5]));
+        $this->assertFalse($this->profiles->receivesAutomaticEmails(3));
+
+        $this->profiles->setReceivesAutomaticEmails(3, true);
+        $this->assertSame([2, 3], $this->groups->removeOptedOut([2, 3]));
+    }
+
+    public function testReadsTheChoiceOnlyWhereTheFormShowedIt(): void
+    {
+        $this->assertNull(MemberEmailGroups::automaticChoice([]));
+        $this->assertFalse(MemberEmailGroups::automaticChoice([MemberEmailGroups::FIELD_AUTOMATIC_SHOWN => '1']));
+        $this->assertTrue(MemberEmailGroups::automaticChoice([
+            MemberEmailGroups::FIELD_AUTOMATIC_SHOWN => '1',
+            MemberEmailGroups::FIELD_AUTOMATIC => '1',
+        ]));
+    }
 }
