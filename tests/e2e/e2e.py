@@ -380,13 +380,22 @@ def mails():
     return json.loads(wp_eval('echo json_encode(get_option("e2e_mails", []));'))
 
 
+def form_with_button(page, op):
+    return next((f for f in Forms(page).forms if ["op", op] in f["buttons"]), None)
+
+
 def compose(session, groups, subject, body, op):
     """Writes an email on the email page; op "review" shows the review, "send" also sends it."""
     _, page = session.get(EMAIL)
-    form = find_form(page, op="review")
+    # Since orchestra-email 0.9, the fields for writing appear after "Write and send here".
+    form = form_with_button(page, "write")
     if form is None:
         return ""
-    _, page = session.submit(form, {"groups[]": groups, "subject": subject, "body": body})
+    _, page = session.submit(form, {"groups[]": groups}, button=("op", "write"))
+    form = form_with_button(page, "review")
+    if form is None:
+        return page
+    _, page = session.submit(form, {"groups[]": groups, "subject": subject, "body": body}, button=("op", "review"))
     if op == "review":
         return page
     send = find_form(page, action="orchestra_email_send")
