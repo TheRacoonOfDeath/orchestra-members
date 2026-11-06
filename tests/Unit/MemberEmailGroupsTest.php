@@ -30,6 +30,7 @@ final class MemberEmailGroupsTest extends TestCase
         WordPress::addUser(3, [Roles::ORGANIZER], 'Anna');
         WordPress::addUser(4, [Roles::CONDUCTOR], 'Carl');
         WordPress::addUser(5, [Roles::MEMBER], 'Dora');
+        WordPress::addUser(6, [Roles::LIBRARIAN], 'Lena');
         $this->profiles->setActive(5, false);
     }
 
@@ -44,8 +45,8 @@ final class MemberEmailGroupsTest extends TestCase
             $this->assertSame(Capabilities::EMAIL_SEND, $group->capability);
         }
         $this->assertSame([
-            MemberEmailGroups::EVERYONE => [3, 2, 4],
-            MemberEmailGroups::MEMBERS => [2],
+            MemberEmailGroups::EVERYONE => [3, 2, 4, 6],
+            MemberEmailGroups::MEMBERS => [2, 6],
             MemberEmailGroups::CONDUCTORS => [4],
             MemberEmailGroups::ORGANIZERS => [3],
         ], $recipients);

@@ -20,6 +20,7 @@ final class CapabilitiesTest extends TestCase
         $byRole = $registry->capabilitiesByRole();
         // Members see their own profile, but not the member list.
         $this->assertSame([Capabilities::PROFILE_EDIT_OWN, Capabilities::PROFILE_READ_OWN], $byRole[Roles::MEMBER]);
+        $this->assertSame($byRole[Roles::MEMBER], $byRole[Roles::LIBRARIAN]);
         $this->assertSame([
             Capabilities::DIRECTORY_READ,
             Capabilities::EMAIL_SEND,

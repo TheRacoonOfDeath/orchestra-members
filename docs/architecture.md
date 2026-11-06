@@ -47,7 +47,9 @@ without JavaScript all are shown, and the options of other types are ignored whe
 for all members. Removing a choice keeps the values already stored until the member changes them.
 
 Only users with an orchestra role (`orchestra_member`, `orchestra_conductor`,
-`orchestra_organizer`) have a profile and appear in the member list.
+`orchestra_organizer`, `orchestra_librarian`) have a profile and appear in the member list.
+Librarians (orchestra-core 0.17) are members who also maintain the library: they have the
+capabilities of members here and belong to the email group "All members".
 
 ### Orchestra role next to other roles
 
@@ -55,7 +57,7 @@ A user has at most one Orchestra role, which can come in addition to other WordP
 an administrator who plays, or an editor of the website). WordPress's own screens offer a single
 role, and saving the "Role" dropdown on user-edit.php replaces all roles. Therefore, for users with
 `promote_user` (administrators), the "Orchestra" section of profile.php and user-edit.php has an
-"Orchestra role" choice (none, Member, Conductor, Organizer), the Orchestra roles are left out of
+"Orchestra role" choice (none, Member, Conductor, Organizer, Librarian), the Orchestra roles are left out of
 the "Role" dropdown on user-edit.php (`editable_roles`), and the Orchestra role is saved on
 `profile_update`, after WordPress has saved the dropdown (`Account\OrchestraRole`). The role
 choice on **Users → Add New** and "Change role to…" in the user list are unchanged.

@@ -27,8 +27,8 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
     correct password they are told that their account is inactive
   - setting a member inactive ends their sessions and deletes their sensitive profile data
 - Email groups for [orchestra-email](https://github.com/TheRacoonOfDeath/orchestra-email), if it is
-  installed: everyone, all members, all conductors and all organizers; inactive members never
-  receive group emails. Organizers write to a single member from the member's profile
+  installed: everyone, all members (including librarians), all conductors and all organizers;
+  inactive members never receive group emails. Organizers write to a single member from the member's profile
   (orchestra-email 0.5 or later)
 - Members turn automatic emails (e.g. about changed parts) off in their profile (orchestra-email 0.10
   or later)
@@ -37,10 +37,11 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 - An API for the other Orchestra plugins
 
 Accounts are created by administrators (**Users → Add New**, role "Orchestra Member", "Orchestra
-Conductor" or "Orchestra Organizer"). There is no self-registration. Existing accounts of the site
-get an Orchestra role from an administrator (**Users → All Users**, "Change role to…" for several
-at once, or "Orchestra role" on the user's profile to keep their other role); "Add member" refuses
-email addresses that already have an account.
+Conductor", "Orchestra Organizer" or "Orchestra Librarian", a member who also maintains the
+library). There is no self-registration. Existing accounts of the site get an Orchestra role from
+an administrator (**Users → All Users**, "Change role to…" for several at once, or "Orchestra role"
+on the user's profile to keep their other role); "Add member" refuses email addresses that already
+have an account.
 
 ## Installation
 

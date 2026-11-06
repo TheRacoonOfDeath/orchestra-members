@@ -49,7 +49,7 @@ final class Capabilities
      */
     public static function register(CapabilityRegistry $registry): void
     {
-        $everyone = [Roles::MEMBER, Roles::CONDUCTOR, Roles::ORGANIZER];
+        $everyone = [Roles::MEMBER, Roles::CONDUCTOR, Roles::ORGANIZER, Roles::LIBRARIAN];
 
         $registry
             ->register(self::DIRECTORY_READ, [Roles::CONDUCTOR, Roles::ORGANIZER])

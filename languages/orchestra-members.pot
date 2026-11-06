@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-05 19:22+0100\n"
+"POT-Creation-Date: 2026-11-06 10:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,8 +39,8 @@ msgid "Please choose a role."
 msgstr ""
 
 #: src/Admin/MembersPage.php:50 src/Admin/MembersPage.php:51
-#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:120
-#: src/Plugin.php:158
+#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:121
+#: src/Plugin.php:163
 msgid "Members"
 msgstr ""
 
@@ -122,33 +122,33 @@ msgstr ""
 msgid "Everyone"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:96 src/Ui/MembersShortcode.php:81
+#: src/Email/MemberEmailGroups.php:97 src/Ui/MembersShortcode.php:81
 #: src/Ui/MembersShortcode.php:95 src/Ui/MembersView.php:207
 msgid "All members"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:97
+#: src/Email/MemberEmailGroups.php:98
 msgid "All conductors"
 msgstr ""
 
-#: src/Email/MemberEmailGroups.php:98
+#: src/Email/MemberEmailGroups.php:99
 msgid "All organizers"
 msgstr ""
 
-#: src/Plugin.php:159
+#: src/Plugin.php:164
 msgid "Who plays in the orchestra."
 msgstr ""
 
-#: src/Plugin.php:165
+#: src/Plugin.php:170
 msgid "My profile"
 msgstr ""
 
-#: src/Plugin.php:166
+#: src/Plugin.php:171
 msgid "Your name, email address, password and orchestra details."
 msgstr ""
 
-#: src/Plugin.php:178
-msgid "Orchestra Members requires Orchestra Core 0.4 or later to be active."
+#: src/Plugin.php:183
+msgid "Orchestra Members requires Orchestra Core 0.17 or later to be active."
 msgstr ""
 
 #: src/Privacy/PersonalData.php:42 src/Privacy/PersonalData.php:57

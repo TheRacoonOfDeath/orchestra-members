@@ -93,7 +93,8 @@ final class MemberEmailGroups
         $category = \__('Orchestra', 'orchestra-members');
         $groups = [
             self::EVERYONE => [\__('Everyone', 'orchestra-members'), []],
-            self::MEMBERS => [\__('All members', 'orchestra-members'), [Roles::MEMBER]],
+            // Librarians are members who also maintain the library.
+            self::MEMBERS => [\__('All members', 'orchestra-members'), [Roles::MEMBER, Roles::LIBRARIAN]],
             self::CONDUCTORS => [\__('All conductors', 'orchestra-members'), [Roles::CONDUCTOR]],
             self::ORGANIZERS => [\__('All organizers', 'orchestra-members'), [Roles::ORGANIZER]],
         ];
