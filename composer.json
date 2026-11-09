@@ -2,7 +2,7 @@
     "name": "orchestra/members",
     "description": "Member profiles and active status for the Orchestra plugin suite.",
     "type": "wordpress-plugin",
-    "license": "MIT",
+    "license": "GPL-2.0-or-later",
     "repositories": [
         {
             "type": "vcs",

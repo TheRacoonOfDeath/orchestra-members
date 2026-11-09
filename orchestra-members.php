@@ -4,10 +4,11 @@
  * Plugin Name:      Orchestra Members
  * Plugin URI:       https://github.com/TheRacoonOfDeath/orchestra-members
  * Description:      Member profiles and active status for the Orchestra plugin suite.
- * Version:          0.19.0
+ * Version:          0.19.1
  * Author:           Julian Nickerl (contact@julian-nickerl.de)
  * Author URI:       mailto:contact@julian-nickerl.de
- * License:          MIT
+ * License:          GPL-2.0-or-later
+ * License URI:      https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:      orchestra-members
  * Domain Path:      /languages
  * Requires at least: 6.5
