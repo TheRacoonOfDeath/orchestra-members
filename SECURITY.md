@@ -17,7 +17,8 @@ as soon as possible and credited in the release notes, unless you prefer otherwi
 Release zips are built by GitHub Actions from the tag and carry a signed build provenance:
 
 ```sh
-gh attestation verify orchestra-members-X.Y.Z.zip --repo TheRacoonOfDeath/orchestra-members
+gh attestation verify orchestra-members-X.Y.Z.zip --repo TheRacoonOfDeath/orchestra-members \
+    --signer-workflow TheRacoonOfDeath/orchestra-workflows/.github/workflows/release.yml
 ```
 
 The data protection of the Orchestra plugins is described in
