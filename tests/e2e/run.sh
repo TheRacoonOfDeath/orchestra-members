@@ -7,6 +7,7 @@
 #   E2E_PORT         port for the web server (default: 8765)
 #   E2E_CORE_ZIP     orchestra-core zip (default: the latest GitHub release); needs 0.7 or later
 #   E2E_EMAIL_ZIP    orchestra-email zip (default: the latest GitHub release)
+#   E2E_WP_VERSION   WordPress version to test (default: the latest)
 #   GITHUB_TOKEN     optional, for the GitHub API when looking up the latest releases
 #
 # Requirements: php 8.3+ with pdo_sqlite, zip and fileinfo; python3; curl; unzip; composer.
@@ -42,7 +43,7 @@ WP="$WORK_DIR/wp"
 # Fresh WordPress with SQLite
 rm -rf "$WP_PATH"
 mkdir -p "$WP_PATH"
-"$WP" core download --quiet
+"$WP" core download --quiet ${E2E_WP_VERSION:+--version="$E2E_WP_VERSION"}
 curl -sSLo "$WORK_DIR/sqlite.zip" https://downloads.wordpress.org/plugin/sqlite-database-integration.latest-stable.zip
 unzip -q -o "$WORK_DIR/sqlite.zip" -d "$WP_PATH/wp-content/plugins"
 sed -e "s#{SQLITE_IMPLEMENTATION_FOLDER_PATH}#$WP_PATH/wp-content/plugins/sqlite-database-integration#" \
