@@ -103,9 +103,9 @@ final class ProfileShortcode
             }
             // Set apart, so that it does not read like the hint of the last field.
             $html .= '<p class="orchestra-muted orchestra-footnote">' . \esc_html__(
-                'Only you, the organizers and the administrators can see this information.',
+                'Entering this information is voluntary. Only you, the organizers and the administrators can see it.',
                 'orchestra-members'
-            ) . '</p></fieldset>';
+            ) . self::privacyPolicyLink() . '</p></fieldset>';
         }
 
         if (MemberEmailGroups::automaticAvailable() && MemberDirectory::orchestraRoles($user) !== []) {
@@ -125,5 +125,16 @@ final class ProfileShortcode
         $save = Form::submit(\__('Save', 'orchestra-members'), 'primary');
 
         return Html::page($html . '<div class="orchestra-actions">' . $save . '</div></form>');
+    }
+
+    /**
+     * A link to the site's privacy policy (Settings → Privacy), or "" if there is none.
+     */
+    private static function privacyPolicyLink(): string
+    {
+        $url = \get_privacy_policy_url();
+
+        return $url === '' ? '' : ' <a href="' . \esc_url($url) . '">'
+            . \esc_html__('Privacy policy', 'orchestra-members') . '</a>';
     }
 }

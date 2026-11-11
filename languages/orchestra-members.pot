@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 10:57+0100\n"
+"POT-Creation-Date: 2026-11-11 13:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: src/Account/MemberCreator.php:72
+#, php-format
+msgid ""
+"%s has added you to the orchestra pages. Your name and email address are "
+"stored for this; everything else only once you enter it yourself."
+msgstr ""
+
+#. translators: %s: URL of the profile page
+#: src/Account/MemberCreator.php:82
+#, php-format
+msgid "You can see and change your details in your profile: %s"
+msgstr ""
+
+#. translators: %s: URL of the privacy policy
+#: src/Account/MemberCreator.php:88
+#, php-format
+msgid "Privacy policy: %s"
+msgstr ""
 
 #: src/Account/NewMemberInput.php:61
 msgid "Please enter a first name."
@@ -39,8 +58,8 @@ msgid "Please choose a role."
 msgstr ""
 
 #: src/Admin/MembersPage.php:50 src/Admin/MembersPage.php:51
-#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:121
-#: src/Plugin.php:163
+#: src/Admin/MembersPage.php:137 src/Email/MemberEmailGroups.php:123
+#: src/Plugin.php:165
 msgid "Members"
 msgstr ""
 
@@ -67,7 +86,7 @@ msgstr ""
 msgid "Orchestra"
 msgstr ""
 
-#: src/Admin/ProfileSection.php:82 src/Ui/ProfileShortcode.php:106
+#: src/Admin/ProfileSection.php:82
 msgid ""
 "Only you, the organizers and the administrators can see this information."
 msgstr ""
@@ -135,19 +154,19 @@ msgstr ""
 msgid "All organizers"
 msgstr ""
 
-#: src/Plugin.php:164
+#: src/Plugin.php:166
 msgid "Who plays in the orchestra."
 msgstr ""
 
-#: src/Plugin.php:170
+#: src/Plugin.php:172
 msgid "My profile"
 msgstr ""
 
-#: src/Plugin.php:171
+#: src/Plugin.php:173
 msgid "Your name, email address, password and orchestra details."
 msgstr ""
 
-#: src/Plugin.php:183
+#: src/Plugin.php:185
 msgid "Orchestra Members requires Orchestra Core 0.17 or later to be active."
 msgstr ""
 
@@ -174,33 +193,74 @@ msgid ""
 "stays blocked."
 msgstr ""
 
+#: src/Privacy/PersonalData.php:126
+msgid ""
+"The choice not to receive automatic emails was kept, so that the account "
+"still receives none."
+msgstr ""
+
+#: src/Privacy/PersonalData.php:151
+msgid ""
+"Accounts for the orchestra pages are created by the administrators, "
+"conductors and organizers with the name and email address of the person, who "
+"then receives an email to set a password."
+msgstr ""
+
+#: src/Privacy/PersonalData.php:157
+msgid ""
+"Members see the names of the others. Conductors and organizers see the list "
+"of members; organizers also see their email addresses, roles and whether "
+"they are active."
+msgstr ""
+
 #. translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions"
-#: src/Privacy/PersonalData.php:146
+#: src/Privacy/PersonalData.php:168
 #, php-format
 msgid "Members can enter the following information in their profile: %s."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:150
+#: src/Privacy/PersonalData.php:172
+msgid ""
+"This is voluntary. Some of it, e.g. dietary restrictions, can reveal health "
+"or religious information; it is only stored with the consent the member "
+"gives by entering it, which they can withdraw at any time by deleting it."
+msgstr ""
+
+#: src/Privacy/PersonalData.php:178
 msgid ""
 "This information is visible only to the member, the organizers and the "
 "administrators."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:154
-msgid "It is used to plan projects and deleted when a member is set inactive."
-msgstr ""
-
-#: src/Privacy/PersonalData.php:161
+#: src/Privacy/PersonalData.php:182
 msgid ""
-"Members who leave are set inactive instead of deleted, to preserve the "
-"history of projects."
+"It is used to plan projects and deleted when a member is set inactive or no "
+"longer has a role in the orchestra."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:164
-msgid "Inactive members cannot log in."
+#: src/Privacy/PersonalData.php:190
+msgid ""
+"Members who leave are set inactive instead of deleted. Their name, email "
+"address and the history of their projects are kept, based on the legitimate "
+"interest of the orchestra in its history."
 msgstr ""
 
-#: src/Privacy/PersonalData.php:168
+#: src/Privacy/PersonalData.php:194
+msgid "Inactive members cannot log in and receive no emails."
+msgstr ""
+
+#: src/Privacy/PersonalData.php:196
+msgid ""
+"Former members can ask for their account to be deleted; their history then "
+"no longer shows their name."
+msgstr ""
+
+#: src/Privacy/PersonalData.php:203
+msgid ""
+"Members can turn off the emails the website sends by itself in their profile."
+msgstr ""
+
+#: src/Privacy/PersonalData.php:212
 msgid "Orchestra Members"
 msgstr ""
 
@@ -622,8 +682,18 @@ msgstr ""
 msgid "Only needed to change your email address or password."
 msgstr ""
 
+#: src/Ui/ProfileShortcode.php:106
+msgid ""
+"Entering this information is voluntary. Only you, the organizers and the "
+"administrators can see it."
+msgstr ""
+
 #: src/Ui/ProfileShortcode.php:120
 msgid "Emails that conductors and organizers write to you are sent either way."
+msgstr ""
+
+#: src/Ui/ProfileShortcode.php:138
+msgid "Privacy policy"
 msgstr ""
 
 #: src/Ui/StatusController.php:41

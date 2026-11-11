@@ -62,4 +62,15 @@ final class PersonalDataTest extends TestCase
         $this->assertCount(1, $result['messages']);
         $this->assertFalse($this->profiles->isActive(5));
     }
+
+    public function testKeepsTheChoiceAgainstAutomaticEmails(): void
+    {
+        $this->profiles->setReceivesAutomaticEmails(5, false);
+
+        $result = $this->privacy->erase('user5@example.com');
+
+        $this->assertTrue($result['items_retained']);
+        $this->assertCount(1, $result['messages']);
+        $this->assertFalse($this->profiles->receivesAutomaticEmails(5));
+    }
 }

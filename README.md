@@ -32,6 +32,9 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
   (orchestra-email 0.5 or later)
 - Members turn automatic emails (e.g. about changed parts) off in their profile (orchestra-email 0.10
   or later)
+- Privacy (GDPR): the welcome email of new members says who added them and links to their profile
+  and the privacy policy; profile data is deleted when a member is set inactive or loses the
+  Orchestra role
 - Export and erasure of the profile data with the WordPress privacy tools, and a suggested
   privacy policy text
 - An API for the other Orchestra plugins

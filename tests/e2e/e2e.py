@@ -459,7 +459,8 @@ check(any(h.startswith("Reply-To:") and "organizer@example.com" in h for h in fi
 _, page = organizer.get(LOG)
 check("Rehearsal" in page and "Orchestra: Everyone" in page and ">Sent<" in page, "the log lists the email")
 _, page = conductor.get(LOG)
-check("Rehearsal" in page, "conductors see the log")
+check("Rehearsal" not in page and "You see the emails you sent." in text(page),
+      "conductors see only their own emails in the log")
 _, page = admin.get("/wp-admin/admin.php?page=orchestra-email-log")
 check("Rehearsal" in page, "administrators see the log in wp-admin")
 
@@ -526,7 +527,8 @@ erased = json.loads(wp_eval(
 check(erased["items_removed"] and meta(member2_id, "orchestra_members_dietary_restrictions") == "",
       "personal data eraser deletes the profile data")
 _, page = admin.get("/wp-admin/options-privacy.php?tab=policyguide")
-check("Orchestra Members" in page and "Inactive members cannot log in." in page, "suggests a privacy policy text")
+check("Orchestra Members" in page and "Inactive members cannot log in" in page and "legitimate interest" in page,
+      "suggests a privacy policy text")
 
 # --- Administrators choose the profile fields -----------------------------------------------
 FIELDS = MEMBERS + ("&" if "?" in MEMBERS else "?") + "orchestra_members_view=fields"
@@ -635,7 +637,10 @@ nora = json.loads(wp_eval('$u = get_user_by("email", "nora@example.com");'
 check("Nora Neu has been added" in text(page) and nora == ["nora", ["orchestra_member"], "Nora Neu"],
       f"conductors add members, always with the Member role: {nora}")
 sent = json.loads(wp_eval('echo json_encode(get_option("e2e_mails", []));'))
-check(any("nora@example.com" in json.dumps(m) for m in sent), "the new member receives an email to set a password")
+welcome = next((m for m in sent if "nora@example.com" in json.dumps(m)), None)
+check(welcome is not None, "the new member receives an email to set a password")
+check(welcome is not None and "has added you to the orchestra pages" in welcome.get("message", ""),
+      "the welcome email says who added the new member and what is stored")
 _, page = organizer.submit(find_form(organizer.get(NEW_MEMBER)[1], action="orchestra_members_add_member"),
                            {"first_name": "Nora", "email": "NORA@example.com"})
 check("already used by another account" in text(page), "an email address can only be used once")
@@ -677,8 +682,11 @@ admin.submit(profile_form(admin, edit_sub))
 check(roles("sub") == ["orchestra_organizer", "subscriber"], "saving the profile again keeps both roles")
 admin.submit(profile_form(admin, edit_sub), {"role": "editor", "orchestra_members_role": "orchestra_member"})
 check(roles("sub") == ["editor", "orchestra_member"], "both roles can be changed at the same time")
+wp("user", "meta", "update", "sub", "orchestra_members_dietary_restrictions", "Vegan")
 admin.submit(profile_form(admin, edit_sub), {"orchestra_members_role": ""})
 check(roles("sub") == ["editor"], "the Orchestra role can be removed")
+check(meta(sub_id, "orchestra_members_dietary_restrictions") == "",
+      "removing the Orchestra role deletes the profile values")
 admin.submit(profile_form(admin, f"/wp-admin/user-edit.php?user_id={member2_id}"))
 check(roles("member2") == ["orchestra_member"], "a member without a WordPress role keeps the Orchestra role")
 forged = profile_form(admin, edit_sub)

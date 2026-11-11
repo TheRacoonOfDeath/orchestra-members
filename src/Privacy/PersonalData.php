@@ -120,10 +120,17 @@ final class PersonalData
                 'orchestra-members'
             );
         }
+        $optedOut = !$this->profiles->receivesAutomaticEmails($profile->userId);
+        if ($optedOut) {
+            $messages[] = \__(
+                'The choice not to receive automatic emails was kept, so that the account still receives none.',
+                'orchestra-members'
+            );
+        }
 
         return [
             'items_removed' => $hadData,
-            'items_retained' => !$profile->active,
+            'items_retained' => !$profile->active || $optedOut,
             'messages' => $messages,
             'done' => true,
         ];
@@ -138,32 +145,69 @@ final class PersonalData
             return;
         }
 
-        $sentences = [];
+        $paragraphs = [
+            [
+                \__(
+                    'Accounts for the orchestra pages are created by the administrators, conductors and organizers'
+                        . ' with the name and email address of the person, who then receives an email to set a'
+                        . ' password.',
+                    'orchestra-members'
+                ),
+                \__(
+                    'Members see the names of the others. Conductors and organizers see the list of members;'
+                        . ' organizers also see their email addresses, roles and whether they are active.',
+                    'orchestra-members'
+                ),
+            ],
+        ];
         $labels = \array_map(static fn (ProfileField $field): string => $field->label, $this->fields->all());
         if ($labels !== []) {
-            $sentences[] = \sprintf(
-                /* translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions" */
-                \__('Members can enter the following information in their profile: %s.', 'orchestra-members'),
-                \implode(', ', $labels)
-            );
-            $sentences[] = \__(
-                'This information is visible only to the member, the organizers and the administrators.',
-                'orchestra-members'
-            );
-            $sentences[] = \__(
-                'It is used to plan projects and deleted when a member is set inactive.',
-                'orchestra-members'
-            );
+            $paragraphs[] = [
+                \sprintf(
+                    /* translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions" */
+                    \__('Members can enter the following information in their profile: %s.', 'orchestra-members'),
+                    \implode(', ', $labels)
+                ),
+                \__(
+                    'This is voluntary. Some of it, e.g. dietary restrictions, can reveal health or religious'
+                        . ' information; it is only stored with the consent the member gives by entering it, which'
+                        . ' they can withdraw at any time by deleting it.',
+                    'orchestra-members'
+                ),
+                \__(
+                    'This information is visible only to the member, the organizers and the administrators.',
+                    'orchestra-members'
+                ),
+                \__(
+                    'It is used to plan projects and deleted when a member is set inactive or no longer has a role'
+                        . ' in the orchestra.',
+                    'orchestra-members'
+                ),
+            ];
         }
-        $sentences = [
-            ...$sentences,
+        $paragraphs[] = [
             \__(
-                'Members who leave are set inactive instead of deleted, to preserve the history of projects.',
+                'Members who leave are set inactive instead of deleted. Their name, email address and the history of'
+                    . ' their projects are kept, based on the legitimate interest of the orchestra in its history.',
                 'orchestra-members'
             ),
-            \__('Inactive members cannot log in.', 'orchestra-members'),
+            \__('Inactive members cannot log in and receive no emails.', 'orchestra-members'),
+            \__(
+                'Former members can ask for their account to be deleted; their history then no longer shows their'
+                    . ' name.',
+                'orchestra-members'
+            ),
         ];
-        $text = '<p>' . \esc_html(\implode(' ', $sentences)) . '</p>';
+        $paragraphs[] = [
+            \__(
+                'Members can turn off the emails the website sends by itself in their profile.',
+                'orchestra-members'
+            ),
+        ];
+        $text = '';
+        foreach ($paragraphs as $sentences) {
+            $text .= '<p>' . \esc_html(\implode(' ', $sentences)) . '</p>';
+        }
 
         \wp_add_privacy_policy_content(\__('Orchestra Members', 'orchestra-members'), \wp_kses_post($text));
     }

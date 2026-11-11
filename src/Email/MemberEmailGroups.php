@@ -114,6 +114,8 @@ final class MemberEmailGroups
         if (!\property_exists(RecipientGroup::class, 'listed')) {
             return;
         }
+        // Since orchestra-email 0.12 the log refers to the member instead of keeping their name.
+        $refersToPerson = \property_exists(RecipientGroup::class, 'person');
         foreach ($this->directory->members([]) as $member) {
             $registry->add(new RecipientGroup(
                 self::memberGroupId($member->id),
@@ -122,7 +124,8 @@ final class MemberEmailGroups
                 static fn (): array => [$member->id],
                 Capabilities::EMAIL_MEMBER,
                 [],
-                false
+                false,
+                ...($refersToPerson ? ['person' => $member->id] : [])
             ));
         }
     }
