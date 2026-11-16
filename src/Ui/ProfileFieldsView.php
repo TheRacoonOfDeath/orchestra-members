@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Orchestra\Members\Ui;
 
 use Orchestra\Core\Ui\Form;
+use Orchestra\Core\Ui\Html;
 use Orchestra\Members\Profile\ProfileField;
 use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileFieldsInput;
@@ -83,7 +84,7 @@ final class ProfileFieldsView
             . ' data-orchestra-add-row="' . self::NEW_ROW_TEMPLATE . '" data-orchestra-target="' . self::ROWS . '">'
             . \esc_html__('+ Add field', 'orchestra-members') . '</button></div>'
             . '<p class="orchestra-muted">' . \esc_html__(
-                'Drag the fields by their handle to change the order. For checkboxes, the hint is the text next to'
+                'Change the order with the arrow buttons. For checkboxes, the hint is the text next to'
                     . ' the box.',
                 'orchestra-members'
             ) . '</p>'
@@ -144,19 +145,13 @@ final class ProfileFieldsView
     }
 
     /**
-     * The top line of a row: the drag handle, which also submits the row's place in the order, the
-     * type and the button that deletes or removes the field.
+     * The top line of a row: the buttons that move the field up or down, with the hidden field that
+     * submits its place in the order, the type and the button that deletes or removes the field.
      */
     private static function header(string $key, string $label, string $type, string $action): string
     {
-        /* translators: %s: field label */
-        $move = \sprintf(\__('Move "%s"', 'orchestra-members'), $label);
-
         return '<div class="orchestra-row-header">' . Form::hidden(ProfileFieldsInput::FIELD_ORDER . '[]', $key)
-            . '<button type="button" class="orchestra-drag-handle" data-orchestra-drag-handle aria-label="'
-            . \esc_attr($move) . '" title="'
-            . \esc_attr__('Drag to change the order, or use the arrow keys', 'orchestra-members') . '">'
-            . '<span aria-hidden="true">&#8801;</span></button>' . $type
+            . Html::moveButtons($label) . $type
             . '<span class="orchestra-row-header__end">' . $action . '</span></div>';
     }
 

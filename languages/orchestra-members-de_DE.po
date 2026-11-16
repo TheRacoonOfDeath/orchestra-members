@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: orchestra-members\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 13:18+0100\n"
+"POT-Creation-Date: 2026-11-16 13:26+0100\n"
 "PO-Revision-Date: 2026-10-16 00:00+0000\n"
 "Last-Translator: Julian Nickerl\n"
 "Language-Team: German\n"
@@ -570,8 +570,8 @@ msgstr "Du darfst dieses Profil nicht bearbeiten."
 msgid "Your profile has been saved."
 msgstr "Dein Profil wurde gespeichert."
 
-#: src/Ui/ProfileFieldControl.php:52 src/Ui/ProfileFieldsView.php:75
-#: src/Ui/ProfileFieldsView.php:126
+#: src/Ui/ProfileFieldControl.php:52 src/Ui/ProfileFieldsView.php:76
+#: src/Ui/ProfileFieldsView.php:127
 msgid "Other"
 msgstr "Sonstiges"
 
@@ -589,7 +589,7 @@ msgstr "Sonstiges: bitte angeben"
 msgid "The profile fields have been saved."
 msgstr "Die Profilfelder wurden gespeichert."
 
-#: src/Ui/ProfileFieldsView.php:30
+#: src/Ui/ProfileFieldsView.php:31
 msgid ""
 "Members fill in these fields in their profile. Only they, the organizers and "
 "the administrators can see the answers, and the answers are deleted when a "
@@ -599,99 +599,89 @@ msgstr ""
 "Organisatoren und die Administratoren sehen die Angaben, und sie werden "
 "gelöscht, wenn ein Mitglied auf inaktiv gesetzt wird."
 
-#: src/Ui/ProfileFieldsView.php:39 src/Ui/ProfileFieldsView.php:90
+#: src/Ui/ProfileFieldsView.php:40 src/Ui/ProfileFieldsView.php:91
 #: src/Ui/ProfileShortcode.php:125
 msgid "Save"
 msgstr "Speichern"
 
-#: src/Ui/ProfileFieldsView.php:47
+#: src/Ui/ProfileFieldsView.php:48
 #, php-format
 msgid "Delete the field \"%s\"? What the members entered in it is deleted too."
 msgstr ""
 "Das Feld „%s“ löschen? Die Angaben der Mitglieder darin werden ebenfalls "
 "gelöscht."
 
-#: src/Ui/ProfileFieldsView.php:53
+#: src/Ui/ProfileFieldsView.php:54
 msgid "Delete"
 msgstr "Löschen"
 
-#: src/Ui/ProfileFieldsView.php:62 src/Ui/ProfileFieldsView.php:114
+#: src/Ui/ProfileFieldsView.php:63 src/Ui/ProfileFieldsView.php:115
 msgid "Label"
 msgstr "Bezeichnung"
 
-#: src/Ui/ProfileFieldsView.php:66 src/Ui/ProfileFieldsView.php:118
+#: src/Ui/ProfileFieldsView.php:67 src/Ui/ProfileFieldsView.php:119
 msgid "Hint"
 msgstr "Hinweis"
 
-#: src/Ui/ProfileFieldsView.php:71 src/Ui/ProfileFieldsView.php:120
+#: src/Ui/ProfileFieldsView.php:72 src/Ui/ProfileFieldsView.php:121
 msgid "Default"
 msgstr "Voreinstellung"
 
-#: src/Ui/ProfileFieldsView.php:74 src/Ui/ProfileFieldsView.php:122
+#: src/Ui/ProfileFieldsView.php:75 src/Ui/ProfileFieldsView.php:123
 msgid "Choices"
 msgstr "Auswahlmöglichkeiten"
 
-#: src/Ui/ProfileFieldsView.php:84
+#: src/Ui/ProfileFieldsView.php:85
 msgid "+ Add field"
 msgstr "+ Feld hinzufügen"
 
-#: src/Ui/ProfileFieldsView.php:86
+#: src/Ui/ProfileFieldsView.php:87
 msgid ""
-"Drag the fields by their handle to change the order. For checkboxes, the "
-"hint is the text next to the box."
+"Change the order with the arrow buttons. For checkboxes, the hint is the "
+"text next to the box."
 msgstr ""
-"Ziehe die Felder an ihrem Griff, um die Reihenfolge zu ändern. Bei "
-"Ankreuzfeldern steht der Hinweis neben dem Kästchen."
+"Ändere die Reihenfolge mit den Pfeilen. Bei Ankreuzfeldern steht der "
+"Hinweis neben dem Kästchen."
 
-#: src/Ui/ProfileFieldsView.php:107
+#: src/Ui/ProfileFieldsView.php:108
 msgid "New field"
 msgstr "Neues Feld"
 
-#: src/Ui/ProfileFieldsView.php:109
+#: src/Ui/ProfileFieldsView.php:110
 msgid "Type"
 msgstr "Typ"
 
-#: src/Ui/ProfileFieldsView.php:111
+#: src/Ui/ProfileFieldsView.php:112
 msgid "Remove"
 msgstr "Entfernen"
 
-#: src/Ui/ProfileFieldsView.php:116
+#: src/Ui/ProfileFieldsView.php:117
 msgid "New field, e.g. T-shirt size"
 msgstr "Neues Feld, z. B. T-Shirt-Größe"
 
-#: src/Ui/ProfileFieldsView.php:123
+#: src/Ui/ProfileFieldsView.php:124
 msgid "One choice per line"
 msgstr "Eine Auswahlmöglichkeit pro Zeile"
 
-#. translators: %s: field label
-#: src/Ui/ProfileFieldsView.php:153
-#, php-format
-msgid "Move \"%s\""
-msgstr "„%s“ verschieben"
-
-#: src/Ui/ProfileFieldsView.php:158
-msgid "Drag to change the order, or use the arrow keys"
-msgstr "Ziehen, um die Reihenfolge zu ändern, oder die Pfeiltasten verwenden"
-
-#: src/Ui/ProfileFieldsView.php:174
+#: src/Ui/ProfileFieldsView.php:169
 msgid "Ticked by default"
 msgstr "Standardmäßig angekreuzt"
 
-#: src/Ui/ProfileFieldsView.php:175
+#: src/Ui/ProfileFieldsView.php:170
 msgid "Counts as the answer of members who have not answered yet."
 msgstr "Gilt als Antwort der Mitglieder, die noch nicht geantwortet haben."
 
-#: src/Ui/ProfileFieldsView.php:184
+#: src/Ui/ProfileFieldsView.php:179
 msgid "Offer \"Other\" with a free-text answer"
 msgstr "„Sonstiges“ mit eigener Antwort anbieten"
 
 #. translators: %d: maximum number of characters
-#: src/Ui/ProfileFieldsView.php:187
+#: src/Ui/ProfileFieldsView.php:182
 #, php-format
 msgid "Members can write their own answer, at most %d characters."
 msgstr "Mitglieder können eine eigene Antwort schreiben, höchstens %d Zeichen."
 
-#: src/Ui/ProfileFieldsView.php:206
+#: src/Ui/ProfileFieldsView.php:201
 msgid "Choices, one per line"
 msgstr "Auswahlmöglichkeiten, eine pro Zeile"
 
@@ -777,6 +767,17 @@ msgstr "Das Mitglied ist inaktiv. Seine sensiblen Profildaten wurden gelöscht."
 #~ msgstr[0] "%d Mitglied"
 #~ msgstr[1] "%d Mitglieder"
 
+#~ msgid ""
+#~ "Drag the fields by their handle to change the order. For checkboxes, the "
+#~ "hint is the text next to the box."
+#~ msgstr ""
+#~ "Ziehe die Felder an ihrem Griff, um die Reihenfolge zu ändern. Bei "
+#~ "Ankreuzfeldern steht der Hinweis neben dem Kästchen."
+
+#~ msgid "Drag to change the order, or use the arrow keys"
+#~ msgstr ""
+#~ "Ziehen, um die Reihenfolge zu ändern, oder die Pfeiltasten verwenden"
+
 #~ msgid "Inactive members cannot log in."
 #~ msgstr "Inaktive Mitglieder können sich nicht einloggen."
 
@@ -792,6 +793,10 @@ msgstr "Das Mitglied ist inaktiv. Seine sensiblen Profildaten wurden gelöscht."
 #~ msgstr ""
 #~ "Mitglieder, die das Orchester verlassen, werden auf inaktiv gesetzt statt "
 #~ "gelöscht, damit der Verlauf der Projekte erhalten bleibt."
+
+#, php-format
+#~ msgid "Move \"%s\""
+#~ msgstr "„%s“ verschieben"
 
 #~ msgid "Offer \"Other\" with a free-text answer (only for choice lists)"
 #~ msgstr "„Sonstiges“ mit eigener Antwort anbieten (nur für Auswahllisten)"
