@@ -6,8 +6,9 @@ Part of the Orchestra plugin suite. Requires the [orchestra-core](https://github
 
 ## Features
 
-- `[orchestra_profile]`: everyone edits their name, email address, password and the orchestra's
-  profile fields (administrators also on the WordPress profile screen)
+- `[orchestra_profile]`: everyone edits their name, email address, password, their birth date (a
+  date picker) and the orchestra's profile fields (administrators also on the WordPress profile
+  screen)
 - Profile fields chosen by the administrators on the members page (**Profile fields**) or under
   **Members → Profile Fields**: text, long text, checkbox (optionally ticked by default) or choice
   list (optionally with "Other" and a free-text answer of up to 100 characters). New installations

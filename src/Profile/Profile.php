@@ -12,11 +12,14 @@ final class Profile
     /**
      * @param array<string, string> $values Sensitive. Field ID => value, for every current
      *     {@see ProfileField}; "" if the member has not entered anything
+     * @param string $birthDate Sensitive. Y-m-d, or "" if the member has not entered it
+     *     ({@see BirthDate})
      */
     public function __construct(
         public readonly int $userId,
         public readonly bool $active,
         public readonly array $values,
+        public readonly string $birthDate = '',
     ) {
     }
 

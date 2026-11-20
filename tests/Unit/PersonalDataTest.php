@@ -23,7 +23,11 @@ final class PersonalDataTest extends TestCase
         $this->profiles = new ProfileRepository($fields);
         $this->privacy = new PersonalData($this->profiles, $fields);
         WordPress::addUser(5, [Roles::MEMBER]);
-        $this->profiles->saveSensitiveData(5, ['financial_support' => '1', 'dietary_restrictions' => 'Vegan']);
+        $this->profiles->saveSensitiveData(
+            5,
+            ['financial_support' => '1', 'dietary_restrictions' => 'Vegan'],
+            '1990-05-08'
+        );
     }
 
     public function testExportsTheProfile(): void
@@ -35,6 +39,7 @@ final class PersonalDataTest extends TestCase
         $this->assertSame([
             ['name' => 'Status', 'value' => 'Active'],
             ['name' => 'Automatic emails', 'value' => 'Yes'],
+            ['name' => 'Birth date', 'value' => '1990-05-08'],
             ['name' => 'Financial support', 'value' => 'Yes'],
             ['name' => 'Dietary restrictions', 'value' => 'Vegan'],
         ], $export['data'][0]['data']);
@@ -50,6 +55,7 @@ final class PersonalDataTest extends TestCase
         $profile = $this->profiles->find(5);
         $this->assertNotNull($profile);
         $this->assertSame(['financial_support' => '', 'dietary_restrictions' => ''], $profile->values);
+        $this->assertSame('', $profile->birthDate);
     }
 
     public function testKeepsTheInactiveStatus(): void

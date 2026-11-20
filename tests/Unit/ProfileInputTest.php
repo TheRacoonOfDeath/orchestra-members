@@ -89,4 +89,17 @@ final class ProfileInputTest extends TestCase
 
         $this->assertSame(['Diet must not be longer than 100 characters.'], $input->validate());
     }
+
+    public function testReadsAndValidatesTheBirthDate(): void
+    {
+        $input = ProfileInput::fromForm(['orchestra_members_birth_date' => ' 1990-05-08 '], $this->fields);
+        $this->assertSame('1990-05-08', $input->birthDate);
+        $this->assertSame([], $input->validate());
+
+        $this->assertSame('', ProfileInput::fromForm([], $this->fields)->birthDate);
+        $this->assertSame(
+            ['Please enter a valid birth date.'],
+            ProfileInput::fromForm(['orchestra_members_birth_date' => '1990-02-30'], $this->fields)->validate()
+        );
+    }
 }

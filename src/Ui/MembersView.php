@@ -198,6 +198,7 @@ final class MembersView
         $details = [
             [\__('Email', 'orchestra-members'), $email],
             [\__('Role', 'orchestra-members'), \esc_html(self::roleNames($member))],
+            [\__('Birth date', 'orchestra-members'), ProfileFieldControl::birthDateValue($profile->birthDate)],
         ];
         foreach ($this->fields->all() as $field) {
             $details[] = [$field->label, ProfileFieldControl::value($field, $profile->value($field->id))];

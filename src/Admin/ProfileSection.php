@@ -134,6 +134,10 @@ final class ProfileSection
                 . '</label></td></tr>';
         }
 
+        echo '<tr><th><label for="orchestra-profile-birth-date">' . \esc_html__('Birth date', 'orchestra-members')
+            . '</label></th><td>'
+            . ProfileFieldControl::birthDate($profile->birthDate, 'orchestra-profile-birth-date', !$editable)
+            . '</td></tr>';
         foreach ($this->fields->all() as $field) {
             $id = 'orchestra-profile-' . $field->id;
             $hint = ProfileFieldControl::hint($field);
@@ -167,7 +171,7 @@ final class ProfileSection
         $input = ProfileInput::fromForm(\wp_unslash($_POST), $this->fields->all());
         $this->errors = $input->validate();
         if ($this->errors === []) {
-            $this->profiles->saveSensitiveData($userId, $input->values);
+            $this->profiles->saveSensitiveData($userId, $input->values, $input->birthDate);
         }
     }
 

@@ -12,6 +12,7 @@ Everything is stored as user meta. There are no custom tables.
 |----------|-------|---------|
 | `orchestra_members_inactive` | `1` | Present only while the member is inactive. New users are active. |
 | `orchestra_members_{field ID}` | see below | The value of a profile field; present only if not empty or an unticked checkbox. Sensitive. |
+| `orchestra_members_birth_date` | `Y-m-d` | The birth date (since 0.22); present only if entered. Sensitive. |
 | `orchestra_members_no_automatic_emails` | `1` | Present only while the member turned automatic emails off. Not sensitive; kept when the member is set inactive. |
 
 The option `orchestra_members_profile_fields` holds the profile fields, in display order. Each has a
@@ -39,6 +40,14 @@ A choice list can offer "Other" with a free-text answer (`other` in the option):
 an "Other" choice and a text box (`orchestra_members_other[ID]`). The text counts when "Other" or
 nothing is chosen and is stored as the value; a value that is not one of the choices is shown as
 the free-text answer. Without the option, such a value is a removed choice (see below).
+
+Every profile also has a **birth date** (since 0.22, `Profile\BirthDate`). It is not a profile field:
+administrators cannot remove it. It is the first entry of the "Orchestra" section of the profile (a
+date picker, `<input type="date">`, between 1900-01-01 and today), and is shown on the WordPress profile
+screen and to organizers in the member view. It is treated like the profile fields: optional, visible to
+the same people, deleted with them (inactive, Orchestra role removed, eraser), and part of the privacy
+export and policy text. The field ID `birth_date` is reserved, so no profile field gets its meta key.
+orchestra-projects exports it with the age at the project's start.
 
 The type of a field cannot be changed after it was created. In the row of a new field, only the
 options of the chosen type are shown ("Ticked by default" for checkboxes, "Choices" and "Other"
@@ -86,6 +95,7 @@ role (`orchestra_members_role`), see `MemberFilter`.
 | `MembersService` | Public API for other plugins, see [api.md](api.md) |
 | `MemberDirectory` | Finds the users with an orchestra role |
 | `Profile\ProfileFields` | The profile fields chosen by the administrators (option) |
+| `Profile\BirthDate` | Validation and display of the birth date |
 | `Profile\ProfileField` | One field: type, normalization and validation of its value |
 | `Profile\ProfileFieldsInput` | Reads and validates the form in which the fields are changed |
 | `Profile\ProfileRepository` | Reads and writes the user meta |

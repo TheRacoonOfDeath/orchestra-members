@@ -88,11 +88,15 @@ final class ProfileShortcode
             . '</fieldset>';
 
         $profile = $this->profiles->find($user->ID);
-        $fields = $this->fields->all();
-        if ($profile !== null && $fields !== [] && MemberDirectory::orchestraRoles($user) !== []) {
+        if ($profile !== null && MemberDirectory::orchestraRoles($user) !== []) {
             $html .= '<fieldset class="orchestra-fieldset orchestra-stack"><legend>'
-                . \esc_html__('Orchestra', 'orchestra-members') . '</legend>';
-            foreach ($fields as $field) {
+                . \esc_html__('Orchestra', 'orchestra-members') . '</legend>'
+                . Html::field(
+                    'orchestra-profile-birth-date',
+                    \__('Birth date', 'orchestra-members'),
+                    ProfileFieldControl::birthDate($profile->birthDate, 'orchestra-profile-birth-date')
+                );
+            foreach ($this->fields->all() as $field) {
                 $id = 'orchestra-profile-' . $field->id;
                 $html .= Html::field(
                     $id,

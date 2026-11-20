@@ -33,7 +33,7 @@ final class ProfileRepository
             $values[$field->id] = $active || $stored !== '' ? $field->fromStored($stored) : '';
         }
 
-        return new Profile($userId, $active, $values);
+        return new Profile($userId, $active, $values, $this->meta($userId, BirthDate::META_KEY));
     }
 
     public function isActive(int $userId): bool
@@ -44,9 +44,15 @@ final class ProfileRepository
     /**
      * @param array<string, string> $values field ID => normalized value; fields that are missing
      *     are left unchanged
+     * @param string|null $birthDate Y-m-d, "" to delete it, null to leave it unchanged
      */
-    public function saveSensitiveData(int $userId, array $values): void
+    public function saveSensitiveData(int $userId, array $values, ?string $birthDate = null): void
     {
+        if ($birthDate !== null && $birthDate !== '') {
+            \update_user_meta($userId, BirthDate::META_KEY, $birthDate);
+        } elseif ($birthDate === '') {
+            \delete_user_meta($userId, BirthDate::META_KEY);
+        }
         foreach ($this->fields->all() as $field) {
             $value = $values[$field->id] ?? null;
             if ($value === null) {
@@ -62,10 +68,13 @@ final class ProfileRepository
     }
 
     /**
-     * Whether anything of the profile is stored, also an unticked checkbox. Defaults do not count.
+     * Whether anything of the profile is stored, also the birth date or an unticked checkbox. Defaults do not count.
      */
     public function hasSensitiveData(int $userId): bool
     {
+        if ($this->meta($userId, BirthDate::META_KEY) !== '') {
+            return true;
+        }
         foreach ($this->fields->all() as $field) {
             if ($this->meta($userId, $field->metaKey()) !== '') {
                 return true;
@@ -77,6 +86,7 @@ final class ProfileRepository
 
     public function deleteSensitiveData(int $userId): void
     {
+        \delete_user_meta($userId, BirthDate::META_KEY);
         foreach ($this->fields->all() as $field) {
             \delete_user_meta($userId, $field->metaKey());
         }

@@ -4,14 +4,36 @@ declare(strict_types=1);
 
 namespace Orchestra\Members\Ui;
 
+use Orchestra\Members\Profile\BirthDate;
 use Orchestra\Members\Profile\ProfileField;
 
 /**
- * The form control and the displayed value of a {@see ProfileField}, shared by the profile page, the
- * WordPress profile screen and the member view.
+ * The form control and the displayed value of a {@see ProfileField} and of the {@see BirthDate},
+ * shared by the profile page, the WordPress profile screen and the member view.
  */
 final class ProfileFieldControl
 {
+    /**
+     * The date picker of the birth date. Escaped.
+     *
+     * @param string $class CSS class, e.g. "regular-text" in wp-admin
+     */
+    public static function birthDate(string $value, string $id, bool $disabled = false, string $class = ''): string
+    {
+        return '<input type="date" id="' . \esc_attr($id) . '" name="' . BirthDate::FIELD . '"'
+            . ($class === '' ? '' : ' class="' . \esc_attr($class) . '"')
+            . ' min="' . BirthDate::MIN . '" max="' . \esc_attr(\current_time('Y-m-d')) . '" value="'
+            . \esc_attr($value) . '" autocomplete="bday"' . ($disabled ? ' disabled' : '') . '>';
+    }
+
+    /**
+     * The birth date for display, escaped. "—" if it is empty.
+     */
+    public static function birthDateValue(string $value): string
+    {
+        return $value === '' ? '—' : \esc_html(BirthDate::display($value));
+    }
+
     /**
      * The input element; checkboxes come with their text (the field's hint). Escaped.
      *

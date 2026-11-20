@@ -73,7 +73,7 @@ final class ProfileController
         }
 
         if ($this->hasOrchestraProfile($user)) {
-            $this->profiles->saveSensitiveData($user->ID, $profile->values);
+            $this->profiles->saveSensitiveData($user->ID, $profile->values, $profile->birthDate);
         }
         $automatic = MemberEmailGroups::automaticChoice($post);
         if ($automatic !== null && MemberDirectory::orchestraRoles($user) !== []) {

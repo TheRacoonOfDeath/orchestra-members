@@ -102,6 +102,21 @@ function update_option(string $option, mixed $value, ?bool $autoload = null): bo
     return true;
 }
 
+function current_time(string $type): string
+{
+    return gmdate($type);
+}
+
+function wp_timezone(): DateTimeZone
+{
+    return new DateTimeZone('UTC');
+}
+
+function wp_date(string $format, ?int $timestamp = null): string
+{
+    return gmdate($format, $timestamp ?? time());
+}
+
 function remove_accents(string $text): string
 {
     return strtr($text, ['ä' => 'a', 'ö' => 'o', 'ü' => 'u', 'ß' => 'ss', 'é' => 'e']);

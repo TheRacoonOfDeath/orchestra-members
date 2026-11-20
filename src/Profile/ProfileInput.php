@@ -7,17 +7,20 @@ namespace Orchestra\Members\Profile;
 /**
  * Normalizes and validates the profile fields submitted in a form. Each field is submitted under
  * its {@see ProfileField::metaKey()}, the free-text answers of choice lists under
- * `orchestra_members_other[ID]` ({@see ProfileField::OTHER_FIELD}).
+ * `orchestra_members_other[ID]` ({@see ProfileField::OTHER_FIELD}), the birth date under
+ * {@see BirthDate::FIELD}.
  */
 final class ProfileInput
 {
     /**
      * @param list<ProfileField> $fields
      * @param array<string, string> $values field ID => value
+     * @param string $birthDate as entered; Y-m-d once {@see validate()} found no error
      */
     private function __construct(
         private readonly array $fields,
         public readonly array $values,
+        public readonly string $birthDate = '',
     ) {
     }
 
@@ -33,7 +36,7 @@ final class ProfileInput
             $values[$field->id] = $field->normalize($post[$field->metaKey()] ?? '', $other[$field->id] ?? '');
         }
 
-        return new self($fields, $values);
+        return new self($fields, $values, BirthDate::normalize($post[BirthDate::FIELD] ?? ''));
     }
 
     /**
@@ -42,6 +45,10 @@ final class ProfileInput
     public function validate(): array
     {
         $errors = [];
+        $birthDateError = BirthDate::error($this->birthDate, \current_time('Y-m-d'));
+        if ($birthDateError !== null) {
+            $errors[] = $birthDateError;
+        }
         foreach ($this->fields as $field) {
             $error = $field->error($this->values[$field->id] ?? '');
             if ($error !== null) {

@@ -13,7 +13,7 @@ final class ProfileFields
     public const OPTION = 'orchestra_members_profile_fields';
 
     /** Field IDs that would collide with other user meta of orchestra-members. */
-    private const RESERVED_IDS = ['inactive'];
+    private const RESERVED_IDS = ['inactive', 'birth_date'];
 
     private const ID_MAX_LENGTH = 40;
 

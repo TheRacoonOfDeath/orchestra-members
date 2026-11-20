@@ -239,18 +239,25 @@ _, page = member.get(PROFILE)
 form = find_form(page, action="orchestra_members_save_profile")
 check(form is not None and "Dietary restrictions" in page and "New password" in page,
       "the profile page shows account and orchestra fields")
+check('type="date" id="orchestra-profile-birth-date" name="orchestra_members_birth_date"' in page,
+      "the profile page has a date picker for the birth date")
 _, page = member.submit(form, {"orchestra_members_financial_support": "1",
                                "orchestra_members_dietary_restrictions": "Vegetarian\nno nuts",
+                               "orchestra_members_birth_date": "1990-05-08",
                                "display_name": "Mia Muster"})
 check("Your profile has been saved." in text(page), "member saves the profile")
 check(meta(member_id, "orchestra_members_financial_support") == "1", "member saves financial support")
 check(meta(member_id, "orchestra_members_dietary_restrictions") == "Vegetarian\nno nuts", "member saves dietary restrictions")
+check(meta(member_id, "orchestra_members_birth_date") == "1990-05-08", "member saves the birth date")
 check(wp("user", "get", "member", "--field=display_name") == "Mia Muster", "member changes their name")
 _, page = member.get(PROFILE)
 form = find_form(page, action="orchestra_members_save_profile")
 _, page = member.submit(form, {"orchestra_members_dietary_restrictions": "x" * 1001})
 check("must not be longer than 1000 characters" in text(page), "too long dietary restrictions are rejected with a message")
 check(meta(member_id, "orchestra_members_dietary_restrictions") == "Vegetarian\nno nuts", "rejected input is not saved")
+_, page = member.submit(form, {"orchestra_members_birth_date": "2999-01-01"})
+check("Please enter a valid birth date." in text(page) and meta(member_id, "orchestra_members_birth_date") == "1990-05-08",
+      "a birth date in the future is rejected")
 status, _ = member.submit(form, {"orchestra_members_dietary_restrictions": "forged", "_wpnonce": "invalid"})
 check(status == 403 and meta(member_id, "orchestra_members_dietary_restrictions") == "Vegetarian\nno nuts",
       "profile data is not saved without a valid nonce")
@@ -310,6 +317,8 @@ check("member2@example.com" in page and "Active" in page, "organizers see emails
 _, page = organizer.get(member_url(member2_id))
 check("Gluten-free" in page, "organizers can view other profiles")
 check("Set inactive" in page, "organizers see the status form")
+_, page = organizer.get(member_url(member_id))
+check("Birth date" in text(page) and "1990" in text(page), "organizers see the birth date")
 _, page = organizer.get(member_url(admin_id))
 check("Set inactive" not in page, "administrators have no status form")
 _, page = organizer.get(member_url(organizer_id))
@@ -341,7 +350,8 @@ _, page = organizer.submit(find_form(page, action="orchestra_members_set_status"
 check("The member is inactive" in text(page), "organizer sets a member inactive on the members page")
 check(meta(member_id, "orchestra_members_inactive") == "1", "member is stored as inactive")
 check(meta(member_id, "orchestra_members_financial_support") == ""
-      and meta(member_id, "orchestra_members_dietary_restrictions") == "",
+      and meta(member_id, "orchestra_members_dietary_restrictions") == ""
+      and meta(member_id, "orchestra_members_birth_date") == "",
       "sensitive data is deleted on deactivation")
 check(not member.logged_in(), "the inactive member's session has ended")
 check(rest_me("member", member_app_password) == 401, "inactive member cannot use an application password")

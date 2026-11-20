@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Orchestra\Members\Privacy;
 
 use Orchestra\Members\Admin\StatusLabel;
+use Orchestra\Members\Profile\BirthDate;
 use Orchestra\Members\Profile\ProfileField;
 use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
@@ -80,6 +81,7 @@ final class PersonalData
                     ? \__('Yes', 'orchestra-members')
                     : \__('No', 'orchestra-members'),
             ],
+            ['name' => \__('Birth date', 'orchestra-members'), 'value' => BirthDate::display($profile->birthDate)],
         ];
         foreach ($this->fields->all() as $field) {
             $data[] = ['name' => $field->label, 'value' => $field->display($profile->value($field->id))];
@@ -160,31 +162,32 @@ final class PersonalData
                 ),
             ],
         ];
-        $labels = \array_map(static fn (ProfileField $field): string => $field->label, $this->fields->all());
-        if ($labels !== []) {
-            $paragraphs[] = [
-                \sprintf(
-                    /* translators: %s: list of profile fields, e.g. "Financial support, Dietary restrictions" */
-                    \__('Members can enter the following information in their profile: %s.', 'orchestra-members'),
-                    \implode(', ', $labels)
-                ),
-                \__(
-                    'This is voluntary. Some of it, e.g. dietary restrictions, can reveal health or religious'
-                        . ' information; it is only stored with the consent the member gives by entering it, which'
-                        . ' they can withdraw at any time by deleting it.',
-                    'orchestra-members'
-                ),
-                \__(
-                    'This information is visible only to the member, the organizers and the administrators.',
-                    'orchestra-members'
-                ),
-                \__(
-                    'It is used to plan projects and deleted when a member is set inactive or no longer has a role'
-                        . ' in the orchestra.',
-                    'orchestra-members'
-                ),
-            ];
-        }
+        $labels = [
+            \__('Birth date', 'orchestra-members'),
+            ...\array_map(static fn (ProfileField $field): string => $field->label, $this->fields->all()),
+        ];
+        $paragraphs[] = [
+            \sprintf(
+                /* translators: %s: list of profile fields, e.g. "Birth date, Financial support, Diet" */
+                \__('Members can enter the following information in their profile: %s.', 'orchestra-members'),
+                \implode(', ', $labels)
+            ),
+            \__(
+                'This is voluntary. Some of it, e.g. dietary restrictions, can reveal health or religious'
+                    . ' information; it is only stored with the consent the member gives by entering it, which'
+                    . ' they can withdraw at any time by deleting it.',
+                'orchestra-members'
+            ),
+            \__(
+                'This information is visible only to the member, the organizers and the administrators.',
+                'orchestra-members'
+            ),
+            \__(
+                'It is used to plan projects and deleted when a member is set inactive or no longer has a role'
+                    . ' in the orchestra.',
+                'orchestra-members'
+            ),
+        ];
         $paragraphs[] = [
             \__(
                 'Members who leave are set inactive instead of deleted. Their name, email address and the history of'

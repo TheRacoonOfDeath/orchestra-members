@@ -7,7 +7,8 @@ This page covers orchestra-members.
 ## Personal data
 
 The profile fields are chosen by the administrators (by default financial support and dietary
-restrictions). Their values are personal data under the GDPR and are treated as sensitive, since
+restrictions); every profile also has a birth date (since 0.22), which is treated like them in
+everything below. Their values are personal data under the GDPR and are treated as sensitive, since
 fields like dietary restrictions can reveal health or religious information. Only add fields the
 orchestra needs.
 
@@ -29,7 +30,7 @@ orchestra needs.
   are kept, so that an erased account stays blocked and receives none; the eraser reports them as
   retained.
 - Organizers can download the profiles of a project's accepted participants as a CSV file
-  (orchestra-projects). Such files leave the site; delete them when they are no longer needed.
+  (orchestra-projects), with the birth date and the age at the start of the project. Such files leave the site; delete them when they are no longer needed.
 - **Settings → Privacy** offers a suggested text for the privacy policy: who creates accounts, who
   sees what, the current profile fields as voluntary data with consent, why inactive members are
   kept, and the automatic-email opt-out.

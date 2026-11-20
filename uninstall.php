@@ -9,6 +9,7 @@
 
 declare(strict_types=1);
 
+use Orchestra\Members\Profile\BirthDate;
 use Orchestra\Members\Profile\ProfileFields;
 use Orchestra\Members\Profile\ProfileRepository;
 
@@ -23,6 +24,7 @@ $orchestraMembersProfiles = new ProfileRepository($orchestraMembersFields);
 foreach ($orchestraMembersFields->all() as $orchestraMembersField) {
     $orchestraMembersProfiles->deleteFieldValues($orchestraMembersField);
 }
+delete_metadata('user', 0, BirthDate::META_KEY, '', true);
 delete_metadata('user', 0, ProfileRepository::META_INACTIVE, '', true);
 delete_metadata('user', 0, ProfileRepository::META_NO_AUTOMATIC_EMAILS, '', true);
 delete_option(ProfileFields::OPTION);
