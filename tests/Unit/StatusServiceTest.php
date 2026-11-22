@@ -20,7 +20,9 @@ final class StatusServiceTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository(new ProfileFields());
+        $fields = new ProfileFields();
+        $fields->save(ProfileFields::earlierDefaults());
+        $this->profiles = new ProfileRepository($fields);
         $this->status = new StatusService($this->profiles);
     }
 

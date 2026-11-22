@@ -20,6 +20,7 @@ final class PersonalDataTest extends TestCase
     {
         WordPress::reset();
         $fields = new ProfileFields();
+        $fields->save(ProfileFields::earlierDefaults());
         $this->profiles = new ProfileRepository($fields);
         $this->privacy = new PersonalData($this->profiles, $fields);
         WordPress::addUser(5, [Roles::MEMBER]);

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Orchestra\Members\Profile;
 
 /**
- * The fields of the orchestra profile, chosen by the administrators. Stored in an option; until
- * they are changed for the first time, the profile has the default fields.
+ * The fields of the orchestra profile, chosen by the administrators. Stored in an option; a new
+ * orchestra starts without fields.
  */
 final class ProfileFields
 {
     public const OPTION = 'orchestra_members_profile_fields';
+
+    /** Set once {@see keepEarlierDefaults()} has run. */
+    public const EARLIER_DEFAULTS_OPTION = 'orchestra_members_earlier_defaults_checked';
 
     /** Field IDs that would collide with other user meta of orchestra-members. */
     private const RESERVED_IDS = ['inactive', 'birth_date'];
@@ -31,7 +34,7 @@ final class ProfileFields
 
         $stored = \get_option(self::OPTION);
         if (!\is_array($stored)) {
-            return $this->cache = self::defaults();
+            return $this->cache = [];
         }
 
         $fields = [];
@@ -59,12 +62,31 @@ final class ProfileFields
     }
 
     /**
-     * The fields every orchestra starts with. Their IDs match the user meta of versions up to 0.4,
-     * so existing data is kept.
+     * Up to 0.22, an orchestra whose administrators never saved the fields had the
+     * {@see earlierDefaults()}; since 0.23 it has none. Sites that already have members keep those
+     * two fields, so their profiles do not change. Runs once per site.
+     *
+     * @param callable(): bool $hasMembers whether any user has an orchestra role
+     */
+    public function keepEarlierDefaults(callable $hasMembers): void
+    {
+        if (\get_option(self::EARLIER_DEFAULTS_OPTION) !== false) {
+            return;
+        }
+
+        if (\get_option(self::OPTION) === false && $hasMembers()) {
+            $this->save(self::earlierDefaults());
+        }
+        \update_option(self::EARLIER_DEFAULTS_OPTION, '1');
+    }
+
+    /**
+     * The fields every orchestra started with up to 0.22. Their IDs match the user meta of versions
+     * up to 0.4, so existing data is kept.
      *
      * @return list<ProfileField>
      */
-    public static function defaults(): array
+    public static function earlierDefaults(): array
     {
         return [
             new ProfileField(

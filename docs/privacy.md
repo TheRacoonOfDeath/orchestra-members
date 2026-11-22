@@ -6,8 +6,8 @@ This page covers orchestra-members.
 
 ## Personal data
 
-The profile fields are chosen by the administrators (by default financial support and dietary
-restrictions); every profile also has a birth date (since 0.22), which is treated like them in
+The profile fields are chosen by the administrators (a new orchestra has none, since 0.23); every
+profile also has a birth date (since 0.22), which is treated like them in
 everything below. Their values are personal data under the GDPR and are treated as sensitive, since
 fields like dietary restrictions can reveal health or religious information. Only add fields the
 orchestra needs.

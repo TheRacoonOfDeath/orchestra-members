@@ -17,9 +17,12 @@ Everything is stored as user meta. There are no custom tables.
 
 The option `orchestra_members_profile_fields` holds the profile fields, in display order. Each has a
 stable ID (derived from the label when it is created), a label, a type, a hint and, for choice
-lists, the choices. Until an administrator saves the fields, the defaults apply: "Financial
-support" (`financial_support`, checkbox) and "Dietary restrictions" (`dietary_restrictions`, long
-text), whose meta keys are those of earlier versions.
+lists, the choices. A new orchestra starts without fields (since 0.23). Up to 0.22, sites whose
+administrators never saved the fields had two defaults, "Financial support" (`financial_support`,
+checkbox) and "Dietary restrictions" (`dietary_restrictions`, long text). On the first request after
+the update, a site that already has users with an Orchestra role saves those two into the option, so
+their profiles and data do not change; the option `orchestra_members_earlier_defaults_checked`
+records that this check ran, so it runs once per site (`ProfileFields::keepEarlierDefaults()`).
 
 | Type | Stored value |
 |------|--------------|

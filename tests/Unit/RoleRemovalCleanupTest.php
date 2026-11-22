@@ -19,7 +19,9 @@ final class RoleRemovalCleanupTest extends TestCase
     protected function setUp(): void
     {
         WordPress::reset();
-        $this->profiles = new ProfileRepository(new ProfileFields());
+        $fields = new ProfileFields();
+        $fields->save(ProfileFields::earlierDefaults());
+        $this->profiles = new ProfileRepository($fields);
         $this->cleanup = new RoleRemovalCleanup($this->profiles);
     }
 

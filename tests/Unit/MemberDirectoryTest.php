@@ -22,6 +22,7 @@ final class MemberDirectoryTest extends TestCase
     {
         WordPress::reset();
         $fields = new ProfileFields();
+        $fields->save(ProfileFields::earlierDefaults());
         $this->profiles = new ProfileRepository($fields);
         $this->members = new MembersService(new MemberDirectory($this->profiles), $this->profiles, $fields);
 

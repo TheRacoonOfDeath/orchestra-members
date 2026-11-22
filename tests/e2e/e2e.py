@@ -216,6 +216,16 @@ check("My profile" in text(page) and "Who plays in the orchestra." not in page
       and "Email" not in text(page).split("Hello", 1)[1],
       "the start page lists the areas the member can use, without the member list")
 
+# --- Profile fields of a new orchestra and of sites updated from 0.22 or earlier ------------
+check(wp_eval('var_export(get_option("orchestra_members_profile_fields"));') == "false"
+      and "Dietary restrictions" not in member.get(PROFILE)[1],
+      "a new orchestra starts without profile fields")
+wp("option", "delete", "orchestra_members_earlier_defaults_checked")
+member.get(PROFILE)
+check([f["id"] for f in json.loads(wp("option", "get", "orchestra_members_profile_fields", "--format=json"))]
+      == ["financial_support", "dietary_restrictions"],
+      "a site with members keeps the default fields of earlier versions")
+
 _, page = Session().get(PAGES["orchestra_login"])
 login_form = find_form(page, orchestra_login_page=PAGES["orchestra_login"]) or (Forms(page).forms or [None])[0]
 check(login_form is not None and 'name="log"' in page, "the login page shows a login form")
@@ -712,7 +722,9 @@ check(meta(member2_id, "orchestra_members_inactive") == "1", "deactivating the p
 wp("plugin", "uninstall", "orchestra-members")
 remaining = wp_eval('global $wpdb; echo (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key LIKE \'orchestra_members_%\'");')
 check(remaining == "0", "uninstall removes all profile data")
-check(wp_eval('var_export(get_option("orchestra_members_profile_fields"));') == "false", "uninstall removes the profile fields")
+check(wp_eval('echo json_encode([get_option("orchestra_members_profile_fields"),'
+              ' get_option("orchestra_members_earlier_defaults_checked")]);') == "[false,false]",
+      "uninstall removes the profile fields")
 
 print()
 if failures:

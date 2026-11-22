@@ -18,7 +18,17 @@ final class ProfileFieldsTest extends TestCase
         WordPress::reset();
     }
 
-    public function testStartsWithTheFieldsOfEarlierVersionsAndKeepsTheirData(): void
+    public function testANewOrchestraHasNoFields(): void
+    {
+        $fields = new ProfileFields();
+        $fields->keepEarlierDefaults(static fn (): bool => false);
+
+        $this->assertSame([], (new ProfileFields())->all());
+        $fields->keepEarlierDefaults(static fn (): bool => true);
+        $this->assertSame([], (new ProfileFields())->all(), 'checked only once');
+    }
+
+    public function testSitesWithMembersKeepTheFieldsOfEarlierVersionsAndTheirData(): void
     {
         WordPress::addUser(5, [Roles::MEMBER]);
         WordPress::$userMeta[5] = [
@@ -26,13 +36,24 @@ final class ProfileFieldsTest extends TestCase
             'orchestra_members_dietary_restrictions' => 'Vegan',
         ];
 
+        $fields = new ProfileFields();
+        $fields->keepEarlierDefaults(static fn (): bool => true);
         $profile = (new ProfileRepository(new ProfileFields()))->find(5);
 
         $this->assertNotNull($profile);
         $this->assertSame(['financial_support' => '1', 'dietary_restrictions' => 'Vegan'], $profile->values);
     }
 
-    public function testSavedFieldsReplaceTheDefaults(): void
+    public function testSavedFieldsAreKeptWhenCheckingTheEarlierDefaults(): void
+    {
+        $fields = new ProfileFields();
+        $fields->save([]);
+        $fields->keepEarlierDefaults(static fn (): bool => true);
+
+        $this->assertSame([], (new ProfileFields())->all());
+    }
+
+    public function testSavesTheFields(): void
     {
         $fields = new ProfileFields();
         $saved = [

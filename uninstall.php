@@ -28,5 +28,6 @@ delete_metadata('user', 0, BirthDate::META_KEY, '', true);
 delete_metadata('user', 0, ProfileRepository::META_INACTIVE, '', true);
 delete_metadata('user', 0, ProfileRepository::META_NO_AUTOMATIC_EMAILS, '', true);
 delete_option(ProfileFields::OPTION);
+delete_option(ProfileFields::EARLIER_DEFAULTS_OPTION);
 // The field for financial support could be chosen in 0.13 only.
 delete_option('orchestra_members_financial_support_field');

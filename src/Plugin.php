@@ -121,6 +121,7 @@ final class Plugin
         }
 
         \add_action('orchestra_core_register_capabilities', [Capabilities::class, 'register']);
+        \add_action('init', [$this, 'keepEarlierProfileFields']);
         \add_action('user_register', [$this, 'announceNewMember']);
         (new PersonalData($this->profiles, $this->fields))->register();
         (new RoleRemovalCleanup($this->profiles))->register();
@@ -145,6 +146,14 @@ final class Plugin
             (new ProfileSection($this->profiles, $this->fields))->register();
             (new UserListColumn($this->profiles))->register();
         }
+    }
+
+    /**
+     * @internal Hooked to `init`, after the translations are loaded.
+     */
+    public function keepEarlierProfileFields(): void
+    {
+        $this->fields->keepEarlierDefaults(fn (): bool => $this->directory->members([], true) !== []);
     }
 
     /**
